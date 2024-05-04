@@ -25,15 +25,15 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="#">
+                <a href="AccountManagement.php" class="active">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="#">
+                <a href="AdminProdMana.php">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="#">
+                <a href="AdmCustomerMana.php">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -41,7 +41,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="#" class="active">
+                <a href="AdminReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>

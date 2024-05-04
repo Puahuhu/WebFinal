@@ -26,20 +26,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="#">
+                <a href="SalesAccMana.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="#">
-                    <span class="material-symbols-sharp ">person</span>
+                <a href="SalesCustomerMana.php">
+                    <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="#">
+                <a href="SalesTransaction.php">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="#">
+                <a href="SalesReport.php" class="active">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
