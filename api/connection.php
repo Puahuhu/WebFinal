@@ -1,4 +1,5 @@
 <?php
+    // dùng require_once ('\xampp\htdocs\WebFinal\api\connection.php');
     header('Access-Control-Allow-Origin: *');
     
     $host = 'localhost';

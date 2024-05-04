@@ -1,5 +1,5 @@
 <?php
-    require_once ('connection.php');
+    require_once ('\xampp\htdocs\WebFinal\api\connection.php');
 
     $sql = 'SELECT * FROM Salesperson';
 
