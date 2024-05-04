@@ -9,7 +9,42 @@
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="css/AccountManagement.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    $(document).ready(function () {
+        // Đọc dữ liệu ngay khi tải trang xong
+        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var employs = data.data;
+                var tableBody = $(".info1");
+
+                employs.forEach(function (employ) {
+                    var statusClass = employ.IsActive === 1 ? "green" : "gray";
+                    var statusText = employ.IsActive === 1 ? "Active" : "Locked";
+                    var operationClass = employ.IsActive === 1 ? "operation_locked" : "operation_actived";
+                    var row = "<tr>" +
+                        "<td>" +
+                        "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
+                        "</td>" +
+                        "<td class='text-hover'>" + employ.FullName + "</td>" +
+                        "<td>" +
+                        "<span class='status " + statusClass + "'></span> " + statusText +
+                        "</td>" +
+                        "<td class='" + operationClass + "'>" +
+                        "<span><button>" + (employ.IsActive === 1 ? "Locked" : "Actived") + "</button></span>" +
+                        "</td>" +
+                        "</tr>";
+                    tableBody.append(row);
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+    });
+</script>
 
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -131,66 +166,6 @@
                                         </tr>
                                     </thead>
                                     <tbody class="info1">
-                                        <tr>
-                                            <td>
-                                                <img src="images/phuong.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Nguyen Le Tuan Phuong</td>
-                                            <td>
-                                                <span class="status green"></span> Active
-                                            </td>
-                                            <td class="operation_locked">
-                                                <span><button>Locked</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/tram.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Chau Thi Tram</td>
-                                            <td>
-                                                <span class="status gray"></span> Locked
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span><button>Actived</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/quynh.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Nguyen Dang Nhu Quynh</td>
-                                            <td>
-                                                <span class="status red"></span> Inactive
-                                            </td>
-                                            <td class="operation_sendmail">
-                                                <span><button>Send mail</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/hong.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Dang Thi Kim Hong</td>
-                                            <td>
-                                                <span class="status green"></span> Active
-                                            </td>
-                                            <td class="operation_locked">
-                                                <span><button>Locked</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/tuan.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover"> Nguyen Tuan</td>
-                                            <td>
-                                                <span class="status red"></span> Inactive
-                                            </td>
-                                            <td class="operation_sendmail">
-                                                <span><button>Send mail</button></span>
-                                            </td>
-                                        </tr>
 
                                     </tbody>
                                 </table>
