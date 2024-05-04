@@ -1,25 +1,17 @@
 function redirectToCreateAccount() {
-    window.location.href = "CreateAccount.php";
+    window.location.href = "AdmCreateAccount.php";
 }
 
-function redirectToProductSales() {
-    window.location.href = "ProductSales.php";
-}
-
-function redirectToProduct() {
-    window.location.href = "Product.php";
+function redirectToProductMana() {
+    window.location.href = "AdimProdMana.php";
 }
 
 function redirectToProductDetailsAdmin() {
-    window.location.href = "ProductDetailsAdmin.php";
+    window.location.href = "AdminProdDetails.php";
 }
 
 function redirectToProductDetailsEdit() {
-    window.location.href = "ProductDetailsEdit.php";
-}
-
-function redirectToCustomerManagement() {
-    window.location.href = "CustomerManagement.php";
+    window.location.href = "AdminProdDetailsEdit.php";
 }
 
 function redirectToAccountManagement() {
@@ -31,25 +23,17 @@ function redirectToAddProduce() {
 }
 
 function redirectToSalesDetails() {
-    window.location.href = "SalesDetails.php";
+    window.location.href = "SalesAccMana.php";
 }
 
 function redirectToProductDetailsSales() {
-    window.location.href = "ProductDetailsSales.php";
+    window.location.href = "SalesProductDetails.php";
 }
 
 function redirectToLogin() {
-    if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-        window.location.href = "LoginAdmin.php";
+    if (confirm("Do you want to log out?")) {
+        window.location.href = "AdminLogin.php";
     }
-}
-
-function redirectToLoginAdmin() {
-    window.location.href = "loginAdmin.php";
-}
-
-function redirectToLoginSales() {
-    window.location.href = "loginSales.php";
 }
 
 function reloadPage() {
