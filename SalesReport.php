@@ -25,20 +25,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="#">
+                <a href="SalesAccMana.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="#">
+                <a href="SalesCustomerMana.php">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="#">
+                <a href="SalesTransaction.php">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="#" class="active">
+                <a href="SalesReport.php" class="active">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -60,10 +60,10 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
+                    <img src="images/hong.png" width="40px" height="40px" alt="">
                     <div>
-                        <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
-                        <small> Admin</small>
+                        <h4 class="yellow text-hover1"> Dang Thi Kim Hong </h4>
+                        <small> Salesperson</small>
                     </div>
                 </div>
             </header>

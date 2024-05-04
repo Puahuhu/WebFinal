@@ -26,19 +26,19 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="#">
+                <a href="SalesAccMana.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="#">
+                <a href="SalesCustomerMana.php">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="#" class="active">
+                <a href="SalesTransaction.php" class="active">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="#">
+                <a href="SalesReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -53,7 +53,7 @@
                 <h1 class="yellow text-hover1">
                     <label for="nav-toggle">
                         <span class = "material-symbols-sharp" id="setting">receipt_long</span>
-                    </label> Product Catalog Management
+                    </label> Transaction
                 </h1>
                 <div class="search-wrapper">
                     <span class="las la-search white"></span>

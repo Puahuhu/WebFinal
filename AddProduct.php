@@ -26,15 +26,15 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="#">
+                <a href="AccountManagement.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="#">
+                <a href="AdminProdMana.php">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="#">
+                <a href="AdmCustomerMana.php">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -42,7 +42,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="#">
+                <a href="AdminReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -150,7 +150,7 @@
                         </table>
                         <div class="main-btn">
                             <a href="#" class="btn2"><input type="submit" value="Add"></a>
-                            <a href="#" class="btn3"><input type="submit" value="Cancel"></a>
+                            <a href="AdminProdMana.php" class="btn3"><input type="submit" value="Cancel"></a>
                         </div>
                     </div>
                     <div class="home-img">

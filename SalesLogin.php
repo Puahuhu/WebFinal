@@ -1,4 +1,5 @@
 <?php
+$_SESSION['logged in'] = true;
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -8,9 +9,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     if (empty($username)) {
-        $error = "Vui lòng nhập tên người dùng";
+        $error = "Please enter your username";
     } elseif (empty($password)) {
-        $error = "Vui lòng nhập mật khẩu";
+        $error = "Please enter your password";
     } else {
         // Kiểm tra xem UserId có trong bảng Salesperson hay không
         $stmt = $dbCon->prepare("SELECT * FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username = :username)");
@@ -23,10 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Chuyển sang màn hình chính
-                header("Location: AccountManagement.php");
+                header("Location: SalesAccMana.php");
                 exit();
             } else {
-                $error = "Sai mật khẩu";
+                $error = "Wrong password";
             }
         } else {
             // Kiểm tra xem UserId có trong bảng Admins hay không
@@ -34,8 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute(array(':username' => $username));
 
             if ($stmt->rowCount() > 0) {
-                $error = "Tài khoản sales không tồn tại";
-            } 
+                $error = "Account doesn't exist";
+            } else {
+                $error = "Account doesn't exist";
+            }
         }
     }
 }
