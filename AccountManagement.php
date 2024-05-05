@@ -24,7 +24,7 @@
                     var statusClass = employ.IsActive === 1 ? "green" : "gray";
                     var statusText = employ.IsActive === 1 ? "Active" : "Locked";
                     var operationClass = employ.IsActive === 1 ? "operation_locked" : "operation_actived";
-                    var row = "<tr>" +
+                    var row = "<tr data-id='" + employ.SalespersonID + "'>" + // Thêm thuộc tính data-id
                         "<td>" +
                         "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
                         "</td>" +
@@ -43,8 +43,26 @@
             } else {
                 alert("Không thể tải dữ liệu từ server");
             }
+            
         }, "json");
+
+        // Hàm xử lý khi nhấn nút "Locked" hoặc "Actived"
+        $(".info1").on("click", ".operation_locked button, .operation_actived button", function () {
+            var row = $(this).closest("tr"); // Lấy hàng chứa nút đang được nhấn
+            var fullName = row.find(".employ-name").text(); // Lấy tên đầy đủ của nhân viên
+            var isActive = row.find(".operation_locked").length > 0 ? 0 : 1; // Xác định trạng thái mới của nhân viên
+            var salespersonID = row.attr("data-id"); // Lấy ID của nhân viên
+
+            $.post("http://localhost:8080/WebFinal/api/Salesperson/update-IsActiveSaleperson.php", {
+                SalespersonID: salespersonID,
+                FullName: fullName,
+                IsActive: isActive
+            })
+            location.reload();
+        });
+        
     });
+    
 </script>
 
 
