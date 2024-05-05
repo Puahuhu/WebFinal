@@ -1,19 +1,22 @@
 <?php
     require_once ('\xampp\htdocs\WebFinal\connection.php');
 
-    $sql = 'SELECT * FROM Salesperson';
-
-    try{
+    $fullName = $_POST['fullName'];
+    
+    $sql = "SELECT * FROM Salesperson WHERE FullName = '$fullName'";
+    
+    try {
         $stmt = $dbCon->prepare($sql);
         $stmt->execute();
-    }
-    catch(PDOException $ex){
+    } catch (PDOException $ex) {
         die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
     }
+    
     $data = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-    {
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $data[] = $row;
     }
+    
     echo json_encode(array('status' => true, 'data' => $data));
+    
 ?>

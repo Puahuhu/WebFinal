@@ -1,3 +1,8 @@
+<?php
+    $fullname = $_GET['fullName'];
+?>
+<!DOCTYPE html>
+<html lang="en">
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,8 +15,46 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/Information.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var fullName = "<?php echo htmlspecialchars($fullname); ?>";
+    $(document).ready(function () {
+        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var employ = data.data; // Lấy đối tượng Salesperson đầu tiên từ mảng data
+                employ.forEach(function (employ) {
+                    if (employ.FullName === fullName) {
+                        // Hiển thị thông tin của Salesperson
+                        $(".home-text").append(
+                            "<span>Administrator</span>" +
+                            "<h1 class='white'>" + employ.FullName + "</h1>" +
+                            "<table>" +
+                            "<tr><td><p>Gmail:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                            // Thêm các trường thông tin khác nếu cần
+                            "</table>" +
+                            "<div class='main-btn'>" +
+                            "<a href='#' class='btn two'>Change Avatar</a>" +
+                            "<a href='#' class='btn two'>Change Password</a>" +
+                            "</div>" +
+                            "<div class='main-btn'>" +
+                            "<a href='#' class='btn2'> Sales Details</a>" +
+                            "</div>"
+                        );
 
+                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                    }
+                });
+                
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+    });
+
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -64,9 +107,9 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/phuong.png" width="40px" height="40px" alt="">
+                    <img src="images/quynh.png" width="40px" height="40px" alt="">
                     <div>
-                        <h4 class="yellow text-hover1"> Nguyen Le Tuan Phuong </h4>
+                        <h4 class="yellow text-hover1"> Nguyễn Đặng Như Quỳnh </h4>
                         <small> Admin</small>
                     </div>
                 </div>
@@ -81,62 +124,10 @@
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <span>
-                            Administrator
-                        </span>
-                        <h1 class="white">Nguyen Le Tuan Phuong </h1>
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Gmail:</p>
-                                </td>
-                                <td>
-                                    <p><a>puahuhu@gmail.com</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Birthday</p>
-                                </td>
-                                <td>
-                                    <p><a>xx/xx/2004</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Mobile</p>
-                                </td>
-                                <td>
-                                    <p><a>0932847243</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Address:</p>
-                                </td>
-                                <td>
-                                    <p><a>Binh Chanh, HCM city</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Creation Date</p>
-                                </td>
-                                <td>
-                                    <p><a>01/05/2024</a></p>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn two ">Change Avatar</a>
-                            <a href="#" class="btn two ">Change Password</a>
-                        </div>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"> Sales Details</a>
-                        </div>
+                        <!-- Thông tin của Salesperson sẽ được hiển thị ở đây -->
                     </div>
                     <div class="home-img">
-                        <img src="images/phuong.png">
+                        <!-- Hình ảnh avatar của Salesperson sẽ được hiển thị ở đây -->
                     </div>
                 </div>
             </main>

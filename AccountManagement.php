@@ -15,7 +15,6 @@
 </head>
 <script>
     $(document).ready(function () {
-        // Đọc dữ liệu ngay khi tải trang xong
         $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var employs = data.data;
@@ -29,7 +28,9 @@
                         "<td>" +
                         "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
                         "</td>" +
-                        "<td class='text-hover'>" + employ.FullName + "</td>" +
+                        "<td>" +
+                        "<a href='http://localhost:8080/WebFinal/AdmAccMana.php?fullName=" + encodeURIComponent(employ.FullName) + "' id='fullname' class='text-hover employ-name' style='color: white;'>" + employ.FullName + "</a>" +
+                        "</td>" +
                         "<td>" +
                         "<span class='status " + statusClass + "'></span> " + statusText +
                         "</td>" +
@@ -45,6 +46,7 @@
         }, "json");
     });
 </script>
+
 
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -100,7 +102,7 @@
                 <div class="user-wrapper">
                     <img src="images/quynh.png" width="40px" height="40px" alt="">
                     <div>
-                        <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
+                        <h4 class="yellow text-hover1"> Nguyễn Đặng Như Quỳnh </h4>
                         <small> Admin</small>
                     </div>
                 </div>
@@ -166,7 +168,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="info1">
-
+                                        <!-- Dữ liệu thêm ở đây -->
                                     </tbody>
                                 </table>
                             </div>
