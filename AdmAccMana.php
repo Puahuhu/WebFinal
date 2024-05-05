@@ -24,10 +24,9 @@
     $(document).ready(function () {
         $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
             if (status === "success" && data.status === true) {
-                var employ = data.data; // Lấy đối tượng Salesperson đầu tiên từ mảng data
+                var employ = data.data;
                 employ.forEach(function (employ) {
                     if (employ.FullName === fullName) {
-                        // Hiển thị thông tin của Salesperson
                         $(".home-text").append(
                             "<span>Administrator</span>" +
                             "<h1 class='white'>" + employ.FullName + "</h1>" +
