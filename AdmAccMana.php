@@ -25,10 +25,10 @@
                 employs.forEach(function (employ) {
                     if (employ.FullName === fullName) {
                         $(".home-text").append(
-                            "<span>Saleperson</span>" +
+                            "<span>Salesperson</span>" +
                             "<h1 class='white'>" + employ.FullName + "</h1>" +
                             "<table>" +
-                            "<tr><td><p>Gmail:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                            "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
                             // Thêm các trường thông tin khác nếu cần
                             "</table>" +
                             "<div class='main-btn'>" +

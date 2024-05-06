@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Chuyển sang màn hình chính
-                header("Location: SalesAccMana.php");
+                header("Location: SalesAccMana.php?username=$username");
                 exit();
             } else {
                 $error = "Wrong password";
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="image-holder">
                 <img class="bg" src="images/bg-phone10.jpeg" alt="">
             </div>
-            <form action="SalesAccMana.php" method="post" id="loginForm">
+            <form action="SalesLogin.php" method="post" id="loginForm">
                 <div class="form-button">
                     <button class="choose" id="adminButton">Admin
                         <i class="zmdi zmdi-account"></i>

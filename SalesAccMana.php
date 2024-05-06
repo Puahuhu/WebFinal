@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
@@ -14,28 +13,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<style>
+    .avatar-change-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .avatar-change-modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #changeAvatarBtn:hover {
+        background-color: silver;
+    }
+
+    #changeAvatarBtn {
+        background-color: #f1f1f1;
+        color: black;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
 <script>
-    var username = "<?php echo htmlspecialchars($_POST['username']); ?>";
     $(document).ready(function () {
+        var salespersonid;
+        var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
         $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var accs = data.data;
                 accs.forEach(function (acc) {
-                    if (acc.Username === username) { // Change 'UserName' to 'Username' for comparison
+                    if (acc.Username === username) {
                         var userId = acc.UserID;
                         $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
                             if (status === "success" && data.status === true) {
                                 var employs = data.data;
                                 employs.forEach(function (employ) {
                                     if (employ.UserID === userId) {
+                                        salespersonid = employ.SalespersonID;
                                         $(".home-text").append(
-                                            "<span>Saleperson</span>" +
+                                            "<span>Salesperson</span>" +
                                             "<h1 class='white'>" + employ.FullName + "</h1>" +
                                             "<table>" +
-                                            "<tr><td><p>Gmail:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                                            "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
                                             "</table>" +
                                             "<div class='main-btn'>" +
-                                            "<a href='#' class='btn two'>Change Avatar</a>" +
+                                            "<a href='#' id='changeAvatarLink' class='btn two'>" +
+                                            "<label class='btn-label'>Change Avatar</label>" +
+                                            "</a>" +
                                             "<a href='#' class='btn two'>Change Password</a>" +
                                             "</div>" +
                                             "<div class='main-btn'>" +
@@ -44,8 +94,8 @@
                                         );
                                         $(".home-img").append("<img src='" + employ.Avatar + "'>");
                                         $(".user-wrapper").append(
-                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>"
-                                            + "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
                                         );
                                     }
                                 });
@@ -59,10 +109,41 @@
                 alert("Không thể tải dữ liệu từ server");
             }
         }, "json");
+        
+
+        // Hiển thị cửa sổ nhỏ khi click vào nút "Change Avatar"
+        $(document).on("click", "#changeAvatarLink", function () {
+            $("#avatarChangeModal").css("display", "block");
+        });
+
+        // Ẩn cửa sổ nhỏ khi click vào nút đóng
+        $(document).on("click", ".close", function () {
+            $("#avatarChangeModal").css("display", "none");
+        });
+
+        // Xử lý sự kiện khi người dùng chọn hình ảnh từ máy tính và gửi đi
+        var fileName;
+        $(document).on("change", "#avatarInput", function () {
+            var file = this.files[0];
+            if (file) {
+                fileName = "images/" + file.name; 
+            } else {
+                console.log("Không có file được chọn.");
+            }
+        });
+
+        $(document).on("click", "#changeAvatarBtn", function () {
+            console.log("SalespersonID:", salespersonid); // Log giá trị của salespersonid
+            console.log("fileName:", fileName); // Log giá trị của fileName
+
+            $.post("http://localhost:8080/WebFinal/api/Salesperson/update-SalepersonAvatar.php", {
+                SalespersonID: salespersonid,
+                Avatar: fileName
+            });
+            location.reload();
+        });
     });
 </script>
-
-
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -139,6 +220,14 @@
             </div>
         </div>
     </div>
+    <div class="avatar-change-modal" id="avatarChangeModal">
+    <div class="avatar-change-modal-content">
+        <span class="close">&times;</span>
+        <h2>Change Avatar</h2>
+        <input type="file" id="avatarInput">
+        <button id="changeAvatarBtn">Change</button>
+    </div>
+</div>
 </body>
 
 </html>
