@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="image-holder">
                 <img class="bg" src="images/bg-phone10.jpeg" alt="">
             </div>
-            <form action="SalesLogin.php" method="post" id="loginForm">
+            <form action="SalesAccMana.php" method="post" id="loginForm">
                 <div class="form-button">
                     <button class="choose" id="adminButton">Admin
                         <i class="zmdi zmdi-account"></i>

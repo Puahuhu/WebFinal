@@ -1,7 +1,7 @@
 <?php
-    require_once ('connection.php');
+    require_once ('\xampp\htdocs\WebFinal\connection.php');
 
-    $sql = 'SELECT * FROM Account';
+    $sql = 'SELECT * FROM Accounts';
 
     try{
         $stmt = $dbCon->prepare($sql);

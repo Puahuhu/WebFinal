@@ -10,7 +10,58 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/Information.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var username = "<?php echo htmlspecialchars($_POST['username']); ?>";
+    $(document).ready(function () {
+        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) { // Change 'UserName' to 'Username' for comparison
+                        var userId = acc.UserID;
+                        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var employs = data.data;
+                                employs.forEach(function (employ) {
+                                    if (employ.UserID === userId) {
+                                        $(".home-text").append(
+                                            "<span>Saleperson</span>" +
+                                            "<h1 class='white'>" + employ.FullName + "</h1>" +
+                                            "<table>" +
+                                            "<tr><td><p>Gmail:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                                            "</table>" +
+                                            "<div class='main-btn'>" +
+                                            "<a href='#' class='btn two'>Change Avatar</a>" +
+                                            "<a href='#' class='btn two'>Change Password</a>" +
+                                            "</div>" +
+                                            "<div class='main-btn'>" +
+                                            "<a href='#' class='btn2'> Sales Details</a>" +
+                                            "</div>"
+                                        );
+                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                        $(".user-wrapper").append(
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>"
+                                            + "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+    });
+</script>
+
 
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -61,11 +112,7 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/hong.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Dang Thi Kim Hong </h4>
-                        <small> Salesperson</small>
-                    </div>
+                    <!-- Avatar của Salesperson sẽ được hiển thị ở đây -->
                 </div>
             </header>
 
@@ -78,62 +125,10 @@
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <span>
-                            Salesperson
-                        </span>
-                        <h1 class="white">Dang Thi Kim Hong </h1>
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Gmail:</p>
-                                </td>
-                                <td>
-                                    <p><a>abcxyzhsnn@gmail.com</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Birthday</p>
-                                </td>
-                                <td>
-                                    <p><a>29/07/2004</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Mobile</p>
-                                </td>
-                                <td>
-                                    <p><a>0932847243</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Address:</p>
-                                </td>
-                                <td>
-                                    <p><a>184 Huynh Van Nghe, Tan Binh, HCM city</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Creation Date</p>
-                                </td>
-                                <td>
-                                    <p><a>29/07/2024</a></p>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn two ">Change Avatar</a>
-                            <a href="#" class="btn two ">Change Password</a>
-                        </div>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"> Sales Details</a>
-                        </div>
+                        <!-- Thông tin của Salesperson sẽ được hiển thị ở đây -->
                     </div>
                     <div class="home-img">
-                        <img src="images/hong.png">
+                        <!-- Hình ảnh avatar của Salesperson sẽ được hiển thị ở đây -->
                     </div>
                 </div>
             </main>

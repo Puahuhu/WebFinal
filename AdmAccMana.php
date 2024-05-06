@@ -1,6 +1,3 @@
-<?php
-    $fullname = $_GET['fullName'];
-?>
 <!DOCTYPE html>
 <html lang="en">
 <!DOCTYPE html>
@@ -20,15 +17,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <script>
-    var fullName = "<?php echo htmlspecialchars($fullname); ?>";
+    var fullName = "<?php echo htmlspecialchars($_GET['fullName']); ?>";
     $(document).ready(function () {
         $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
             if (status === "success" && data.status === true) {
-                var employ = data.data;
-                employ.forEach(function (employ) {
+                var employs = data.data;
+                employs.forEach(function (employ) {
                     if (employ.FullName === fullName) {
                         $(".home-text").append(
-                            "<span>Administrator</span>" +
+                            "<span>Saleperson</span>" +
                             "<h1 class='white'>" + employ.FullName + "</h1>" +
                             "<table>" +
                             "<tr><td><p>Gmail:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
