@@ -29,7 +29,7 @@
                         "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
                         "</td>" +
                         "<td>" +
-                        "<a href='http://localhost:8080/WebFinal/AdmAccMana.php?fullName=" + encodeURIComponent(employ.FullName) + "' id='fullname' class='text-hover employ-name' style='color: white;'>" + employ.FullName + "</a>" +
+                        "<a href='http://localhost:8080/WebFinal/AdmInformationView.php?fullName=" + encodeURIComponent(employ.FullName) + "&username=" + encodeURIComponent(username) + "' id='fullname' class='text-hover employ-name' style='color: white;'>" + employ.FullName + "</a>" +
                         "</td>" +
                         "<td>" +
                         "<span class='status " + statusClass + "'></span> " + statusText +
@@ -44,6 +44,35 @@
                 alert("Không thể tải dữ liệu từ server");
             }
             
+        }, "json");
+        
+        var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("http://localhost:8080/WebFinal/api/Admin/get-admin.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var adms = data.data;
+                                adms.forEach(function (adm) {
+                                    if (adm.UserID === userId) {
+                                        $(".user-wrapper").append(
+                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
         }, "json");
 
         // Hàm xử lý khi nhấn nút "Locked" hoặc "Actived"
@@ -100,7 +129,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a href="AdminLogin.php">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -118,11 +147,7 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Nguyễn Đặng Như Quỳnh </h4>
-                        <small> Admin</small>
-                    </div>
+                    <!--  -->
                 </div>
             </header>
             <main>

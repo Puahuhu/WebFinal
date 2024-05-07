@@ -85,7 +85,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a href="AdminLogin.php">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>

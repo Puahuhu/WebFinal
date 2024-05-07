@@ -83,10 +83,8 @@
                                             "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
                                             "</table>" +
                                             "<div class='main-btn'>" +
-                                            "<a href='#' id='changeAvatarLink' class='btn two'>" +
-                                            "<label class='btn-label'>Change Avatar</label>" +
-                                            "</a>" +
-                                            "<a href='#' class='btn two'>Change Password</a>" +
+                                            "<a href='#' id='changeAvatarLink' class='btn two'>Change Avatar</a>" +
+                                            "<a href='SalesChangePassword.php?username=" + encodeURIComponent(username) + "'class='btn two'>Change Password</a>" +
                                             "</div>" +
                                             "<div class='main-btn'>" +
                                             "<a href='#' class='btn2'> Sales Details</a>" +
@@ -139,8 +137,14 @@
             $.post("http://localhost:8080/WebFinal/api/Salesperson/update-SalepersonAvatar.php", {
                 SalespersonID: salespersonid,
                 Avatar: fileName
-            });
-            location.reload();
+            }, function (data, status) {
+                if (status === "success") {
+                    alert("Avatar changed successfully.");
+                    location.reload();
+                } else {
+                    alert("An error occurred while processing your request.");
+                }
+            }, "json");
         });
     });
 </script>
@@ -175,7 +179,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a href="SalesLogin.php">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
