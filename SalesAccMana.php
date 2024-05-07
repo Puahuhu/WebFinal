@@ -81,6 +81,8 @@
                                             "<h1 class='white'>" + employ.FullName + "</h1>" +
                                             "<table>" +
                                             "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                                            "<tr><td><p>Address:</p></td><td><p>" + employ.SalesAddress + "</p></td></tr>" +
+                                            "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
                                             "</table>" +
                                             "<div class='main-btn'>" +
                                             "<a href='#' id='changeAvatarLink' class='btn two'>Change Avatar</a>" +

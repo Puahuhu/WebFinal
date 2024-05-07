@@ -13,5 +13,4 @@
     catch(PDOException $ex){
         die(json_encode(array('status' => false, 'data' => 'Unable to connect: ' . $ex->getMessage())));
     }
-
 ?>

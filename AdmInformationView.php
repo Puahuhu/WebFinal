@@ -27,6 +27,8 @@
                             "<h1 class='white'>" + employ.FullName + "</h1>" +
                             "<table>" +
                             "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                            "<tr><td><p>Address:</p></td><td><p>" + employ.SalesAddress + "</p></td></tr>" +
+                            "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
                             // Thêm các trường thông tin khác nếu cần
                             "</table>" +
                             "<div class='main-btn'>" +
