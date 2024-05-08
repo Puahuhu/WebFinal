@@ -24,8 +24,8 @@ try {
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'Thêm tiêu đề';
-    $mail->Body    = 'Thêm nội dung';
+    $mail->Subject = 'send mail is so fucking easy little homie';
+    $mail->Body    = 'gg mit to bit';
 
     $mail->send();
     echo 'Message has been sent';
