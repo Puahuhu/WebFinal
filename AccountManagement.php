@@ -130,6 +130,7 @@
                     <h3> Reporting and Analytics </h3>
                 </a>
                 <a href="AdminLogin.php">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -277,6 +278,6 @@
             </div>
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>
