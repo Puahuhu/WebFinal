@@ -15,7 +15,7 @@
 </head>
 <script>
     $(document).ready(function () {
-        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var employs = data.data;
                 var tableBody = $(".info1");
@@ -29,7 +29,7 @@
                         "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
                         "</td>" +
                         "<td>" +
-                        "<a href='http://localhost:8080/WebFinal/AdmInformationView.php?fullName=" + encodeURIComponent(employ.FullName) + "&username=" + encodeURIComponent(username) + "' id='fullname' class='text-hover employ-name' style='color: white;'>" + employ.FullName + "</a>" +
+                        "<a href='AdmInformationView.php?fullName=" + encodeURIComponent(employ.FullName) + "&username=" + encodeURIComponent(username) + "' id='fullname' class='text-hover employ-name' style='color: white;'>" + employ.FullName + "</a>" +
                         "</td>" +
                         "<td>" +
                         "<span class='status " + statusClass + "'></span> " + statusText +
@@ -47,13 +47,13 @@
         }, "json");
         
         var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
-        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+        $.get("api/Account/get-account.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var accs = data.data;
                 accs.forEach(function (acc) {
                     if (acc.Username === username) {
                         var userId = acc.UserID;
-                        $.get("http://localhost:8080/WebFinal/api/Admin/get-admin.php", function (data, status) {
+                        $.get("api/Admin/get-admin.php", function (data, status) {
                             if (status === "success" && data.status === true) {
                                 var adms = data.data;
                                 adms.forEach(function (adm) {
@@ -82,7 +82,7 @@
             var isActive = row.find(".operation_locked").length > 0 ? 0 : 1; // Xác định trạng thái mới của nhân viên
             var salespersonID = row.attr("data-id"); // Lấy ID của nhân viên
 
-            $.post("http://localhost:8080/WebFinal/api/Salesperson/update-IsActiveSaleperson.php", {
+            $.post("api/Salesperson/update-IsActiveSaleperson.php", {
                 SalespersonID: salespersonID,
                 FullName: fullName,
                 IsActive: isActive

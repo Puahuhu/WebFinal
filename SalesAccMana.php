@@ -64,13 +64,13 @@
     $(document).ready(function () {
         var salespersonid;
         var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
-        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+        $.get("api/Account/get-account.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var accs = data.data;
                 accs.forEach(function (acc) {
                     if (acc.Username === username) {
                         var userId = acc.UserID;
-                        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+                        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
                             if (status === "success" && data.status === true) {
                                 var employs = data.data;
                                 employs.forEach(function (employ) {
@@ -136,7 +136,7 @@
             console.log("SalespersonID:", salespersonid); // Log giá trị của salespersonid
             console.log("fileName:", fileName); // Log giá trị của fileName
 
-            $.post("http://localhost:8080/WebFinal/api/Salesperson/update-SalepersonAvatar.php", {
+            $.post("api/Salesperson/update-SalepersonAvatar.php", {
                 SalespersonID: salespersonid,
                 Avatar: fileName
             }, function (data, status) {

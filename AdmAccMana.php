@@ -19,7 +19,7 @@
 <script>
     var fullName = "<?php echo htmlspecialchars($_GET['fullName']); ?>";
     $(document).ready(function () {
-        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var employs = data.data;
                 employs.forEach(function (employ) {
