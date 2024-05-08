@@ -218,10 +218,6 @@
                                                 <span class="material-symbol"><button>More</button></span>
                                             </td>
                                         </tr>
-
-
-
-
                                     </tbody>
                                 </table>
                             </div>

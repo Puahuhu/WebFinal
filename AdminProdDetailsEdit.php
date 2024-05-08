@@ -72,28 +72,53 @@
                 </div>
             </header>
 
-            <head>
+            <!-- <head>
                 <div class="head-display">
                     <h5 class="material-symbols-sharp" id="icon_arrow">arrow_right</h5>
                     <label class="adjust-size">Iphone15 Promax</label>
+                    
                 </div>
-            </head>
+            </head> -->
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <span>
-                            Product
-                        </span>
-                        <h1 class="white">Iphone 15 Promax </h1>
+                        <form action="api//Product//update-product.php" method="post">
+                            <span>
+                                Product
+                            </span>
+                            
+                            <?php
+                            if(isset($_GET['ProductID'])) {
+                                $product_id = $_GET['ProductID'];
+                                
+                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                if (!$conn) {
+                                    die("Kết nối không thành công: " . mysqli_connect_error());
+                                }
+                                
+                                $sql = "SELECT * FROM products WHERE ProductID = $product_id";
+                                $result = mysqli_query($conn, $sql);
+                                
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    $row = mysqli_fetch_assoc($result);
+                        ?>
+                        
+                        <h1 class="white" name="ProductName" ><?= $row['ProductName'] ?> </h1>
                         <table>
+                            <tr>
+                                <td>
+                                    <p>Product ID:</p>
+                                </td>
+                                <td>
+                                <p><a ><input name="ProductID" type="text" value="<?php echo $row['ProductID']; ?>"></a></p>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <p>Barcode:</p>
                                 </td>
                                 <td>
-                                    <p>
-                                        <a><input type="text" id="" placeholder="-" maxlength="20" required></a>
-                                    </p>
+                                <p><a ><input name="Barcode" type="text" value="<?php echo $row['Barcode']; ?>"></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -101,9 +126,7 @@
                                     <p>Import Price:</p>
                                 </td>
                                 <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" maxlength="20" required></a>
-                                    </p>
+                                    <p><a><input name="ImportPrice" type="text" value="<?php echo $row['ImportPrice']; ?>"></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -111,9 +134,7 @@
                                     <p>Retail Price</p>
                                 </td>
                                 <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" maxlength="20" required></a>
-                                    </p>
+                                    <p><a><input name="RetailPrice" type="text" value="<?php echo $row['RetailPrice']; ?>"></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -121,27 +142,30 @@
                                     <p>Category:</p>
                                 </td>
                                 <td>
-                                    <p>
-                                        <a><input type="text" maxlength="20" placeholder="-" required></a>
-                                    </p>
+                                    <p><a><input name="CategoryID" type="text" value="<?php echo $row['CategoryID']; ?>"></a></p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Creation Date</p>
+                                    <p>Creation Date:</p>
                                 </td>
                                 <td>
-                                    <p>
-                                        <a><input type="date" id="dateproduct" placeholder="-" maxlength="20"></a>
-                                    </p>
+                                    <p><a ><input name="CreatedDate" type="text" value="<?php echo $row['CreatedDate']; ?>"></a></p>
                                 </td>
                             </tr>
 
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"><input type="submit" value="Save"></a>
-                            <a href="#" class="btn3"><input type="submit" value="Cancel"></a>
-                        </div>
+                        
+                        
+                            </table>
+                            <div class="main-btn">
+                                <input type="submit" class="btn2" value="Save"></input>
+                                <a href="AdminProdDetails.php" class="btn3"><input type="submit" value="Cancel"></a>
+                            </div>
+                        <?php
+                                }
+                            }
+                        ?>    
+                        </form>
                     </div>
                     <div class="home-img">
                         <img src="images/product1.png">

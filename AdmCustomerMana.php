@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +28,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php" >
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -33,7 +36,7 @@
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php">
+                <a href="AdmCustomerMana.php" class="active">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -58,10 +61,12 @@
                         <span class = "material-symbols-sharp" id="setting">person</span>
                     </label> Customer Management
                 </h1>
+                
                 <div class="search-wrapper">
                     <span class="las la-search white"></span>
                     <input type="search" placeholder="Search here" />
                 </div>
+                
                 <div class="user-wrapper">
                     <img src="images/quynh.png" width="40px" height="40px" alt="">
                     <div>
@@ -74,10 +79,26 @@
                 <div class="cards">
 
                     <div class="card-single">
+                        <?php 
+                            $conn = mysqli_connect("localhost", "root", "", "finalweb");
+
+                            if (!$conn) {
+                                die("Kết nối không thành công: " . mysqli_connect_error());
+                            }
+                            $countQuery = "SELECT COUNT(*) AS totalCustomers FROM customers";
+                            $countResult = mysqli_query($conn, $countQuery);
+
+                            if ($countResult && mysqli_num_rows($countResult) > 0) {
+                                $row = mysqli_fetch_assoc($countResult);
+                                $totalCustomers = $row['totalCustomers'];
+                        ?>
                         <div>
-                            <h1 class="white quantity">54</h1>
+                            <h1 class="white quantity"><?= $totalCustomers ?></h1>
                             <span>Total Customer</span>
                         </div>
+                        <?php
+                            }
+                        ?>
                         <div>
                             <span class="material-symbols-sharp">person</span>
                         </div>
@@ -99,82 +120,40 @@
                                             <td class="danger adjust-size"> History Transaction </td>
                                         </tr>
                                     </thead>
+                                    <?php
+                                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+
+                                        if (!$conn) {
+                                            die("Kết nối không thành công: " . mysqli_connect_error());
+                                        }
+                                        $sql="select * from customers";
+                                        
+                                        $result = mysqli_query($conn, $sql);
+                
+                                    if ($result && mysqli_num_rows($result) > 0) {
+                                        while ($row = mysqli_fetch_array($result)) {
+                
+
+
+                                    ?>
                                     <tbody class="info1">
                                         <tr>
-                                            <td class="adjust-size1">Nguyen Van A</td>
+                                            <td class="adjust-size1"><?= $row['FullName']?></td>
                                             <td class="adjust-size1">
-                                                <span class=""></span> 0923884838
+                                                <span class=""></span><?= $row['Phone']?>
                                             </td>
                                             <td class="adjust-size1">
-                                                <address> 123 Main Street, City, Country</address>
+                                                <address> <?= $row['CustomerAddress']?></address>
                                             </td>
                                             <td class="operation_actived">
                                                 <span class="material-symbol"><button>More</button></span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="adjust-size1">Nguyen Le Tuan Phuong</td>
-                                            <td class="adjust-size1">
-                                                <span class=""></span> 0932843274
-                                            </td>
-                                            <td class="adjust-size1">
-                                                <address> 123 Main Street, City, Country</address>
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">Nguyen Dang Nhu Quynh</td>
-                                            <td class="adjust-size1">
-                                                <span class=""></span> 0438246322
-                                            </td>
-                                            <td class="adjust-size1">
-                                                <address> 123 Main Street, City, Country</address>
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">Dang Thi Kim Hong</td>
-                                            <td class="adjust-size1">
-                                                <span class=""></span> 0932743264
-                                            </td>
-                                            <td class="adjust-size1">
-                                                <address> 123 Main Street, City, Country</address>
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">Chau Thi Tram</td>
-                                            <td class="adjust-size1">
-                                                <span class=""></span> 0932432800
-                                            </td>
-                                            <td class="adjust-size1">
-                                                <address> 123 Main Street, City, Country</address>
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">Nguyen Tuan</td>
-                                            <td class="adjust-size1">
-                                                <span class=""></span> 0943274362
-                                            </td>
-                                            <td class="adjust-size1">
-                                                <address> 123 Main Street, City, Country</address>
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-
-
-
+                                    <?php
+                                            }
+                                        }
+                                    ?>
 
                                     </tbody>
                                 </table>
@@ -186,6 +165,7 @@
                             <div class="card-header">
                                 <h3 class="yellow"> New Customer</h3>
                             </div>
+
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">

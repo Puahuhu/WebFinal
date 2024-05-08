@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" >
+                <a href="AccountManagement.php" class="active">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -41,7 +41,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php" class="active">
+                <a href="AdminReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -71,21 +71,36 @@
                 </div>
             </header>
             <main>
+                <!-- <div class="right-aligned7">
+                    <span class="silver">Start date</span>
+                </div>
+                <div class="right-aligned8">
+                    <span class="silver">End date</span>
+                </div>
+                <div class="right-aligned">
+                    <input type="date">
+                </div>
+                <div class="right-aligned5">
+                    <input type="date">
+                </div>
+                <div class="right-aligned6">
+                    <a href="Fromto.php" ><input type="submit"></a>
+                </div> -->
                 <div class="cards1">
-                    <div class="card-single5 active-button">
-                        <button>Today</button>
+                    <div class="card-single5 hover-button">
+                        <a href="AdminReport.php"> <button>Today</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="yesterday.php"> <button>Yesterday</button></a>
+                        <a href="Yesterday.php"> <button>Yesterday</button></a>
                     </div>
                     <div class="card-single5 hover-button">
                         <a href="TheLastSevenDays.php"> <button>The last 7 days</button></a>
                     </div>
-                    <div class="card-single5 hover-button">
+                    <div class="card-single5 active-button">
                         <a href="ThisMonth.php"> <button>This month</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="Fromto.php"> <button>From-To</button></a>
+                        <a href="Fromto.php"> <button>From - To</button></a>
                     </div>
                 </div>
                 <div class="cards">
@@ -95,12 +110,14 @@
                         if (!$conn) {
                             die("Connection failed: " . mysqli_connect_error());
                         }
-                        $today = date("Y-m-d");
-                        $sql = "SELECT * FROM orders WHERE DATE(orders.OrderDate) = '$today'";
-                        $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) = '$today'";
+                        $firstDayOfMonth = date("Y-m-01");
+                        $lastDayOfMonth = date("Y-m-t");
+
+                        $sql = "SELECT * FROM orders WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
+                        $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
                         $sql2 = "SELECT orders.*, orderDetails.*
                         FROM orders
-                        INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'";
+                        INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
                         $result = mysqli_query($conn, $sql);
                         $result1 = mysqli_query($conn, $sql1);
                         $result2 = mysqli_query($conn, $sql2);
@@ -192,10 +209,10 @@
                                             if (!$conn) {
                                                 die("Connection failed: " . mysqli_connect_error());
                                             }
-                                            $today = date("Y-m-d");
+                                            $thisMonth = date("Y-m-d",strtotime("-7 days"));
                                             $sql = "SELECT orders.*, orderDetails.*
                                                 FROM orders
-                                                INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                                INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'" ;
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {

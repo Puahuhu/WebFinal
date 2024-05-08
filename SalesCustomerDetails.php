@@ -81,6 +81,7 @@
                         <span>
                             Customer
                         </span>
+                        
                         <h1 class="white">Tuan Nguyen </h1>
                         <table>
                             <tr>

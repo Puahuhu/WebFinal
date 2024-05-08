@@ -68,90 +68,108 @@
                     <div>
                         <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
                         <small> Admin</small>
-                    </div>
+                    </div>  
                 </div>
             </header>
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Barcode:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" id="" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Product Name</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Import Price</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Retail Price </p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" required placeholder="-"></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Category</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Creation Date</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="date" id="dateproduct" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Image Import:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><button id="choose_avatar">Import</button></a>
-                                    </p>
-                                </td>
-                            </tr>
+                        <form action="api/Product/add-product.php" method="POST">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <p>Product ID:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="ProductID" type="text" id="" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Barcode:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="Barcode" type="text" id="" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Product Name</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="ProductName" type="text" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Import Price</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="ImportPrice" type="text" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Retail Price </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="RetailPrice" type="text" required placeholder="-"></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Category</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="CategoryID" type="text" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Creation Date</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input name="CreatedDate" type="date" id="dateproduct" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
+                                    <td>
+                                        <p>Image Import:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><button id="choose_avatar">Import</button></a>
+                                        </p>
+                                    </td>
+                                </tr> -->
 
 
-                        </table>
+                            </table>
+                        
                         <div class="main-btn">
-                            <a href="#" class="btn2"><input type="submit" value="Add"></a>
+                            <!-- <a href="api//Product//add-product.php" method="POST" class="btn2"><input type="submit" value="Add"></a> -->
+                            <!-- <form action="api//Product//add-product.php" method="post">
+                                <button type="submit" class="btn2">Add</button>
+                            </form> -->
+                            <input type="submit" class="btn2" value="Add"></input>
+                        </form>
                             <a href="AdminProdMana.php" class="btn3"><input type="submit" value="Cancel"></a>
                         </div>
+                        
                     </div>
                     <div class="home-img">
                         <img src="images/product2.png">

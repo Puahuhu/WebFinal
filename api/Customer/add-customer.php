@@ -1,5 +1,5 @@
 <?php
-    require_once('connection.php');
+    require('api/Product/connection.php');
 
     if (!isset($_POST['CustomerID']) || !isset($_POST['FullName']) || !isset($_POST['Phone']) || !isset($_POST['CustomerAddress']) || !isset($_POST['UserID'])) {
         die(json_encode(array('status' => false, 'data' => 'Parameters not valid')));
@@ -23,3 +23,4 @@
     } catch (PDOException $ex) {
         die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
     }
+?>
