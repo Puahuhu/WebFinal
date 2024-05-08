@@ -164,7 +164,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="SalesAccMana.php">
+                <a onclick="reloadPage()" class="active">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -177,11 +177,11 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php" class="active">
+                <a href="SalesReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="SalesLogin.php">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
