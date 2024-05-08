@@ -98,7 +98,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Product Name</p>
+                                        <p>Product Name:</p>
                                     </td>
                                     <td>
                                         <p>
@@ -108,7 +108,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Import Price</p>
+                                        <p>Import Price:</p>
                                     </td>
                                     <td>
                                         <p>
@@ -118,7 +118,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Retail Price </p>
+                                        <p>Retail Price: </p>
                                     </td>
                                     <td>
                                         <p>
@@ -128,7 +128,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Category</p>
+                                        <p>Category:</p>
                                     </td>
                                     <td>
                                         <p>
@@ -138,7 +138,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Creation Date</p>
+                                        <p>Creation Date:</p>
                                     </td>
                                     <td>
                                         <p>

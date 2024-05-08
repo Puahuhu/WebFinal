@@ -83,7 +83,7 @@
                             $conn = mysqli_connect("localhost", "root", "", "finalweb");
 
                             if (!$conn) {
-                                die("Kết nối không thành công: " . mysqli_connect_error());
+                                die("Connection failed: " . mysqli_connect_error());
                             }
                             $countQuery = "SELECT COUNT(*) AS totalCustomers FROM customers";
                             $countResult = mysqli_query($conn, $countQuery);
