@@ -44,10 +44,13 @@
         $stmt = $dbCon->prepare($sql);
         $stmt->execute(array($barcode, $name, $import_price, $retail_price, $category, $date, $image));
         $lastInsertedId = $dbCon->lastInsertId();
-
-        echo json_encode(array('status' => true, 'data' => array('message' => 'Product successfully added', 'ProductID' => $lastInsertedId, 'Barcode' => $barcode)));
     } catch (PDOException $ex) {
         die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
     }
-
+    echo '<script>
+            function redirectPage() {
+                window.location.href = "../../AdminProdMana.php";
+            }
+            redirectPage();
+        </script>';
 ?>

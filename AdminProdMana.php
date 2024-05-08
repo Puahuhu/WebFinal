@@ -96,13 +96,13 @@
                                 </form>    
                             </div>
                             <div>
-                                <img src="images/product1.png" width="150px" height="150px" alt="">
+                                <img src="<?php echo $row['Images'] ;?>" width="150px" height="150px" alt="">
                             </div>
                             <div class="product-name ">
                                 <?php echo $row['ProductName'] ;?>
                             </div>
                             <div class="product-cost card-header">
-                                <?php echo $row['RetailPrice']; ?>
+                                <?php echo $row['RetailPrice']; echo " $"?>
                                 <a href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>"><button>More <label class="las la-arrow-right"></label></button></a>
                             </div>
                         </div>
