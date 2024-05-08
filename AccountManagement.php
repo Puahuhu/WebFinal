@@ -9,7 +9,91 @@
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="css/AccountManagement.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    $(document).ready(function () {
+        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var employs = data.data;
+                var tableBody = $(".info1");
+
+                employs.forEach(function (employ) {
+                    var statusClass = employ.IsActive === 1 ? "green" : "gray";
+                    var statusText = employ.IsActive === 1 ? "Active" : "Locked";
+                    var operationClass = employ.IsActive === 1 ? "operation_locked" : "operation_actived";
+                    var row = "<tr data-id='" + employ.SalespersonID + "'>" + // Thêm thuộc tính data-id
+                        "<td>" +
+                        "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
+                        "</td>" +
+                        "<td>" +
+                        "<a href='http://localhost:8080/WebFinal/AdmInformationView.php?fullName=" + encodeURIComponent(employ.FullName) + "&username=" + encodeURIComponent(username) + "' id='fullname' class='text-hover employ-name' style='color: white;'>" + employ.FullName + "</a>" +
+                        "</td>" +
+                        "<td>" +
+                        "<span class='status " + statusClass + "'></span> " + statusText +
+                        "</td>" +
+                        "<td class='" + operationClass + "'>" +
+                        "<span><button>" + (employ.IsActive === 1 ? "Locked" : "Actived") + "</button></span>" +
+                        "</td>" +
+                        "</tr>";
+                    tableBody.append(row);
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+            
+        }, "json");
+        
+        var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("http://localhost:8080/WebFinal/api/Admin/get-admin.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var adms = data.data;
+                                adms.forEach(function (adm) {
+                                    if (adm.UserID === userId) {
+                                        $(".user-wrapper").append(
+                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+
+        // Hàm xử lý khi nhấn nút "Locked" hoặc "Actived"
+        $(".info1").on("click", ".operation_locked button, .operation_actived button", function () {
+            var row = $(this).closest("tr"); // Lấy hàng chứa nút đang được nhấn
+            var fullName = row.find(".employ-name").text(); // Lấy tên đầy đủ của nhân viên
+            var isActive = row.find(".operation_locked").length > 0 ? 0 : 1; // Xác định trạng thái mới của nhân viên
+            var salespersonID = row.attr("data-id"); // Lấy ID của nhân viên
+
+            $.post("http://localhost:8080/WebFinal/api/Salesperson/update-IsActiveSaleperson.php", {
+                SalespersonID: salespersonID,
+                FullName: fullName,
+                IsActive: isActive
+            })
+            location.reload();
+        });
+        
+    });
+    
+</script>
+
 
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -45,6 +129,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
+                <a href="AdminLogin.php">
                 <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
@@ -63,11 +148,7 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
-                        <small> Admin</small>
-                    </div>
+                    <!--  -->
                 </div>
             </header>
             <main>
@@ -131,67 +212,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="info1">
-                                        <tr>
-                                            <td>
-                                                <img src="images/phuong.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Nguyen Le Tuan Phuong</td>
-                                            <td>
-                                                <span class="status green"></span> Active
-                                            </td>
-                                            <td class="operation_locked">
-                                                <span><button>Locked</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/tram.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Chau Thi Tram</td>
-                                            <td>
-                                                <span class="status gray"></span> Locked
-                                            </td>
-                                            <td class="operation_actived">
-                                                <span><button>Actived</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/quynh.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Nguyen Dang Nhu Quynh</td>
-                                            <td>
-                                                <span class="status red"></span> Inactive
-                                            </td>
-                                            <td class="operation_sendmail">
-                                                <span><button>Send mail</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/hong.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover">Dang Thi Kim Hong</td>
-                                            <td>
-                                                <span class="status green"></span> Active
-                                            </td>
-                                            <td class="operation_locked">
-                                                <span><button>Locked</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/tuan.png" width="25px" height="25px" alt="">
-                                            </td>
-                                            <td class="text-hover"> Nguyen Tuan</td>
-                                            <td>
-                                                <span class="status red"></span> Inactive
-                                            </td>
-                                            <td class="operation_sendmail">
-                                                <span><button>Send mail</button></span>
-                                            </td>
-                                        </tr>
-
+                                        <!-- Dữ liệu thêm ở đây -->
                                     </tbody>
                                 </table>
                             </div>

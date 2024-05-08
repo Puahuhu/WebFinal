@@ -1,7 +1,10 @@
 <?php
     require_once ('\xampp\htdocs\WebFinal\connection.php');
+    $salespersonID = $_POST["SalespersonID"];
+    $fullName = $_POST["FullName"];
+    $isActive = $_POST["IsActive"];
 
-    $sql = 'SELECT * FROM Salesperson';
+    $sql = "UPDATE salesperson SET IsActive=$isActive WHERE SalespersonID=$salespersonID";
 
     try{
         $stmt = $dbCon->prepare($sql);

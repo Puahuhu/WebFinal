@@ -10,8 +10,70 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/Information.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var fullName = "<?php echo htmlspecialchars($_GET['fullName']); ?>";
+    $(document).ready(function () {
+        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var employs = data.data;
+                employs.forEach(function (employ) {
+                    if (employ.FullName === fullName) {
+                        $(".home-text").append(
+                            "<span>Salesperson</span>" +
+                            "<h1 class='white'>" + employ.FullName + "</h1>" +
+                            "<table>" +
+                            "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                            "<tr><td><p>Address:</p></td><td><p>" + employ.SalesAddress + "</p></td></tr>" +
+                            "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
+                            // Thêm các trường thông tin khác nếu cần
+                            "</table>" +
+                            "<div class='main-btn'>" +
+                            "<a href='#' class='btn2'> Sales Details</a>" +
+                            "</div>"
+                        );
 
+                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+
+        var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("http://localhost:8080/WebFinal/api/Admin/get-admin.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var adms = data.data;
+                                adms.forEach(function (adm) {
+                                    if (adm.UserID === userId) {
+                                        $(".user-wrapper").append(
+                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+    });
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -46,7 +108,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a href="AdminLogin.php">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -64,75 +126,22 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Dang Nhu Quynh </h4>
-                        <small> Admin</small>
-                    </div>
+                    <!--  -->
                 </div>
             </header>
 
             <head>
-                <div class="head-display">
+                <div class="head-display" style="visibility: hidden;">
                     <h5 class="material-symbols-sharp" id="icon_arrow">arrow_right</h5>
-                    <label class="adjust-size">Dang Thi Kim Hong</label>
                 </div>
             </head>
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <span>
-                            Salesperson
-                        </span>
-                        <h1 class="white">Dang Thi Kim Hong </h1>
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Gmail:</p>
-                                </td>
-                                <td>
-                                    <p><a>abcxyzhsnn@gmail.com</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Birthday</p>
-                                </td>
-                                <td>
-                                    <p><a>xx/xx/xxxx</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Mobile</p>
-                                </td>
-                                <td>
-                                    <p><a>09xxxxxxxx</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Address:</p>
-                                </td>
-                                <td>
-                                    <p><a> Tan Binh, HCM city</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Creation Date</p>
-                                </td>
-                                <td>
-                                    <p><a>31/03/2024</a></p>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"> Sales Details</a>
-                        </div>
+                        <!--  -->
                     </div>
                     <div class="home-img">
-                        <img src="images/hong.png">
+                        <!--  -->
                     </div>
                 </div>
             </main>

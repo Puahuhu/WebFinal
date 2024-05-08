@@ -1,7 +1,7 @@
 <?php
     require_once ('\xampp\htdocs\WebFinal\connection.php');
 
-    $sql = 'SELECT * FROM Salesperson';
+    $sql = 'SELECT * FROM admins';
 
     try{
         $stmt = $dbCon->prepare($sql);

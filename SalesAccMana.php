@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
@@ -10,8 +9,147 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/Information.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<style>
+    .avatar-change-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    }
 
+    .avatar-change-modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #changeAvatarBtn:hover {
+        background-color: silver;
+    }
+
+    #changeAvatarBtn {
+        background-color: #f1f1f1;
+        color: black;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var salespersonid;
+        var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var employs = data.data;
+                                employs.forEach(function (employ) {
+                                    if (employ.UserID === userId) {
+                                        salespersonid = employ.SalespersonID;
+                                        $(".home-text").append(
+                                            "<span>Salesperson</span>" +
+                                            "<h1 class='white'>" + employ.FullName + "</h1>" +
+                                            "<table>" +
+                                            "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
+                                            "<tr><td><p>Address:</p></td><td><p>" + employ.SalesAddress + "</p></td></tr>" +
+                                            "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
+                                            "</table>" +
+                                            "<div class='main-btn'>" +
+                                            "<a href='#' id='changeAvatarLink' class='btn two'>Change Avatar</a>" +
+                                            "<a href='SalesChangePassword.php?username=" + encodeURIComponent(username) + "'class='btn two'>Change Password</a>" +
+                                            "</div>" +
+                                            "<div class='main-btn'>" +
+                                            "<a href='#' class='btn2'> Sales Details</a>" +
+                                            "</div>"
+                                        );
+                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                        $(".user-wrapper").append(
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+        
+
+        // Hiển thị cửa sổ nhỏ khi click vào nút "Change Avatar"
+        $(document).on("click", "#changeAvatarLink", function () {
+            $("#avatarChangeModal").css("display", "block");
+        });
+
+        // Ẩn cửa sổ nhỏ khi click vào nút đóng
+        $(document).on("click", ".close", function () {
+            $("#avatarChangeModal").css("display", "none");
+        });
+
+        // Xử lý sự kiện khi người dùng chọn hình ảnh từ máy tính và gửi đi
+        var fileName;
+        $(document).on("change", "#avatarInput", function () {
+            var file = this.files[0];
+            if (file) {
+                fileName = "images/" + file.name; 
+            } else {
+                console.log("Không có file được chọn.");
+            }
+        });
+
+        $(document).on("click", "#changeAvatarBtn", function () {
+            console.log("SalespersonID:", salespersonid); // Log giá trị của salespersonid
+            console.log("fileName:", fileName); // Log giá trị của fileName
+
+            $.post("http://localhost:8080/WebFinal/api/Salesperson/update-SalepersonAvatar.php", {
+                SalespersonID: salespersonid,
+                Avatar: fileName
+            }, function (data, status) {
+                if (status === "success") {
+                    alert("Avatar changed successfully.");
+                    location.reload();
+                } else {
+                    alert("An error occurred while processing your request.");
+                }
+            }, "json");
+        });
+    });
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -43,7 +181,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a href="SalesLogin.php">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -61,11 +199,7 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/hong.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Dang Thi Kim Hong </h4>
-                        <small> Salesperson</small>
-                    </div>
+                    <!-- Avatar của Salesperson sẽ được hiển thị ở đây -->
                 </div>
             </header>
 
@@ -78,62 +212,10 @@
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <span>
-                            Salesperson
-                        </span>
-                        <h1 class="white">Dang Thi Kim Hong </h1>
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Gmail:</p>
-                                </td>
-                                <td>
-                                    <p><a>abcxyzhsnn@gmail.com</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Birthday</p>
-                                </td>
-                                <td>
-                                    <p><a>29/07/2004</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Mobile</p>
-                                </td>
-                                <td>
-                                    <p><a>0932847243</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Address:</p>
-                                </td>
-                                <td>
-                                    <p><a>184 Huynh Van Nghe, Tan Binh, HCM city</a></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Creation Date</p>
-                                </td>
-                                <td>
-                                    <p><a>29/07/2024</a></p>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn two ">Change Avatar</a>
-                            <a href="#" class="btn two ">Change Password</a>
-                        </div>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"> Sales Details</a>
-                        </div>
+                        <!-- Thông tin của Salesperson sẽ được hiển thị ở đây -->
                     </div>
                     <div class="home-img">
-                        <img src="images/hong.png">
+                        <!-- Hình ảnh avatar của Salesperson sẽ được hiển thị ở đây -->
                     </div>
                 </div>
             </main>
@@ -144,6 +226,14 @@
             </div>
         </div>
     </div>
+    <div class="avatar-change-modal" id="avatarChangeModal">
+    <div class="avatar-change-modal-content">
+        <span class="close">&times;</span>
+        <h2>Change Avatar</h2>
+        <input type="file" id="avatarInput">
+        <button id="changeAvatarBtn">Change</button>
+    </div>
+</div>
 </body>
 
 </html>

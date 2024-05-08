@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Chuyển sang màn hình chính
-                header("Location: AccountManagement.php");
+                header("Location: AccountManagement.php?username=$username");
                 exit();
             } else {
                 $error = "Wrong password";
