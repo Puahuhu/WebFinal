@@ -83,14 +83,51 @@
             </div>
         `;
 
-        var cartContainer = document.querySelector('.scrollable-content1');
-        cartContainer.appendChild(productContainer);
+        // Thêm các trường ẩn vào form
+        var hiddenProductId = createHiddenInput('productId[]', ProductId);
+        var hiddenProductName = createHiddenInput('productName[]', ProductName);
+        var hiddenProductPrice = createHiddenInput('productPrice[]', RetailPrice);
+        var hiddenProductImage = createHiddenInput('productImage[]', Images);
 
+        document.getElementById('checkoutForm').appendChild(hiddenProductId);
+        document.getElementById('checkoutForm').appendChild(hiddenProductName);
+        document.getElementById('checkoutForm').appendChild(hiddenProductPrice);
+        document.getElementById('checkoutForm').appendChild(hiddenProductImage);
+
+        // Thêm sản phẩm vào giỏ hàng
+        document.querySelector('.scrollable-content1').appendChild(productContainer);
+
+        // Cập nhật tổng giá trị của giỏ hàng
+        updateTotalPrice();
+    }
+
+    // Hàm tạo trường input ẩn
+    function createHiddenInput(name, value) {
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = name;
+        hiddenInput.value = value;
+        return hiddenInput;
+    }
+
+
+    function updateTotalPrice() {
         var totalPrice = calculateTotalPrice();
-
         var totalPriceElement = document.querySelector('.operation_actived2 h6');
         totalPriceElement.textContent = totalPrice + '$';
     }
+
+    function calculateTotalPrice() {
+        var totalPrice = 0;
+        var cartItems = document.querySelectorAll('.scrollable-content1 .card-body');
+        cartItems.forEach(function(item) {
+            var priceString = item.querySelector('.operation_actived h5:nth-child(3)').textContent;
+            var price = parseFloat(priceString.replace('$', ''));
+            totalPrice += price;
+        });
+        return totalPrice;
+    }
+
 
 
     function calculateTotalPrice() {
@@ -196,9 +233,19 @@
         }
     }
 
+    function sendCartData() {
+        // Lấy ra form
+        var form = document.getElementById('checkoutForm');
+        // Submit form
+        form.submit();
+    }
 
 </script>
 <body>
+    <form id="checkoutForm" action="SalesCart.php" method="post">
+        <!-- Các trường ẩn để lưu thông tin sản phẩm -->
+    </form>
+    <input type="hidden" id="cartData" name="cartData">
     <input type="checkbox" id="nav-toggle">
     <div class="container">
         <aside>
@@ -326,7 +373,8 @@
                                 <div class="info">
                                     <div class="operation_actived2">
                                         <h6>0$</h6>
-                                        <span><button>Checkout</button></span>
+                                        <input type="hidden" id="cartData" name="cartData">
+                                        <a><span><button onclick="sendCartData();">Checkout</button></span></a>
                                     </div>
                                 </div>
                             </div>
