@@ -26,11 +26,11 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php" >
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php">
+                <a href="AdminProdMana.php" class="active">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
@@ -73,196 +73,43 @@
             </header>
             <main class="scrollable-content">
                 <div class="cards">
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product1.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            IPHONE 15 PROMAX
-                        </div>
-                        <div class="product-cost card-header">
-                            1200$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product2.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            APPLE WATCH SE
-                        </div>
-                        <div class="product-cost card-header">
-                            400$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="card-single">
+                    <?php 
+                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+
+                        if (!$conn) {
+                            die("Connection failed: " . mysqli_connect_error());
+                        }
+                        $sql="select * from products";
+                        
+                        $result = mysqli_query($conn, $sql);
+
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_array($result)) {
+
+                    ?>
+                       <div class="card-single">
                             <div class="delete-product">
-                                <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
+                                <form action="api/Product/delete-product.php" method="post">
+                                    <input type="hidden" name="ProductID" value="<?php echo $row['ProductID']; ?>">
+                                    <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
+                                    
+                                </form>    
                             </div>
                             <div>
-                                <img src="images/product3.png" width="150px" height="150px" alt="">
+                                <img src="<?php echo $row['Images'] ;?>" width="150px" height="150px" alt="">
                             </div>
                             <div class="product-name ">
-                                SAMSUNG GALAXY
+                                <?php echo $row['ProductName'] ;?>
                             </div>
                             <div class="product-cost card-header">
-                                1000$
-                                <button>More <label class="las la-arrow-right"></label></button>
+                                <?php echo $row['RetailPrice']; echo " $"?>
+                                <a href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>"><button>More <label class="las la-arrow-right"></label></button></a>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product4.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            IPHONE 14
-                        </div>
-                        <div class="product-cost card-header">
-                            800$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards">
-                    <div class="card-single">
-                        <div class="delete-product ">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product5.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            XIAOMI
-                        </div>
-                        <div class="product-cost card-header">
-                            500$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product6.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            CAMERA
-                        </div>
-                        <div class="product-cost card-header">
-                            100$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="card-single">
-                            <div class="delete-product">
-                                <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                            </div>
-                            <div>
-                                <img src="images/product7.png" width="150px" height="150px" alt="">
-                            </div>
-                            <div class="product-name">
-                                HEADPHONE
-                            </div>
-                            <div class="product-cost card-header">
-                                200$
-                                <button>More <label class="las la-arrow-right"></label></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product8.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name">
-                            USB
-                        </div>
-                        <div class="product-cost card-header">
-                            150$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="cards">
-                    <div class="card-single">
-                        <div class="delete-product ">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product5.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            XIAOMI
-                        </div>
-                        <div class="product-cost card-header">
-                            500$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product6.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name ">
-                            CAMERA
-                        </div>
-                        <div class="product-cost card-header">
-                            100$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="card-single">
-                            <div class="delete-product">
-                                <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                            </div>
-                            <div>
-                                <img src="images/product7.png" width="150px" height="150px" alt="">
-                            </div>
-                            <div class="product-name">
-                                HEADPHONE
-                            </div>
-                            <div class="product-cost card-header">
-                                200$
-                                <button>More <label class="las la-arrow-right"></label></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-single">
-                        <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                        </div>
-                        <div>
-                            <img src="images/product8.png" width="150px" height="150px" alt="">
-                        </div>
-                        <div class="product-name">
-                            USB
-                        </div>
-                        <div class="product-cost card-header">
-                            150$
-                            <button>More <label class="las la-arrow-right"></label></button>
-                        </div>
-                    </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
             </main>
             <div class="right-aligned4 card-single3 cart-icon">
@@ -271,7 +118,7 @@
                 </div>
             </div>
             <div class="right-aligned card-single2">
-                <button id="add" class="material-symbols-sharp"><span>Add Product</span> add_shopping_cart</button>
+                <button id="add" class="material-symbols-sharp"><span> <a href="AddProduct.php"> Add Product</a></span> add_shopping_cart</button>
             </div>
             <div class="recent-grid ">
                 <div class="customers right-aligned2">

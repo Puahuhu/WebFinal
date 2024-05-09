@@ -77,27 +77,50 @@
             </head>
             <main>
                 <div class="home">
-                    <div class="home-text">
+                <div class="home-text">
                         <span>
                             Product
                         </span>
-                        <h1 class="white">Iphone 15 Promax </h1>
+                        <?php
+                            if(isset($_GET['ProductID'])) {
+                                $product_id = $_GET['ProductID'];
+                                
+                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                if (!$conn) {
+                                    die("Kết nối không thành công: " . mysqli_connect_error());
+                                }
+                                
+                                $sql = "SELECT * FROM products WHERE ProductID = $product_id";
+                                $result = mysqli_query($conn, $sql);
+                                
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    $row = mysqli_fetch_assoc($result);
+                        ?>
+                        
+                        <h1 class="white"><?php echo $row['ProductName'] ?> </h1>
                         <table>
                             <tr>
                                 <td>
                                     <p>Barcode:</p>
                                 </td>
                                 <td>
-                                    <p><a>483264872</a></p>
+                                    <p><a><?php echo $row['Barcode'] ?></a></p>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td>
-                                    <p> Price</p>
+                                    <p>Import Price:</p>
                                 </td>
                                 <td>
-                                    <p><a>1200$</a></p>
+                                    <p><a><?= $row['ImportPrice'] ?></a></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Retail Price</p>
+                                </td>
+                                <td>
+                                    <p><a><?= $row['RetailPrice'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -105,25 +128,29 @@
                                     <p>Category:</p>
                                 </td>
                                 <td>
-                                    <p><a>Hongbiet</a></p>
+                                    <p><a><?= $row['CategoryID'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <p>Creation Date</p>
+                                    <p>Creation Date:</p>
                                 </td>
                                 <td>
-                                    <p><a>29/07/2024</a></p>
+                                    <p><a><?= $row['CreatedDate'] ?></a></p>
                                 </td>
                             </tr>
 
                         </table>
                         <div class="main-btn">
-                            <a href="#" class="btn2"> Add Cart</a>
+                            <a href="AdminProdDetailsEdit.php?ProductID=<?= $row['ProductID'] ?>" class="btn2"> EDIT </a>
                         </div>
+                        <?php
+                                }
+                            }
+                        ?>
                     </div>
                     <div class="home-img">
-                        <img src="images/product1.png">
+                        <img src="<?= $row['Images'] ?>">
                     </div>
                 </div>
             </main>

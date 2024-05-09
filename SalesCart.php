@@ -1,3 +1,6 @@
+<?php
+    session_start(); // Bắt đầu session
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +13,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/Cart.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    function updateTotal() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var totalPrice = 0;
+        var totalQuantity = 0;
+
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                var productPrice = parseInt(checkbox.parentElement.querySelector('.product-price').value);
+                totalPrice += productPrice;
+                totalQuantity++;
+            }
+        });
+
+        // Cập nhật hiển thị tổng giá trị và số lượng sản phẩm
+        document.getElementById('totalPrice').innerText = totalPrice;
+        document.getElementById('totalQuantity').innerText = totalQuantity;
+
+    }
+</script>
+
 
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -81,145 +108,69 @@
                             <div class="card-header1">
                                 <h3 class="danger"> List of products </h3>
                             </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
-                                    <div class="info">
-                                        <img src="images/product3.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Samsung Galaxy</h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                            <h5> 200$ </h5>
-                                            <span><button>Delete</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
-                                    <div class="info">
-                                        <input type="checkbox">
-                                        <img src="images/product4.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Iphone 14</h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                            <h5> 200$ </h5>
-                                            <span><button>Delete</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
+                            <?php
+                                function updateSessionTotal($totalPrice, $totalQuantity) {
+                                    $_SESSION['cart_total_price'] = $totalPrice;
+                                    $_SESSION['cart_total_quantity'] = $totalQuantity;
+                                }
 
-                                    <div class="info">
-                                        <img src="images/product5.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Xiaomi </h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
+                                // Kiểm tra xem có dữ liệu được gửi qua phương thức POST không
+                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                    // Kiểm tra xem có dữ liệu productId được gửi không
+                                    if (isset($_POST['productId'])) {
+                                        // Lấy số lượng sản phẩm
+                                        $numProducts = count($_POST['productId']);
+                                        $totalPrice = 0;
+                                        $totalQuantity = 0;
 
-                                            <h5> 200$ </h5>
-                                            <span><button>Delete</button></span>
+                                        // Lặp qua từng sản phẩm để hiển thị thông tin và tính toán tổng
+                                        for ($i = 0; $i < $numProducts; $i++) {
+                                            $productId = $_POST['productId'][$i];
+                                            $productName = $_POST['productName'][$i];
+                                            $productPrice = $_POST['productPrice'][$i];
+                                            $productImage = $_POST['productImage'][$i]; // Lấy giá trị của trường ẩn images
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
+                                            // Hiển thị thông tin của từng sản phẩm
+                                            echo '<div class="card-body">';
+                                            echo '<div class="customer">';
+                                            echo '<input type="checkbox" onchange="updateTotal()">';
+                                            echo '<div class="info">';
+                                            echo '<img src="' . $productImage . '" width="40px" height="40px" alt="">';
+                                            echo '<div class="operation_actived">';
+                                            echo '<h4 class="text-hover" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis;">'.$productName.'</h4>';
+                                            echo '<h5>Amount:<span>1</span> </h5>';
+                                            echo '<h5 data-price="'.$productPrice.'">' . $productPrice . '$</h5>';
+                                            echo '<span><button>Delete</button></span>';
+                                            echo '<input type="hidden" class="product-price" value="' . $productPrice . '">';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            echo '</div>';
 
-                                    <div class="info">
-                                        <img src="images/product6.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Camera </h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                            <h5> 200$ </h5>
-                                            <span><button>Delete</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
+                                            // Tính toán tổng số tiền và số lượng sản phẩm
+                                            $totalPrice += $productPrice;
+                                            $totalQuantity++;
+                                        }
 
-                                    <div class="info">
-                                        <img src="images/product6.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Camera </h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                            <h5> 200$</h5>
-                                            <span><button>Delete</button></span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
-
-                                    <div class="info">
-                                        <img src="images/product6.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Camera </h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                            <h5> 200$ </h5>
-                                            <span><button>Delete</button></span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
-
-                                    <div class="info">
-                                        <img src="images/product6.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Camera </h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-
-                                            <h5> 200$ </h5>
-                                            <span><button>Delete</button></span>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <input type="checkbox">
-
-                                    <div class="info">
-                                        <img src="images/product6.png" width="40px" height="40px" alt="">
-                                        <div class="operation_actived">
-                                            <h4 class="text-hover"> Camera </h4>
-                                            <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                            <h5> 200$</h5>
-                                            <span><button>Delete</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                        // Cập nhật session với tổng số tiền và số lượng sản phẩm
+                                        updateSessionTotal($totalPrice, $totalQuantity);
+                                    }
+                                }
+                                ?>
                         </div>
                     </div>
                     <div class="customers right-aligned3">
                         <div class="card">
-                            <div class="card-header1    ">
+                            <div class="card-header1">
                                 <h4 class="danger"> Total
-                                    <h5> 5 products</h5>
+                                    <h5><span id="totalQuantity">0</span> products</h5>
                                 </h4>
                             </div>
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
                                         <div class="operation_actived2">
-                                            <h6>1000$ </h6>
+                                            <h6>$<span id="totalPrice">0</span></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -313,6 +264,7 @@
             </main>
 
         </div>
+    </div>
 </body>
 
 </html>

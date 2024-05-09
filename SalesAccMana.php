@@ -85,22 +85,33 @@
             }
         });
 
-        $(document).on("click", "#changeAvatarBtn", function () {
-            console.log("SalespersonID:", salespersonid); // Log giá trị của salespersonid
-            console.log("fileName:", fileName); // Log giá trị của fileName
+        $(document).on("submit", "#avatarForm", function (event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của form
 
-            $.post("api/Salesperson/update-SalepersonAvatar.php", {
-                SalespersonID: salespersonid,
-                Avatar: fileName
-            }, function (data, status) {
-                if (status === "success") {
-                    alert("Avatar changed successfully.");
-                    location.reload();
-                } else {
+            var formData = new FormData(this);
+            formData.append('SalespersonID', salespersonid); 
+            formData.append('Avatar', fileName); 
+
+            $.ajax({
+                url: "api/Salesperson/update-SalepersonAvatar.php",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data, status) {
+                    if (status === "success") {
+                        alert("Avatar changed successfully.");
+                        location.reload();
+                    } else {
+                        alert("An error occurred while processing your request.");
+                    }
+                },
+                error: function (xhr, desc, err) {
                     alert("An error occurred while processing your request.");
                 }
-            }, "json");
+            });
         });
+
     });
 </script>
 <body>
@@ -183,8 +194,11 @@
     <div class="avatar-change-modal-content">
         <span class="close">&times;</span>
         <h2>Change Avatar</h2>
-        <input type="file" id="avatarInput">
-        <button id="changeAvatarBtn">Change</button>
+        <form id="avatarForm" enctype="multipart/form-data">
+            <input type="file" id="avatarInput" name="avatarInput">
+            <button type="submit" id="changeAvatarBtn">Change</button>
+        </form>
+
     </div>
 </div>
 </body>
