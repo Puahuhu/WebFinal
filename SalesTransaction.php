@@ -10,8 +10,79 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/Transaction.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    function addToCart(ProductId, ProductName, RetailPrice, Images) {
+    // AJAX request to add product to cart
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'api/Product/add-to-card.php');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Success, log product information to console
+                console.log('Product added to cart:');
+                console.log('Product ID:', ProductId);
+                console.log('Product Name:', ProductName);
+                console.log('Retail Price:', RetailPrice);
+                console.log('Images:', Images);
 
+                // Update cart in UI
+                updateCartUI(ProductId, ProductName, RetailPrice, Images);
+            }
+        };
+        xhr.send('action=addToCart&productId=' + encodeURIComponent(ProductId) +
+            '&ProductName=' + encodeURIComponent(ProductName) +
+            '&ProductPrice=' + encodeURIComponent(RetailPrice)+
+            '&Images=' + encodeURIComponent(Images));
+    }
+
+    function updateCartUI(ProductId, ProductName, RetailPrice, Images) {
+        // Create HTML elements for the new product
+        var productContainer = document.createElement('div');
+        productContainer.classList.add('card-body');
+        productContainer.innerHTML = `
+            <div class="customer">
+                <div class="info">
+                    <img src="${Images}" width="40px" height="40px" alt="">
+                    <div class="operation_actived">
+                        <h4 class="text-hover">${ProductName}</h4>
+                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
+                        <h5>${RetailPrice}$</h5>
+                        <span><button>Delete</button></span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Append the new product to the cart
+        var cartContainer = document.querySelector('.scrollable-content1');
+        cartContainer.appendChild(productContainer);
+
+        // Calculate total price
+        var totalPrice = calculateTotalPrice();
+
+        // Update total price in the UI
+        var totalPriceElement = document.querySelector('.operation_actived2 h6');
+        totalPriceElement.textContent = totalPrice + '$';
+    }
+
+    // Function to calculate total price of all products in the cart
+    function calculateTotalPrice() {
+        var totalPrice = 0;
+        var cartItems = document.querySelectorAll('.scrollable-content1 .card-body');
+        cartItems.forEach(function(item) {
+            var priceString = item.querySelector('.operation_actived h5:nth-child(3)').textContent;
+            var price = parseFloat(priceString.replace('$', ''));
+            totalPrice += price;
+        });
+        return totalPrice;
+    }
+
+
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -87,17 +158,19 @@
                     ?>
                     <div class="card-single">
                         <div class="delete-product">
-                            <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">add_shopping_cart</span></button>
+                        <button onclick="addToCart(<?= $row['ProductID'] ?>, '<?= $row['ProductName'] ?>', <?= $row['RetailPrice'] ?>, '<?= $row['Images'] ?>')">
+                            <span class="material-symbols-sharp">add_shopping_cart</span>
+                        </button>
                         </div>
                         <div>
-                            <img src="images/product1.png" width="150px" height="150px" alt="">
+                            <img src="<?= $row['Images'] ?>" width="150px" height="150px" alt="">
                         </div>
                         <div class="product-name ">
                             <?= $row['ProductName'] ?>
                         </div>
                         <div class="product-cost card-header">
                             <?= $row['RetailPrice'] ?>
-                            <button>More <label class="las la-arrow-right"></label></button>
+                            <a href="SalesProductDetails.php?ProductID=<?= $row['ProductID'] ?>"><button> More <label class="las la-arrow-right"></label></button></a>
                         </div>
                      </div>   
                     <?php 
@@ -123,128 +196,18 @@
                         <div class="card-header1">
                             <h3 class="danger"> Cart Products </h3>
                         </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product3.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Samsung Galaxy </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                        <h5> 200$ </h5>
-                                        <span><button>Delete</button></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product4.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Iphone 14 </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                        <h5> 200$ </h5>
-                                        <span><button>Delete</button></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product5.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Xiaomi </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-
-                                        <h5> 200$ </h5>
-                                        <span><button>Delete</button></span>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                        <h5> 200$ </h5>
-                                        <span><button>Delete</button></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                        <h5> 200$</h5>
-                                        <span><button>Delete</button></span>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                        <h5> 200$ </h5>
-                                        <span><button>Delete</button></span>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-
-                                        <h5> 200$ </h5>
-                                        <span><button>Delete</button></span>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
-                                        <h5> 200$</h5>
-                                        <span><button>Delete</button></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="customers right-aligned3">
                     <div class="card">
-                        <div class="card-header1    ">
+                        <div class="card-header1">
                             <h4 class="danger"> Total </h4>
                         </div>
                         <div class="card-body">
                             <div class="customer">
                                 <div class="info">
                                     <div class="operation_actived2">
-                                        <h6>1000$ </h6>
+                                        <h6></h6>
                                         <span><button>Checkout</button></span>
                                     </div>
                                 </div>
