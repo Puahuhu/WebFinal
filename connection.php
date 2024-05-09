@@ -1,4 +1,5 @@
 <?php
+    // dùng require_once ('\xampp\htdocs\WebFinal\api\connection.php');
     header('Access-Control-Allow-Origin: *');
     
     $host = 'localhost';
@@ -12,5 +13,4 @@
     catch(PDOException $ex){
         die(json_encode(array('status' => false, 'data' => 'Unable to connect: ' . $ex->getMessage())));
     }
-
 ?>

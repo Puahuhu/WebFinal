@@ -10,8 +10,78 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/CreateAccount.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+    $(document).ready(function () {
+        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var employs = data.data;
+                                employs.forEach(function (employ) {
+                                    if (employ.UserID === userId) {
+                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                        $(".user-wrapper").append(
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+        
+        $(document).on("click", "#submit", function () {
+            event.preventDefault();
+            var newPassword = $("#newpass").val().trim();
+            var confirmPassword = $("#confirmpass").val().trim();
 
+            if (newPassword === "" || confirmPassword === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert("New password and confirm password do not match.");
+                return;
+            }
+
+
+            $.post("http://localhost:8080/WebFinal/api/Account/update-accountpwd.php", {
+                Username: username,
+                pwd: newPassword
+            }, function (data, status) {
+                if (status === "success") {
+                    alert("Password changed successfully.");
+                    window.location.href = "SalesAccMana.php?username=" + username;
+                } else {
+                    alert("An error occurred while processing your request.");
+                }
+            }, "json");
+        });
+
+        $(document).on("click", "#cancel", function () {
+            window.location.href = "SalesAccMana.php?username=" + username;
+        });
+
+        
+    });
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -43,7 +113,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -61,57 +131,43 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/phuong.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Nguyen Le Tuan Phuong </h4>
-                        <small> Admin</small>
-                    </div>
+                    <!--  -->
                 </div>
             </header>
             <main>
                 <div class="home">
                     <div class="home-text">
                         <table>
-                            <tr>
-                                <td>
-                                    <p>Old Password</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" id="" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>New Password:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Confirm Password</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-
-
+                            <form id="changePasswordForm" action="changePasswordProcess.php" method="POST">
+                                <tr>
+                                    <td>
+                                        <p>New Password:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" id="newpass" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Confirm Password</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" id="confirmpass" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </form>
                         </table>
                         <div class="main-btn">
-                            <a href="#" class="btn2"><input type="submit" value="Confirm"></a>
-                            <a href="#" class="btn3"><input type="submit" value="Cancel"></a>
+                            <a href= # class="btn2" id="submit">Confirm</a>
+                            <a href= # class="btn3" id="cancel">Cancel</a>
                         </div>
                     </div>
                     <div class="home-img">
-                        <img src="images/phuong.png">
+                        <!--  -->
                     </div>
                 </div>
             </main>
