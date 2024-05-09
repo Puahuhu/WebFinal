@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -42,7 +42,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php">
+                <a href="AdminReport.php" class="active">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -93,139 +93,94 @@
                                             <td class="danger">Total Price </td>
                                         </tr>
                                     </thead>
+                                    <?php
+                                        if(isset($_GET['ProductID'])) {
+                                            $product_id = $_GET['ProductID'];
+                                            
+                                            $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                            if (!$conn) {
+                                                die("Kết nối không thành công: " . mysqli_connect_error());
+                                            }
+                                            
+                                            $sql = "SELECT * FROM products 
+                                            INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID 
+                                            WHERE products.ProductID = $product_id";
+                                            $result = mysqli_query($conn, $sql);
+                                            
+                                            if ($result && mysqli_num_rows($result) > 0) {
+                                                $row = mysqli_fetch_assoc($result);
+                                    ?>
                                     <tbody class="info1">
                                         <tr>
                                             <td>
                                                 <img src="images/product1.png" width="50px" height="50px" alt="">
                                             </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
+                                            <td class="text-hover"><?= $row['ProductName'] ?></td>
                                             <td>
-                                                1200$
+                                                <?= $row['UnitPrice'] ?>
                                             </td>
                                             <td>
-                                                2
+                                                <?= $row['Quantity'] ?>
                                             </td>
-                                            <td>2400$</td>
+                                            <td><?= $row['RetailPrice'] ?></td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover">Iphone 15 Promax</td>
-                                            <td>
-                                                1200$
-                                            </td>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>2400$</td>
-                                        </tr>
-
-
-
                                     </tbody>
+                                    <?php 
+                                            }
+                                        }
+                                    ?>  
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div class="customers right-aligned3">
                         <div class="card">
+                        <?php
+                            if(isset($_GET['ProductID'])) {
+                                $product_id = $_GET['ProductID'];
+                                
+                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                if (!$conn) {
+                                    die("Kết nối không thành công: " . mysqli_connect_error());
+                                }
+                                
+                                $sql = "SELECT sum(Quantity) as total FROM orderdetails INNER JOIN products ON products.ProductID = orderdetails.ProductID 
+                                WHERE products.ProductID = $product_id";
+                                $result = mysqli_query($conn, $sql);
+                                $row = mysqli_fetch_assoc($result);
+                                $totalProducts = $row['total'];
+                                $sql1 = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
+                                        FROM products 
+                                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID 
+                                        WHERE products.ProductID = $product_id";
+                                $result1 = mysqli_query($conn, $sql1);
+                                $row1 = mysqli_fetch_assoc($result1);
+                                $totalMoney = $row1['totalmoney'];
+
+                               
+                                    
+                        ?>
                             <div class="card-header1">
                                 <h6 class="danger"> Total
-                                    <h5 class="silver"> 5 products</h5>
+                                    <h5 class="silver"> <?=$totalProducts ?> products</h5>
                                 </h6>
                             </div>
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
                                         <div>
-                                            <h6 class="silver2">21600$ </h6>
+                                            <h6 class="silver2"><?= $totalMoney ?>$ </h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <?php
+                            }
+                        ?>
                     </div>
                     <div class="card-single2 align3">
-                        <button>Cancel</button>
+                        <a href="AdminReport.php"> <button>Cancel</button></a>
                     </div>
             </main>
             </div>
