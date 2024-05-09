@@ -128,35 +128,74 @@
     function handleSearchInput(query) {
         var suggestions = document.getElementById('suggestions');
         if (query.length >= 2) {
+            var nameResponseReceived = false;
+            // Yêu cầu AJAX tìm kiếm theo tên sản phẩm
             $.ajax({
-                url: 'api/Product/search.php',
+                url: 'api/Product/search-name.php',
                 method: 'POST',
                 data: { q: query },
                 success: function (data) {
                     var productList = '';
                     var products = JSON.parse(data);
-                    products.forEach(function (product) {
-                        productList += `
-                            <div class="customer" onclick="selectProductFromSuggestion('${product.ProductID}','${product.ProductName}', '${product.RetailPrice}', '${product.Images}')">
-                                <div class="info">
-                                    <img src="${product.Images}" width="40px" height="40px" alt="">
-                                    <div class="operation_actived">
-                                        <h4 class="text-hover">${product.ProductName}</h4>
-                                        <h5>${product.RetailPrice}$</h5>
+                    if (products.length > 0) {
+                        nameResponseReceived = true;
+                        products.forEach(function (product) {
+                            productList += `
+                                <div class="customer" onclick="selectProductFromSuggestion('${product.ProductID}','${product.ProductName}', '${product.RetailPrice}', '${product.Images}')">
+                                    <div class="info">
+                                        <img src="${product.Images}" width="40px" height="40px" alt="">
+                                        <div class="operation_actived">
+                                            <h4 class="text-hover">${product.ProductName}</h4>
+                                            <h5>${product.RetailPrice}$</h5>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-                    });
-                    suggestions.innerHTML = productList;
-                    suggestions.style.display = 'block';
+                            `;
+                        });
+                        suggestions.innerHTML = productList;
+                        suggestions.style.display = 'block';
+                    } else {
+                        // Nếu không có kết quả từ tìm kiếm theo tên, tiếp tục với tìm kiếm theo mã barcode
+                        searchByBarcode();
+                    }
                 }
             });
+
+            function searchByBarcode() {
+                if (!nameResponseReceived) {
+                    // Yêu cầu AJAX tìm kiếm theo mã barcode
+                    $.ajax({
+                        url: 'api/Product/search-barcode.php',
+                        method: 'POST',
+                        data: { q: query },
+                        success: function (data) {
+                            var productList = '';
+                            var products = JSON.parse(data);
+                            products.forEach(function (product) {
+                                productList += `
+                                    <div class="customer" onclick="selectProductFromSuggestion('${product.ProductID}','${product.ProductName}', '${product.RetailPrice}', '${product.Images}')">
+                                        <div class="info">
+                                            <img src="${product.Images}" width="40px" height="40px" alt="">
+                                            <div class="operation_actived">
+                                                <h4 class="text-hover">${product.ProductName}</h4>
+                                                <h5>${product.RetailPrice}$</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            suggestions.innerHTML = productList;
+                            suggestions.style.display = 'block';
+                        }
+                    });
+                }
+            }
         } else {
             suggestions.innerHTML = '';
             suggestions.style.display = 'none';
         }
     }
+
 
 </script>
 <body>
