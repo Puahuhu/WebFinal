@@ -154,7 +154,7 @@
                         </div>
                     </div>
                     <div class="home-img">
-                        <img src="images/phuong.png">
+                        <img src="images/avatar.png">
                     </div>
                 </div>
             </main>
