@@ -14,6 +14,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<style>
+    .suggestions {
+        position: absolute;
+        top: calc(55px); /* Hiển thị khung gợi ý ngay dưới thanh tìm kiếm */
+        left: 20%;
+        border-radius: 30px;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        max-height: 300px; /* Đặt chiều cao tối đa cho khung gợi ý */
+        overflow-y: auto; 
+        background-color: #404040; 
+        display: none; /* Ẩn khung gợi ý ban đầu */
+        z-index: 999; /* Đảm bảo khung gợi ý nằm trên các phần tử khác */
+    }
+
+    #suggestions::-webkit-scrollbar {
+        width: 6px;
+        background-color: silver;
+        border-radius: 30px;
+    } 
+
+    #suggestions::-webkit-scrollbar-thumb {
+        background-color: #242526;
+        border-radius: 30px;
+    }
+
+</style>
 <script>
     function addToCart(ProductId, ProductName, RetailPrice, Images) {
     // AJAX request to add product to cart
@@ -22,14 +51,12 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
             if (xhr.status === 200) {
-                // Success, log product information to console
                 console.log('Product added to cart:');
                 console.log('Product ID:', ProductId);
                 console.log('Product Name:', ProductName);
                 console.log('Retail Price:', RetailPrice);
                 console.log('Images:', Images);
 
-                // Update cart in UI
                 updateCartUI(ProductId, ProductName, RetailPrice, Images);
             }
         };
@@ -40,7 +67,6 @@
     }
 
     function updateCartUI(ProductId, ProductName, RetailPrice, Images) {
-        // Create HTML elements for the new product
         var productContainer = document.createElement('div');
         productContainer.classList.add('card-body');
         productContainer.innerHTML = `
@@ -49,27 +75,24 @@
                     <img src="${Images}" width="40px" height="40px" alt="">
                     <div class="operation_actived">
                         <h4 class="text-hover">${ProductName}</h4>
-                        <h5>Amount:<span>1 <button> < </button><button>></button></span> </h5>
+                        <h5>Amount:<span>1</span></h5>
                         <h5>${RetailPrice}$</h5>
-                        <span><button>Delete</button></span>
+                        <span><button onclick="deleteProduct(this)">Delete</button></span>
                     </div>
                 </div>
             </div>
         `;
 
-        // Append the new product to the cart
         var cartContainer = document.querySelector('.scrollable-content1');
         cartContainer.appendChild(productContainer);
 
-        // Calculate total price
         var totalPrice = calculateTotalPrice();
 
-        // Update total price in the UI
         var totalPriceElement = document.querySelector('.operation_actived2 h6');
         totalPriceElement.textContent = totalPrice + '$';
     }
 
-    // Function to calculate total price of all products in the cart
+
     function calculateTotalPrice() {
         var totalPrice = 0;
         var cartItems = document.querySelectorAll('.scrollable-content1 .card-body');
@@ -81,6 +104,59 @@
         return totalPrice;
     }
 
+    function deleteProduct(button) {
+        var productItem = button.closest('.card-body');
+
+        productItem.remove();
+
+        var totalPrice = calculateTotalPrice();
+        var totalPriceElement = document.querySelector('.operation_actived2 h6');
+        totalPriceElement.textContent = totalPrice + '$';
+    }
+
+    // Function to handle click event when selecting a product from suggestions
+    function selectProductFromSuggestion(productID, productName, retailPrice, images) {
+        // Add the selected product to the cart
+        addToCart(productID, productName, retailPrice, images);
+        // Clear the search input and hide suggestions
+        document.querySelector('.search-wrapper input').value = '';
+        document.getElementById('suggestions').innerHTML = '';
+        document.getElementById('suggestions').style.display = 'none';
+    }
+
+    // Update handleSearchInput function to include product selection from suggestions
+    function handleSearchInput(query) {
+        var suggestions = document.getElementById('suggestions');
+        if (query.length >= 2) {
+            $.ajax({
+                url: 'api/Product/search.php',
+                method: 'POST',
+                data: { q: query },
+                success: function (data) {
+                    var productList = '';
+                    var products = JSON.parse(data);
+                    products.forEach(function (product) {
+                        productList += `
+                            <div class="customer" onclick="selectProductFromSuggestion('${product.ProductID}','${product.ProductName}', '${product.RetailPrice}', '${product.Images}')">
+                                <div class="info">
+                                    <img src="${product.Images}" width="40px" height="40px" alt="">
+                                    <div class="operation_actived">
+                                        <h4 class="text-hover">${product.ProductName}</h4>
+                                        <h5>${product.RetailPrice}$</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    suggestions.innerHTML = productList;
+                    suggestions.style.display = 'block';
+                }
+            });
+        } else {
+            suggestions.innerHTML = '';
+            suggestions.style.display = 'none';
+        }
+    }
 
 </script>
 <body>
@@ -128,8 +204,10 @@
                 </h1>
                 <div class="search-wrapper">
                     <span class="las la-search white"></span>
-                    <input type="search" placeholder="Search here" />
+                    <input type="search" placeholder="Search here" oninput="handleSearchInput(this.value)" />
+                    <div id="suggestions" class="suggestions"></div>
                 </div>
+
                 <div class="user-wrapper">
                     <img src="images/hong.png" width="40px" height="40px" alt="">
                     <div>
@@ -190,7 +268,7 @@
                     <button><img src="images/cart_icon.png"></button>
                 </div>
             </div>
-            <div class="recent-grid ">
+            <div class="recent-grid">
                 <div class="customers right-aligned2">
                     <div class="card scrollable-content1">
                         <div class="card-header1">
@@ -202,12 +280,13 @@
                     <div class="card">
                         <div class="card-header1">
                             <h4 class="danger"> Total </h4>
+
                         </div>
                         <div class="card-body">
                             <div class="customer">
                                 <div class="info">
                                     <div class="operation_actived2">
-                                        <h6></h6>
+                                        <h6>0$</h6>
                                         <span><button>Checkout</button></span>
                                     </div>
                                 </div>
