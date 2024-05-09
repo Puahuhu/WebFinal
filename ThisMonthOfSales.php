@@ -73,8 +73,8 @@
             <main>
                 
                 <div class="cards1">
-                    <div class="card-single5 active-button">
-                        <button>Today</button>
+                    <div class="card-single5 hover-button">
+                        <a href="SalesReport.php"> <button>Today</button></a>
                     </div>
                     <div class="card-single5 hover-button">
                         <a href="YesterdayofSale.php"> <button>Yesterday</button></a>
@@ -82,7 +82,7 @@
                     <div class="card-single5 hover-button">
                         <a href="SaleTheLastSevenDays.php"> <button>The last 7 days</button></a>
                     </div>
-                    <div class="card-single5 hover-button">
+                    <div class="card-single5 active-button">
                         <a href="ThisMonthOfSales.php"> <button>This month</button></a>
                     </div>
                     <div class="card-single5 hover-button">
@@ -96,18 +96,20 @@
                         if (!$conn) {
                             die("Connection failed: " . mysqli_connect_error());
                         }
-                        $today = date("Y-m-d");
+                        $yesterday = date("Y-m-d",strtotime("-1 days"));
                         
+                        $firstDayOfMonth = date("Y-m-01");
+                        $lastDayOfMonth = date("Y-m-t");
+
                         $sql = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
                         FROM products 
                         INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
-                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID 
-                        WHERE DATE(orders.OrderDate) = '$today'";
-
-                        $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) = '$today'";
+                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID  WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
+                        $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
                         $sql2 = "SELECT orders.*, orderDetails.*
                         FROM orders
-                        INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'";
+                        INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
+
                         $result = mysqli_query($conn, $sql);
                         $result1 = mysqli_query($conn, $sql1);
                         $result2 = mysqli_query($conn, $sql2);
@@ -187,11 +189,12 @@
                                             if (!$conn) {
                                                 die("Connection failed: " . mysqli_connect_error());
                                             }
-                                            $today = date("Y-m-d");
+                                            $firstDayOfMonth = date("Y-m-01");
+                                            $lastDayOfMonth = date("Y-m-t");
                                             $sql = "SELECT *
                                                 FROM products 
                                                 INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
-                                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'" ;
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -245,7 +248,7 @@
                                         <img src="images/product3.png" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> <?= $row['ProductName'] ?> </h4>
-                                            <span class="dateadd"><?= $today ?></span>
+                                            <span class="dateadd"><?= $yesterday ?></span>
                                             <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>
                                     </div>

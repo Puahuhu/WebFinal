@@ -71,10 +71,27 @@
                 </div>
             </header>
             <main>
-                
+                <form method="POST">
+                        <div class="right-aligned7">
+                            <span class="silver">Start date</span>
+                        </div>
+                        <div class="right-aligned8">
+                            <span class="silver">End date</span>
+                            
+                        </div>
+                        <div class="right-aligned">
+                            <input type="date" name="startDate" >
+                        </div>
+                        <div class="right-aligned5">
+                            <input type="date" name="endDate" >
+                        </div>
+                        <div class="right-aligned6">
+                            <input type="submit" name="submit">
+                        </div>
+                    </form>
                 <div class="cards1">
-                    <div class="card-single5 active-button">
-                        <button>Today</button>
+                    <div class="card-single5 hover-button">
+                        <a href="SalesReport.php"> <button>Today</button></a>
                     </div>
                     <div class="card-single5 hover-button">
                         <a href="YesterdayofSale.php"> <button>Yesterday</button></a>
@@ -85,7 +102,7 @@
                     <div class="card-single5 hover-button">
                         <a href="ThisMonthOfSales.php"> <button>This month</button></a>
                     </div>
-                    <div class="card-single5 hover-button">
+                    <div class="card-single5 active-button">
                         <a href="FromToOfSales.php"> <button>From-To</button></a>
                     </div>
                 </div>
@@ -96,39 +113,29 @@
                         if (!$conn) {
                             die("Connection failed: " . mysqli_connect_error());
                         }
-                        $today = date("Y-m-d");
-                        
+                        $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : date("m-d-y");
+                        $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : date("m-d-y");
+
+                        // Truy vấn dữ liệu tổng số tiền nhận được
                         $sql = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
                         FROM products 
                         INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
-                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID 
-                        WHERE DATE(orders.OrderDate) = '$today'";
-
-                        $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) = '$today'";
-                        $sql2 = "SELECT orders.*, orderDetails.*
-                        FROM orders
-                        INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'";
+                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE date(orders.OrderDate) BETWEEN '$startDate' AND '$endDate'";
                         $result = mysqli_query($conn, $sql);
-                        $result1 = mysqli_query($conn, $sql1);
-                        $result2 = mysqli_query($conn, $sql2);
-                        $totalAmountReceived = 0;
-                        $NumberOfOrder = 0;
-                        $NumberOfProduct = 0;
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $totalAmountReceived = $row['totalmoney'];
-                            }
-                        }
-                        if (mysqli_num_rows($result1) > 0) {
-                            $row1 = mysqli_fetch_assoc($result1);
-                            $NumberOfOrder = $row1['OrderID'];
-                        }
-                        if (mysqli_num_rows($result2) > 0) {
-                            while ($row2 = mysqli_fetch_assoc($result2)) {
-                                $NumberOfProduct += $row2['Quantity'];
-                            }
-                        }
-                    
+                        $row = mysqli_fetch_assoc($result);
+                        $totalAmountReceived = $row['totalmoney'];
+
+                        // Truy vấn dữ liệu số lượng đơn hàng
+                        $sql = "SELECT COUNT(*) AS NumberOfOrder FROM orders WHERE OrderDate BETWEEN '$startDate' AND '$endDate'";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_fetch_assoc($result);
+                        $numberOfOrders = $row['NumberOfOrder'];
+
+                        // Truy vấn dữ liệu số lượng sản phẩm
+                        $sql = "SELECT SUM(Quantity) AS TotalQuantity FROM orderdetails WHERE OrderID IN (SELECT OrderID FROM orders WHERE OrderDate BETWEEN '$startDate' AND '$endDate')";
+                        $result = mysqli_query($conn, $sql);
+                        $row = mysqli_fetch_assoc($result);
+                        $numberOfProducts = $row['TotalQuantity'];
                     ?>
                 
                 
@@ -187,11 +194,14 @@
                                             if (!$conn) {
                                                 die("Connection failed: " . mysqli_connect_error());
                                             }
-                                            $today = date("Y-m-d");
+                                            $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : date("m-d-y");
+                                            $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : date("m-d-y");
+
+                                            // Truy vấn dữ liệu tổng số tiền nhận được
                                             $sql = "SELECT *
-                                                FROM products 
-                                                INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
-                                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                            FROM products 
+                                            INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                            INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE date(orders.OrderDate) BETWEEN '$startDate' AND '$endDate'";
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
