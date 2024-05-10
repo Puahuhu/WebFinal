@@ -20,15 +20,13 @@ try {
 
     //Recipients
     $mail->setFrom('nguyenletuanphuongzzz@gmail.com', 'Admin');
-    $mail->addAddress('nguyenletuanphuong710@gmail.com', 'Puahuhu');     //Add a recipient
+    $mail->addAddress($email, $fullName);     //Add a recipient
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'send mail is so fucking easy little homie';
-    $mail->Body    = 'gg mit to bit';
+    $mail->Subject = $subject;
+    $mail->Body = $body;
 
     $mail->send();
-    echo 'Message has been sent';
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

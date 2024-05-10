@@ -1,5 +1,5 @@
 <?php
-    require_once ('connection.php');
+    require_once ('\xampp\htdocs\WebFinal\connection.php');
 
     if (!isset($_POST['UserID']) ) {
         die(json_encode(array('status' => false, 'data' => 'Parameters not valid')));
