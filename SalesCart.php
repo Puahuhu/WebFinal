@@ -15,28 +15,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<script>
-    function updateTotal() {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        var totalPrice = 0;
-        var totalQuantity = 0;
-
-        checkboxes.forEach(function(checkbox) {
-            if (checkbox.checked) {
-                var productPrice = parseInt(checkbox.parentElement.querySelector('.product-price').value);
-                totalPrice += productPrice;
-                totalQuantity++;
-            }
-        });
-
-        // Cập nhật hiển thị tổng giá trị và số lượng sản phẩm
-        document.getElementById('totalPrice').innerText = totalPrice;
-        document.getElementById('totalQuantity').innerText = totalQuantity;
-
+<style>
+    .btn4 {
+    display: inline-block;
+    padding: 5px 15px;
+    background: silver;
+    color: black;
+    border: 3px double black;
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 10px;
+    
     }
-</script>
 
+    .btn4:hover {
+    transform: translateY(-5px);
+    background: transparent var(--clr-dark);
+    color: white;
+    transform: scale(1.05);
+    }
 
+</style>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -102,16 +101,17 @@
                 </div>
                 <div class="recent-grid ">
                     <div class="customers right-aligned2">
-                        <div class="card scrollable-content1">
+                        <div class="card scrollable-content1" id="productList">
                             <div class="card-header1">
                                 <h3 class="danger"> List of products </h3>
                             </div>
                             <?php
-                                function updateSessionTotal($totalPrice, $totalQuantity) {
+                                function updateSessionTotal($totalPrice, $totalQuantity, $totalorderValue) {
                                     $_SESSION['cart_total_price'] = $totalPrice;
                                     $_SESSION['cart_total_quantity'] = $totalQuantity;
-                                }
-
+                                    $_SESSION['cart_total_order'] = $totalorderValue;
+                                };
+                                $numProducts = 0;
                                 // Kiểm tra xem có dữ liệu được gửi qua phương thức POST không
                                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     // Kiểm tra xem có dữ liệu productId được gửi không
@@ -120,6 +120,7 @@
                                         $numProducts = count($_POST['productId']);
                                         $totalPrice = 0;
                                         $totalQuantity = 0;
+                                        $totalorderValue = 0;
 
                                         // Lặp qua từng sản phẩm để hiển thị thông tin và tính toán tổng
                                         for ($i = 0; $i < $numProducts; $i++) {
@@ -147,10 +148,12 @@
                                             // Tính toán tổng số tiền và số lượng sản phẩm
                                             $totalPrice += $productPrice;
                                             $totalQuantity++;
+                                            $totalorderValue += $productPrice;
+
                                         }
 
                                         // Cập nhật session với tổng số tiền và số lượng sản phẩm
-                                        updateSessionTotal($totalPrice, $totalQuantity);
+                                        updateSessionTotal($totalPrice, $totalQuantity, $totalorderValue);
                                     }
                                 }
                                 ?>
@@ -160,100 +163,107 @@
                         <div class="card">
                             <div class="card-header1">
                                 <h4 class="danger"> Total
-                                    <h5><span id="totalQuantity">0</span> products</h5>
+                                    <h5><span id="totalQuantity"><?php echo $totalQuantity; ?>$ </span> products</h5>
                                 </h4>
                             </div>
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
                                         <div class="operation_actived2">
-                                            <h6>$<span id="totalPrice">0</span></h6>
+                                            <h6>$<span id="totalPrice"><?php echo $totalPrice; ?>$ </span></h6>
                                         </div>
+                                    </div>
+                                    <div class="operation_actived2">
+                                        <input type="button" class="btn4" value="Select all" id="selectAllCheckbox" onclick="toggleSelectAll()">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
                 <div class="home">
                     <div class="home-text">
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Mobile:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" id="" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Full Name:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Address:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Total Order Value:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Money Customer Give</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Money Back</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Creation Date:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="date" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"><input type="submit" value="Invoice"></a>
-                            <a href="#" class="btn3"><input type="submit" value="Cancel"></a>
-                        </div>
+                        <form id="invoiceForm" method="post" action="ReceiptDetails.php">
+                            <input type="hidden" name="selectedProducts" id="selectedProductsInput">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <p>Mobile:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" name="phone" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Full Name:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" name="name" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Address:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" name="address" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Total Order Value:</p>
+                                    </td>
+                                    <td>
+                                        <p>  
+                                        <a><input id="totalorderValue" type="text" name="total" placeholder="-"></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Money Customer Give</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" name="moneygive" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Money Back</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="text" name="moneyback" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>Creation Date:</p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <a><input type="date" name="date" placeholder="-" required></a>
+                                        </p>
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                            <div class="main-btn">
+                                <input id="invoiceButton" class="btn2" type="submit" value="Invoice">
+                                <input class="btn3" type="button" value="Cancel" onclick="window.history.back()">
+                            </div>
+                        </form>
                     </div>
 
                 </div>
@@ -263,5 +273,144 @@
         </div>
     </div>
 </body>
+<script>
 
+    function updateTotal() {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var totalPrice = 0;
+        var totalQuantity = 0;
+        var totalOrderValue = 0;
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                var productPrice = parseInt(checkbox.parentElement.querySelector('.product-price').value);
+                totalPrice += productPrice;
+                totalQuantity++;
+            }
+        });
+
+        // Tính toán lại totalOrderValue
+        totalOrderValue = totalPrice;
+
+        totalOrderValue = totalOrderValue === 0 ? "" : totalOrderValue;
+
+        // Cập nhật hiển thị tổng giá trị và số lượng sản phẩm
+        document.getElementById('totalPrice').innerText = totalPrice;
+        document.getElementById('totalQuantity').innerText = totalQuantity;
+        document.getElementById('totalorderValue').value = totalOrderValue; // Cập nhật giá trị vào input hidden
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy tất cả các checkbox
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // Thêm sự kiện change cho mỗi checkbox
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (checkbox.checked) {
+                    var productContainer = checkbox.closest('.customer');
+                    var productName = productContainer.querySelector('.text-hover').innerText;
+                    var productPrice = productContainer.querySelector('.product-price').value;
+                    var productImage = productContainer.querySelector('img').getAttribute('src');
+
+                    // In ra thông tin của sản phẩm vào console
+                    console.log("Product Name: " + productName);
+                    console.log("Product Price: " + productPrice);
+                    console.log("Product Image: " + productImage);
+                }
+            });
+        });
+
+        // Update tổng tiền khi checkbox thay đổi
+        updateTotal();
+
+        // Thêm sự kiện cho nút Invoice
+        document.getElementById('invoiceButton').onclick = function (event) {
+            var form = document.getElementById('invoiceForm');
+            var inputs = form.querySelectorAll('input[type="text"], input[type="date"]');
+            var isEmpty = false;
+
+            inputs.forEach(function(input) {
+                if (input.value.trim() === '') { // Kiểm tra giá trị của trường nhập và loại bỏ khoảng trắng ở đầu và cuối chuỗi
+                    isEmpty = true;
+                }
+            });
+
+            if (isEmpty) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của nút submit
+                return; // Dừng việc thực hiện submit form nếu có trường dữ liệu trống
+            }
+
+            var selectedProducts = [];
+
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    var product = {};
+                    var productContainer = checkbox.closest('.customer');
+                    product.name = productContainer.querySelector('.text-hover').innerText;
+                    product.price = productContainer.querySelector('.product-price').value;
+                    product.image = productContainer.querySelector('img').getAttribute('src');
+                    selectedProducts.push(product);
+                }
+            });
+
+            var selectedProductsJSON = JSON.stringify(selectedProducts);
+            form.querySelector('input[name="selectedProducts"]').value = selectedProductsJSON;
+
+            if (selectedProducts.length === 0) {
+                alert('Chưa có sản phẩm được chọn!');
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của nút submit
+            }
+
+            
+        };
+
+        // Lấy các phần tử HTML tương ứng
+        var moneyCustomerGiveInput = document.querySelector('input[name="moneygive"]');
+        var totalOrderValueInput = document.getElementById('totalorderValue');
+        var moneyBackInput = document.querySelector('input[name="moneyback"]');
+
+        // Thêm sự kiện xử lý khi giá trị "Money Customer Give" thay đổi
+        moneyCustomerGiveInput.addEventListener('input', function () {
+            var moneyCustomerGive = parseFloat(this.value);
+            var totalOrderValue = parseFloat(totalOrderValueInput.value);
+
+            if (moneyCustomerGive >= totalOrderValue) {
+                
+                var moneyBack = moneyCustomerGive - totalOrderValue;
+                
+                moneyBackInput.value = moneyBack; 
+            } else {
+                // Nếu giá trị "Money Customer Give" nhỏ hơn "Total Order Value", không hiển thị gì ở trường "Money Back"
+                moneyBackInput.value = "";
+            }
+        });
+
+    });
+
+    function toggleSelectAll() {
+        var checkboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+        var firstCheckbox = checkboxes[0]; // Lấy checkbox đầu tiên trong danh sách
+        var areAllChecked = true; // Biến để kiểm tra xem tất cả các checkbox đã được chọn hay không
+
+        checkboxes.forEach(function(checkbox) {
+            if (!checkbox.checked) { // Nếu có ít nhất một checkbox chưa được chọn
+                areAllChecked = false;
+            }
+        });
+
+        checkboxes.forEach(function(checkbox) {
+            if (areAllChecked) {
+                checkbox.checked = false; // Hủy chọn tất cả các checkbox
+            } else {
+                checkbox.checked = true; // Chọn tất cả các checkbox
+            }
+        });
+
+        updateTotal();
+    }
+
+</script>
 </html>
