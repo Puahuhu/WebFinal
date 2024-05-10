@@ -156,7 +156,7 @@
                         ?>
 
                             <div>
-                                <h1 class="white"> <?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?>$</h1>
+                                <h1 class="white"> $<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
                                 <span>Total Amount Received</span>
                             </div>
                             <div>
@@ -186,7 +186,7 @@
                         <div class="card-single">
 
                             <div>
-                                <h1 class="white"><?= isset($totalAmountReceived) ?$totalAmountReceived-  $TotalProfit : "0" ?>$</h1>
+                                <h1 class="white">$<?= isset($totalAmountReceived) ?$totalAmountReceived-  $TotalProfit : "0" ?></h1>
                                 <span> Total Profit</span>
                             </div>
                             <div>
@@ -230,12 +230,12 @@
                                             while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
                                             <tr>
-                                                <td class="adjust-size1 center-aligned"><?= $row['TotalAmount'] ?></td>
+                                                <td class="adjust-size1 center-aligned">$<?= $row['TotalAmount'] ?></td>
                                                 <td class="adjust-size1 center-aligned">
-                                                    <span class="adjust-size center-aligned"></span> <?= $row['MoneyGiven'] ?>
+                                                    <span class="adjust-size center-aligned">$</span> <?= $row['MoneyGiven'] ?>
                                                 </td>
                                                 <td class="adjust-size1 center-aligned">
-                                                    <span class="adjust-size"></span> <?= $row['MoneyBack'] ?>
+                                                    <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
                                                 </td>
                                                 <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
                                                 <td class="adjust-size1 center-aligned">

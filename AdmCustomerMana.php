@@ -146,7 +146,7 @@
                                                 <address> <?= $row['CustomerAddress']?></address>
                                             </td>
                                             <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
+                                                <a href="AdmCustomerHistoryPayment.php?CustomerID=<?= $row['CustomerID'] ?>"> <span class="material-symbol"><button>More</button></span></a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -165,58 +165,40 @@
                             <div class="card-header">
                                 <h3 class="yellow"> New Customer</h3>
                             </div>
+                            <?php
+                                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
 
+                                        if (!$conn) {
+                                            die("Kết nối không thành công: " . mysqli_connect_error());
+                                        }
+                                        $today = date('Y-m-d');
+                                        $sql = "SELECT * FROM customers WHERE date(CreatedDate) = '$today'";
+
+                                        
+                                        $result = mysqli_query($conn, $sql);
+                                    if ($result && mysqli_num_rows($result) > 0) {
+                                        while ($row = mysqli_fetch_array($result)) {
+                
+
+
+                                    ?>
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
                                         <img src="images/user_icon.png" width="50px" height="50px" alt="">
                                         <div>
-                                            <h4> Nguyen Le Tuan Phuong </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
+                                            <h4> <?= $row['FullName'] ?> </h4>
+                                            <span class="dateadd"><?= $today ?></span>
+                                            <a href="AdmCustomerHistoryPayment.php?CustomerID=<?= $row['CustomerID']?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/user_icon.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> Dang Thi Kim Hong </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/user_icon.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> Chau Thi Tram </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/user_icon.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> Nguyen Tuan </h4>
-                                            <span class="dateadd">22/22/22</span>
-
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                             <?php 
+                                        }
+                                    }
+                             ?>
+                            
                         </div>
                     </div>
                 </div>

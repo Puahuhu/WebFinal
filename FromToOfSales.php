@@ -140,7 +140,7 @@
                 
                 
                         <div>
-                            <h1 class="white"><?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?>$</h1>
+                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
                             <span>Total Amount Received</span>
                         </div>
                         <div>
@@ -208,12 +208,12 @@
 
                                         ?>
                                         <tr>
-                                            <td class="adjust-size1"><?= $row['Barcode'] ?></td>
+                                            <td class="adjust-size1">$<?= $row['Barcode'] ?></td>
                                             <td class="adjust-size1">
-                                                <span class="adjust-size"></span> <?= $row['ProductName'] ?>
+                                                <span class="adjust-size"></span> $<?= $row['ProductName'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> <?= $row['RetailPrice'] ?>
+                                                <span class="adjust-size"></span> $<?= $row['RetailPrice'] ?>
                                             </td>
                                             <td class="adjust-size1"><?= $row['OrderDate'] ?></td>
                                             <td class="operation_actived">

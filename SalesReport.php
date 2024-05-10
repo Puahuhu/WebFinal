@@ -133,7 +133,7 @@
                 
                 
                         <div>
-                            <h1 class="white"><?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?>$</h1>
+                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
                             <span>Total Amount Received</span>
                         </div>
                         <div>

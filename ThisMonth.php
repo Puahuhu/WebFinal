@@ -140,8 +140,8 @@
                     
                     ?>
                 
-                        <div>
-                            <h1 class="white"><?= $totalAmountReceived ?>$</h1>
+                <div>
+                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
                             <span>Total Amount Received</span>
                         </div>
                         <div>
@@ -150,7 +150,7 @@
                     </div>
                     <div class="card-single">
                         <div>
-                            <h1 class="white"><?= $NumberOfOrder ?></h1>
+                            <h1 class="white"><?= isset($NumberOfOrder) ? $NumberOfOrder : "0" ?></h1>
                             <span> Number Of Order </span>
                         </div>
                         <div>
@@ -160,7 +160,7 @@
                     <div>
                         <div class="card-single">
                             <div>
-                                <h1 class="white"><?=$NumberOfProduct ?></h1>
+                                <h1 class="white"><?=isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
                                 <span>Number Of Products</span>
                             </div>
                             <div>
@@ -171,15 +171,13 @@
                     <div class="card-single">
 
                         <div>
-                            <h1 class="white"><?=$totalAmountReceived- $TotalProfit ?>$</h1>
+                            <h1 class="white">$<?=isset( $TotalProfit) ? $totalAmountReceived - $TotalProfit : "0"  ?></h1>
                             <span> Total Profit</span>
                         </div>
                         <div>
                             <span class="material-symbols-sharp">paid</span>
                         </div>
                     </div>
-                
-                
                 </div>
                 <div class="recent-grid ">
                     <div class="projects scrollable-content">
@@ -220,12 +218,12 @@
 
                                         ?>
                                         <tr>
-                                            <td class="adjust-size1 center-aligned"><?= $row['TotalAmount'] ?></td>
+                                            <td class="adjust-size1 center-aligned">$<?= $row['TotalAmount'] ?></td>
                                             <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> <?= $row['MoneyGiven'] ?>
+                                                <span class="adjust-size center-aligned"></span> $<?= $row['MoneyGiven'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> <?= $row['MoneyBack'] ?>
+                                                <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
                                             <td class="adjust-size1 center-aligned">
@@ -269,7 +267,7 @@
                                     <div class="info">
                                         <img src="images/receipt1.png" width="50px" height="50px" alt="">
                                         <div>
-                                            <h4> <?= $row['RetailPrice'] ?> $</h4>
+                                            <h4> $<?= $row['RetailPrice'] ?> </h4>
                                             <span class="dateadd"><?= $today ?></span>
                                             <a href="ReceiptDetails.php?ProductID=<?= $row['ProductID'] ?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>

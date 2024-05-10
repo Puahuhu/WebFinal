@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -34,7 +34,7 @@
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php">
+                <a href="AdmCustomerMana.php" class="active">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -79,12 +79,29 @@
                 </div>
             </head>
             <main>
-                <div class="home">
+            <div class="home">
                     <div class="home-text">
+                        
                         <span>
                             Customer
                         </span>
-                        <h1 class="white">Tuan Nguyen </h1>
+                        <?php
+                            if(isset($_GET['CustomerID'])) {
+                                $CustomerID = $_GET['CustomerID'];
+                                
+                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                if (!$conn) {
+                                    die("Kết nối không thành công: " . mysqli_connect_error());
+                                }
+                                
+                                $sql = "SELECT * FROM customers WHERE CustomerID = $CustomerID";
+                                $result = mysqli_query($conn, $sql);
+                    
+                                
+                                if($result && mysqli_num_rows($result) > 0) {
+                                    $row = mysqli_fetch_assoc($result);
+                        ?>
+                        <h1 class="white"><?= $row['FullName'] ?></h1>
                         <table>
                             <tr>
                                 <td>
@@ -107,7 +124,7 @@
                                     <p>Mobile</p>
                                 </td>
                                 <td>
-                                    <p><a>09xxxxxxxx</a></p>
+                                    <p><a><?= $row['Phone'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -115,7 +132,7 @@
                                     <p>Address:</p>
                                 </td>
                                 <td>
-                                    <p><a> Tan Binh, HCM city</a></p>
+                                    <p><a> <?= $row['CustomerAddress'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -123,13 +140,19 @@
                                     <p>Creation Date</p>
                                 </td>
                                 <td>
-                                    <p><a>31/03/2024</a></p>
+                                    <p><a><?= $row['CreatedDate'] ?></a></p>
                                 </td>
                             </tr>
                         </table>
+                        
                         <div class="main-btn">
-                            <a href="#" class="btn2"> History Transaction</a>
+                            <a href="AdmCustomerHistoryPayment.php?CustomerID=<?= $CustomerID?>" class="btn2"> History Transaction</a>
                         </div>
+                        <?php
+                                }
+                            }
+                        
+                        ?>
                     </div>
                     <div class="home-img">
                         <img src="images/tuan.png">
