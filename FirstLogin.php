@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,11 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Lấy trạng thái của tài khoản
-                $stmt = $dbCon->prepare("SELECT IsActive FROM Accounts WHERE Username=:username");
+                $stmt = $dbCon->prepare("SELECT IsActive FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
                 if ($result['IsActive'] == 1) {
+                    // Thiết lập session khi đăng nhập thành công
+                    $_SESSION['username'] = $username;
                     $error = "Account has been activated";
                 } else {
                     // Chuyển sang màn hình đổi mật khẩu

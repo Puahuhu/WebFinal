@@ -2,6 +2,10 @@
 $_SESSION['logged in'] = true;
 $error = "";
 
+if(isset($_GET['timeout']) && $_GET['timeout'] == 'true') {
+    echo "<p>Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.</p>";
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once("connection.php");
 
