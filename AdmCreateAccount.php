@@ -36,6 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($stmt->execute()) {
             $createSuccess = "Account created successfully.";
+            $subject = 'Your account successfully created';
+            $body = 'Your account has been successfully created with the following details:<br><br>'
+                    . 'Username: ' . $username . '<br>'
+                    . 'Password: ' . $username;
             require("send-email.php");
         } else {
             $createSuccess = "Error: Unable to create account.";

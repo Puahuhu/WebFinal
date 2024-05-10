@@ -24,10 +24,8 @@ try {
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'Your account successfully created';
-    $mail->Body = 'Your account has been successfully created with the following details:<br><br>'
-                . 'Username: ' . $username . '<br>'
-                . 'Password: ' . $username;
+    $mail->Subject = $subject;
+    $mail->Body = $body;
 
     $mail->send();
 } catch (Exception $e) {
