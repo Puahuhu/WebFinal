@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = explode('@', $email)[0];
 
     // Thêm vào bảng Accounts
+
     $sql = "INSERT INTO Accounts (Username, pwd) VALUES (:username, :username)";
 
     $stmt = $dbCon->prepare($sql);
