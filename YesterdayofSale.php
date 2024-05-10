@@ -242,7 +242,7 @@
                                 <div class="card-body">
                                     <div class="customer">
                                     <div class="info">
-                                        <img src="images/product3.png" width="50px" height="50px" alt="">
+                                        <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> <?= $row['ProductName'] ?> </h4>
                                             <span class="dateadd"><?= $yesterday ?></span>

@@ -70,11 +70,30 @@
             </header>
 
             <head>
-                
+            <?php
+                if(isset($_GET['CustomerID'])) {
+                    $CustomerID = $_GET['CustomerID'];
+                    
+                    $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                    if (!$conn) {
+                        die("Kết nối không thành công: " . mysqli_connect_error());
+                    }
+                    
+                    $sql = "SELECT * FROM customers WHERE CustomerID = $CustomerID";
+                    $result = mysqli_query($conn, $sql);
+        
+                    
+                    if($result && mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                ?>
                 <div class="head-display">
                     <h5 class="material-symbols-sharp" id="icon_arrow">arrow_right</h5>
-                    <label class="adjust-size3">Nguyen Le Tuan Phuong</label>
+                    <label class="adjust-size3"><?= $row['FullName'] ?></label>
                 </div>
+                <?php
+                    }
+                }
+                ?>
             </head>
             <main>
                 <?php

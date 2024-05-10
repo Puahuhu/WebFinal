@@ -261,7 +261,7 @@
                                 <div class="card-body">
                                     <div class="customer">
                                     <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
+                                            <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> $<?= $row['RetailPrice'] ?> </h4>
                                             <span class="dateadd"><?= $today ?></span>

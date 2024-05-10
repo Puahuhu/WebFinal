@@ -161,10 +161,6 @@
                             </table>
                         
                         <div class="main-btn">
-                            <!-- <a href="api//Product//add-product.php" method="POST" class="btn2"><input type="submit" value="Add"></a> -->
-                            <!-- <form action="api//Product//add-product.php" method="post">
-                                <button type="submit" class="btn2">Add</button>
-                            </form> -->
                             <input type="submit" class="btn2" value="Add"></input>
                         </form>
                             <a href="AdminProdMana.php" class="btn3"><input type="submit" value="Cancel"></a>

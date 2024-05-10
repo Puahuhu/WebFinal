@@ -166,14 +166,15 @@
                         </div>
                     </div>
                     <div>
-                        <div class="card-single">
-                            <div>
-                                <h1 class="white"><?=isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
-                                <span>Number Of Products</span>
-                            </div>
-                            <div>
-                                <span class="material-symbols-sharp">inventory_2</span>
-                            </div>
+                    <div class="card-single">
+
+                        <div>
+                            <h1 class="white">$<?=isset( $TotalProfit) ? $totalAmountReceived - $TotalProfit : "0"  ?></h1>
+                            <span> Total Profit</span>
+                        </div>
+                        <div>
+                            <span class="material-symbols-sharp">paid</span>
+                        </div>
                         </div>
                     </div>
                 
@@ -260,7 +261,7 @@
                                 <div class="card-body">
                                     <div class="customer">
                                     <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
+                                        <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> $<?= $row['RetailPrice'] ?> </h4>
                                             <span class="dateadd"><?= $today ?></span>

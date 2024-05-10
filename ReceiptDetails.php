@@ -113,7 +113,7 @@
                                     <tbody class="info1">
                                         <tr>
                                             <td>
-                                                <img src="images/product1.png" width="50px" height="50px" alt="">
+                                                <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                             </td>
                                             <td class="text-hover"><?= $row['ProductName'] ?></td>
                                             <td>
