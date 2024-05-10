@@ -1,11 +1,11 @@
 <?php
-    require_once '\xampp\htdocs\WebFinal\connection.php';
+    require_once ('connection.php');
 
     $salespersonID = $_POST["SalespersonID"];
     $avatar = $_FILES["avatarInput"]["name"]; 
     $name = $_POST["Avatar"];
 
-    $target_dir = "/xampp/htdocs/WebFinal/images/";
+    $target_dir = "images/";
     $target_file = $target_dir . basename($_FILES["avatarInput"]["name"]);
     move_uploaded_file($_FILES["avatarInput"]["tmp_name"], $target_file);
 

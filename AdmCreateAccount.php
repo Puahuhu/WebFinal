@@ -14,7 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = explode('@', $email)[0];
 
     // Thêm vào bảng Accounts
-    $sql = "INSERT INTO Accounts (Username, pwd, IsActive) VALUES (:username, :username, 0)";
+
+    $sql = "INSERT INTO Accounts (Username, pwd) VALUES (:username, :username)";
 
     $stmt = $dbCon->prepare($sql);
     $stmt->bindParam(':username', $username);
@@ -39,7 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $subject = 'Your account successfully created';
             $body = 'Your account has been successfully created with the following details:<br><br>'
                     . 'Username: ' . $username . '<br>'
-                    . 'Password: ' . $username;
+                    . 'Password: ' . $username . '<br><br>'
+                    . 'First login link here: http://localhost/WebFinal/FirstLogin.php';
             require("send-email.php");
         } else {
             $createSuccess = "Error: Unable to create account.";
