@@ -61,7 +61,6 @@
                 return;
             }
 
-
             $.post("api/Account/update-accountpwd.php", {
                 Username: username,
                 pwd: newPassword
@@ -74,12 +73,6 @@
                 }
             }, "json");
         });
-
-        $(document).on("click", "#cancel", function () {
-            window.location.href = "SalesAccMana.php?username=" + username;
-        });
-
-        
     });
 </script>
 <body>
@@ -96,20 +89,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="SalesAccMana.php" class="active">
+                <a class="active">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="SalesCustomerMana.php">
+                <a>
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php">
+                <a>
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php">
+                <a>
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>

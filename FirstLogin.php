@@ -1,5 +1,4 @@
 <?php
-$_SESSION['logged in'] = true;
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,21 +17,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute(array(':username' => $username));
 
         if ($stmt->rowCount() > 0) {
-            // Kiểm tra tài khoản và mật khẩu trong bảng Accounts
+            // Kiểm tra xem tài khoản mật khẩu có trong bảng Accounts hay không
             $stmt = $dbCon->prepare("SELECT * FROM Accounts WHERE Username=:username AND pwd=:password");
             $stmt->execute(array(':username' => $username, ':password' => $password));
 
             if ($stmt->rowCount() > 0) {
-                // Kiểm tra trạng thái tài khoản
-                $stmt = $dbCon->prepare("SELECT IsActive FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
+                // Lấy trạng thái của tài khoản
+                $stmt = $dbCon->prepare("SELECT IsActive FROM Accounts WHERE Username=:username");
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                if ($result['IsActive'] == 0) {
-                    $error = "The account needs first-time login";
+                if ($result['IsActive'] == 1) {
+                    $error = "Account has been activated";
                 } else {
-                    // Chuyển sang màn hình chính
-                    header("Location: SalesAccMana.php?username=$username");
+                    // Chuyển sang màn hình đổi mật khẩu
+                    header("Location: FirstChangePassword.php?username=$username");
                     exit();
                 }
             } else {
@@ -54,14 +53,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salesperson Login</title>
+    <title>First Login</title>
     <link rel="stylesheet" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/Error.css">
@@ -73,15 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="image-holder">
                 <img class="bg" src="images/bg-phone10.jpeg" alt="">
             </div>
-            <form action="SalesLogin.php" method="post" id="loginForm">
-                <div class="form-button">
-                    <button class="choose" id="adminButton">Admin
-                        <i class="zmdi zmdi-account"></i>
-                    </button>
-                    <button class="active">Salesperson
-                        <i class="zmdi zmdi-account"></i>
-                    </button>
-                </div>
+            <form action="FirstLogin.php" method="post" id="loginForm">
                 <h3>Sign in</h3>
                 <div class="form-wrapper">
                     <input name="username" type="text" placeholder="Username" class="form-control" value="<?php if(isset($_POST['username'])) echo $_POST['username']; ?>">
@@ -92,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="zmdi zmdi-lock"></i>
                 </div>
                 <button type="submit">Login
-						<i class="zmdi zmdi-arrow-right"></i>
+					<i class="zmdi zmdi-arrow-right"></i>
 				</button>
                 <!-- In thông báo lỗi -->
                 <?php if (!empty($error)) { ?>
@@ -101,10 +90,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
         </div>
     </div>
-    <script>
-        document.getElementById("adminButton").addEventListener("click", function () {
-            document.getElementById("loginForm").action = "AdminLogin.php";
-        });
-    </script>
 </body>
 </html>

@@ -39,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $subject = 'Your account successfully created';
             $body = 'Your account has been successfully created with the following details:<br><br>'
                     . 'Username: ' . $username . '<br>'
-                    . 'Password: ' . $username;
+                    . 'Password: ' . $username . '<br><br>'
+                    . 'First login link here: http://localhost/WebFinal/FirstLogin.php';
             require("send-email.php");
         } else {
             $createSuccess = "Error: Unable to create account.";
