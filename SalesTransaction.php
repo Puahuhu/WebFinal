@@ -45,7 +45,6 @@
 </style>
 <script>
     function addToCart(ProductId, ProductName, RetailPrice, Images) {
-    // AJAX request to add product to cart
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'api/Product/add-to-card.php');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -65,7 +64,11 @@
             '&ProductPrice=' + encodeURIComponent(RetailPrice)+
             '&Images=' + encodeURIComponent(Images));
     }
-
+    var hiddenProductId;
+    var hiddenProductName;
+    var hiddenProductPrice;
+    var hiddenProductImage;
+    
     function updateCartUI(ProductId, ProductName, RetailPrice, Images) {
         var productContainer = document.createElement('div');
         productContainer.classList.add('card-body');
@@ -83,25 +86,21 @@
             </div>
         `;
 
-        // Thêm các trường ẩn vào form
-        var hiddenProductId = createHiddenInput('productId[]', ProductId);
-        var hiddenProductName = createHiddenInput('productName[]', ProductName);
-        var hiddenProductPrice = createHiddenInput('productPrice[]', RetailPrice);
-        var hiddenProductImage = createHiddenInput('productImage[]', Images);
-
+        hiddenProductId = createHiddenInput('productId[]', ProductId);
+        hiddenProductName = createHiddenInput('productName[]', ProductName);
+        hiddenProductPrice = createHiddenInput('productPrice[]', RetailPrice);
+        hiddenProductImage = createHiddenInput('productImage[]', Images);
+        
         document.getElementById('checkoutForm').appendChild(hiddenProductId);
         document.getElementById('checkoutForm').appendChild(hiddenProductName);
         document.getElementById('checkoutForm').appendChild(hiddenProductPrice);
         document.getElementById('checkoutForm').appendChild(hiddenProductImage);
 
-        // Thêm sản phẩm vào giỏ hàng
         document.querySelector('.scrollable-content1').appendChild(productContainer);
 
-        // Cập nhật tổng giá trị của giỏ hàng
         updateTotalPrice();
     }
 
-    // Hàm tạo trường input ẩn
     function createHiddenInput(name, value) {
         var hiddenInput = document.createElement('input');
         hiddenInput.type = 'hidden';
@@ -128,8 +127,6 @@
         return totalPrice;
     }
 
-
-
     function calculateTotalPrice() {
         var totalPrice = 0;
         var cartItems = document.querySelectorAll('.scrollable-content1 .card-body');
@@ -142,31 +139,37 @@
     }
 
     function deleteProduct(button) {
-        var productItem = button.closest('.card-body');
+        var product = button.closest('.card-body');
+        var productItem = document.getElementById('checkoutForm');
 
-        productItem.remove();
+        var productIdInput = productItem.querySelector('input[name="productId[]"]');
+        var productNameInput = productItem.querySelector('input[name="productName[]"]');
+        var productPriceInput = productItem.querySelector('input[name="productPrice[]"]');
+        var productImageInput = productItem.querySelector('input[name="productImage[]"]');
+        productIdInput.remove();
+        productNameInput.remove();
+        productPriceInput.remove();
+        productImageInput.remove();
+
+        product.remove();
 
         var totalPrice = calculateTotalPrice();
         var totalPriceElement = document.querySelector('.operation_actived2 h6');
         totalPriceElement.textContent = totalPrice + '$';
     }
 
-    // Function to handle click event when selecting a product from suggestions
+
     function selectProductFromSuggestion(productID, productName, retailPrice, images) {
-        // Add the selected product to the cart
         addToCart(productID, productName, retailPrice, images);
-        // Clear the search input and hide suggestions
         document.querySelector('.search-wrapper input').value = '';
         document.getElementById('suggestions').innerHTML = '';
         document.getElementById('suggestions').style.display = 'none';
     }
 
-    // Update handleSearchInput function to include product selection from suggestions
     function handleSearchInput(query) {
         var suggestions = document.getElementById('suggestions');
         if (query.length >= 2) {
             var nameResponseReceived = false;
-            // Yêu cầu AJAX tìm kiếm theo tên sản phẩm
             $.ajax({
                 url: 'api/Product/search-name.php',
                 method: 'POST',
@@ -192,7 +195,7 @@
                         suggestions.innerHTML = productList;
                         suggestions.style.display = 'block';
                     } else {
-                        // Nếu không có kết quả từ tìm kiếm theo tên, tiếp tục với tìm kiếm theo mã barcode
+
                         searchByBarcode();
                     }
                 }
@@ -200,7 +203,6 @@
 
             function searchByBarcode() {
                 if (!nameResponseReceived) {
-                    // Yêu cầu AJAX tìm kiếm theo mã barcode
                     $.ajax({
                         url: 'api/Product/search-barcode.php',
                         method: 'POST',
@@ -234,9 +236,7 @@
     }
 
     function sendCartData() {
-        // Lấy ra form
         var form = document.getElementById('checkoutForm');
-        // Submit form
         form.submit();
     }
 

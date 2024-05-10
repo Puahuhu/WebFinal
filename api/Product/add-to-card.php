@@ -1,10 +1,6 @@
 <?php
-    // PHP script to handle adding products to the cart and displaying the cart
-
-    // Start the session
-    session_start();
-
     // Function to add a product to the cart
+    session_start();
     function addToCart($productId, $productName, $retailprice, $images) {
         // Initialize cart if not already initialized
         if (!isset($_SESSION['cart'])) {

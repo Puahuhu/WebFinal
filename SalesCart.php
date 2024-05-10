@@ -1,6 +1,4 @@
-<?php
-    session_start(); // Bắt đầu session
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -140,7 +138,6 @@
                                             echo '<h4 class="text-hover" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis;">'.$productName.'</h4>';
                                             echo '<h5>Amount:<span>1</span> </h5>';
                                             echo '<h5 data-price="'.$productPrice.'">' . $productPrice . '$</h5>';
-                                            echo '<span><button>Delete</button></span>';
                                             echo '<input type="hidden" class="product-price" value="' . $productPrice . '">';
                                             echo '</div>';
                                             echo '</div>';
