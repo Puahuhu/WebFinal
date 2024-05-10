@@ -31,6 +31,7 @@
     $date = $_POST['date'];
     require_once ('connection.php');
 
+    //////////////////////////
     $sql = 'SELECT * FROM Customers';
     try {
         $stmt = $dbCon->prepare($sql);
@@ -52,6 +53,7 @@
         }
     }
 
+    // Tạo order mới
     if ($customerID !== null) {
         $sql1 = 'INSERT INTO Orders(CustomerID, SalespersonID, OrderDate, TotalAmount, MoneyGiven, MoneyBack) VALUES(?, ?, ?, ?, ?, ?)';
         try {
@@ -61,16 +63,12 @@
             die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
         }
     }else{
-        // Lấy username từ $name
+
+        // Tạo tài khoản mới
         $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', removeVietnameseAccents($name)));
-
-        // password là username
         $password = $username;
-
-        // IsActive là 1
         $isActive = 1;
 
-        // Thực hiện INSERT vào bảng Customers
         $insertSQL = 'INSERT INTO accounts(username, pwd, IsActive) VALUES (?, ?, ?)';
 
         try {
@@ -79,6 +77,73 @@
 
             // Lấy CustomerID vừa được tạo
             $customerID = $dbCon->lastInsertId();
+
+        } catch (PDOException $ex) {
+            die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
+        }
+
+        // Lấy danh sách tài khoản
+        $sql = 'SELECT * FROM accounts';
+        try {
+            $stmt = $dbCon->prepare($sql);
+            $stmt->execute();
+        } catch (PDOException $ex) {
+            die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
+        }
+
+        $data = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $row;
+        }
+
+        $userid = null;
+        foreach ($data as $account) {
+            if ($account['Username'] === $username) {
+                $userid = $account['UserID'];
+                break;
+            }
+        }
+
+        // Tạo thông tin khách hàng mới
+        $insertSQL = 'INSERT INTO customers(UserID, FullName, Phone, CustomerAddress, CreatedDate) VALUES (?, ?, ?, ?, ?)';
+
+        try {
+            $insertStmt = $dbCon->prepare($insertSQL);
+            $insertStmt->execute([$userid, $name, $phone, $address, $date]);
+
+            // Lấy CustomerID vừa được tạo
+            $customerID = $dbCon->lastInsertId();
+        } catch (PDOException $ex) {
+            die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
+        }
+
+        // Lấy danh sách khách hàng
+        $sql = 'SELECT * FROM Customers';
+        try {
+            $stmt = $dbCon->prepare($sql);
+            $stmt->execute();
+        } catch (PDOException $ex) {
+            die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
+        }
+
+        $data = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $data[] = $row;
+        }
+
+        $customerID = null;
+        foreach ($data as $customer) {
+            if ($customer['FullName'] === $name) {
+                $customerID = $customer['CustomerID'];
+                break;
+            }
+        }
+
+        // Tạo order mới
+        $sql1 = 'INSERT INTO Orders(CustomerID, SalespersonID, OrderDate, TotalAmount, MoneyGiven, MoneyBack) VALUES(?, ?, ?, ?, ?, ?)';
+        try {
+            $stmt = $dbCon->prepare($sql1);
+            $stmt->execute(array($customerID, 1, $date, $total, $moneygive, $moneyback)); // Nhớ thay đổi SalespersonID
         } catch (PDOException $ex) {
             die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
         }
