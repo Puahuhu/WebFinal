@@ -272,6 +272,7 @@
 
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
 <script>
 
@@ -411,6 +412,5 @@
 
         updateTotal();
     }
-
 </script>
 </html>

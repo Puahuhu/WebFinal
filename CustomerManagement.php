@@ -247,6 +247,6 @@
             </div>
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>

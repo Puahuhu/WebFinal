@@ -339,6 +339,6 @@
                     </div>
             </main>
             </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>
