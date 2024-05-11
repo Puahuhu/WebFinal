@@ -106,6 +106,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <script>
+        document.getElementById("adminButton").addEventListener("click", function () {
+            document.getElementById("loginForm").action = "AdminLogin.php";
+        });
+
         function resetTimeout() {
             window.location.href = "reset_timeout.php";
         }
