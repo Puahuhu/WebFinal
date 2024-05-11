@@ -72,6 +72,18 @@
                     alert("An error occurred while processing your request.");
                 }
             }, "json");
+
+            $.post("api/Account/update-isActiveAccount.php", {
+                Username: username 
+            }, function (data, status) {
+                if (status === "success") {
+                    alert('User is now active.');
+                    window.location.href = "SalesAccMana.php?username=" + username;
+                } else {
+                    alert("An error occurred while processing your request.");
+                }
+            }, "json");
+            
         });
     });
 </script>
