@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +51,7 @@
                     // Thêm điều kiện kiểm tra isNew
                     if (isNew === 1) {
                         row += "<td class='operation_sendmail'>" +
-                            "<span><button>Send Mail</button></span>" +
+                            "<span><button id='timeoutButton'>Send Mail</button></span>" +
                             "</td>";
                     } else {
                         row += "<td></td>"; 
