@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Lấy trạng thái của tài khoản
-                $stmt = $dbCon->prepare("SELECT IsActive FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
+                $stmt = $dbCon->prepare("SELECT IsNew FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
