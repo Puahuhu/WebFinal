@@ -63,6 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/CreateAccount.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -181,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </tr>
                             </table>
                             <div class="main-btn">
-                                <a class="btn2"><input type="submit" value="Create"></a>
+                                <a class="btn2"><input id="createBtn" type="submit" value="Create"></a>
                                 <a href="AccountManagement.php" class="btn3"><input type="submit" value="Cancel"></a>
                             </div>
                         </form>
@@ -204,5 +207,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </body>
-
+<script>
+    $(document).ready(function(){
+        // Khi nút "Create" được click
+        $("#createBtn").click(function(e){
+            // Ngăn chặn hành động mặc định của nút submit
+            e.preventDefault();
+            // Disable nút để ngăn chặn việc click nhiều lần
+            $("#createBtn").prop("disabled", true);
+            // Tiến hành gửi dữ liệu
+            $("form").submit();
+        });
+    });
+</script>
 </html>
