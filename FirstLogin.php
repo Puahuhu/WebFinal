@@ -3,6 +3,16 @@ session_start();
 
 $error = "";
 
+// Kiểm tra xem phiên làm việc đã hết hạn chưa
+if (isset($_SESSION['last_activity']) && time() - $_SESSION['last_activity'] > 60) {
+    session_unset(); // Xóa tất cả các biến phiên
+    session_destroy(); // Hủy phiên hiện tại
+    header("Location: SalesLogin.php"); // Chuyển hướng đến trang SalesLogin.php
+    exit();
+}
+
+$_SESSION['last_activity'] = time(); // Cập nhật thời gian hoạt động cuối cùng
+
 // Xử lý form
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once("connection.php");
@@ -95,10 +105,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
     <script>
-        setTimeout(function() {
+        function redirect() {
             alert("Session has expired. Please contact the admin to reopen the login link.");
             window.location.href = "SalesLogin.php";
-        }, 60000);
+        }
+
+        setTimeout(redirect, 60000);
     </script>
 </body>
 </html>

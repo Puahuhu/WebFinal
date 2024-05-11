@@ -103,21 +103,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="error"><?php echo $error; ?></div>
                 <?php } ?>
             </form>
+            <button type="submit" onclick="resetTimeout()">Reset
+						<i class="zmdi zmdi-arrow-right"></i>
+			</button>
         </div>
     </div>
     <script>
-        document.getElementById("adminButton").addEventListener("click", function () {
-            document.getElementById("loginForm").action = "AdminLogin.php";
-        });
-
-        document.getElementById("timeoutButton").addEventListener("click", function () {
-        // Gửi yêu cầu để set timeout lại
-        fetch('set_timeout.php')
-        .then(response => response.text())
-        .then(data => {
-            alert(data); // Hiển thị thông báo kết quả từ server
-        });
-    });
+        function resetTimeout() {
+            window.location.href = "reset_timeout.php";
+        }
     </script>
 </body>
 </html>
