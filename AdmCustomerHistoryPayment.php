@@ -160,9 +160,9 @@
                         <small class="success quantity">Customer</small>
                         <h6><?= $row3['FullName'] ?></h6>
                     </div>
-                    <div class="avatar">
+                    <!-- <div class="avatar">
                         <img src="images/phuong.png">
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <?php

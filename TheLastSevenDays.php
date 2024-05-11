@@ -63,11 +63,11 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
+                    <!-- <img src="images/quynh.png" width="40px" height="40px" alt="">
                     <div>
                         <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
                         <small> Admin</small>
-                    </div>
+                    </div> -->
                 </div>
             </header>
             <main>
@@ -138,6 +138,8 @@
                     ?>
                 
                 <div>
+                <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
+
                             <span>Total Amount Received</span>
                         </div>
                         <div>
