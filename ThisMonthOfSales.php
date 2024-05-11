@@ -63,11 +63,11 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/hong.png" width="40px" height="40px" alt="">
+                    <!-- <img src="images/hong.png" width="40px" height="40px" alt="">
                     <div>
                         <h4 class="yellow text-hover1"> Dang Thi Kim Hong </h4>
                         <small> Salesperson</small>
-                    </div>
+                    </div> -->
                 </div>
             </header>
             <main>

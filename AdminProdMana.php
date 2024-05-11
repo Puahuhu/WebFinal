@@ -85,7 +85,8 @@
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a>
+                <a> 
+                <!-- <a href="AdmCustomerMana.php" class="sidebar-link"> -->
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
@@ -163,110 +164,6 @@
             <div class="right-aligned card-single2">
                 <button id="add" class="material-symbols-sharp"><span> <a href="AddProduct.php"> Add Product</a></span> add_shopping_cart</button>
             </div>
-            <!-- <div class="recent-grid ">
-                <div class="customers right-aligned2">
-                    <div class="card scrollable-content1">
-                        <div class="card-header1">
-                            <h3 class="danger"> Activities Recent</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <?php
-
-                                    ?>
-                                <div class="info">
-                                    
-                                    <img src="images/product3.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Samsung Galaxy </h4>
-                                        <h5> 28/04/2024 </h5>
-                                    </div>
-                                </div>
-                                <?php
-
-                                ?>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product4.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Iphone 14 </h4>
-                                        <h5> 26/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product5.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Xiaomi </h4>
-                                        <h5> 25/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5> 22/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5> 22/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5> 22/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5> 22/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="customer">
-                                <div class="info">
-                                    <img src="images/product6.png" width="40px" height="40px" alt="">
-                                    <div>
-                                        <h4 class="text-hover"> Camera </h4>
-                                        <h5> 22/04/2024 </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
     <script src="js/click.js"></script>

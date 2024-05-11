@@ -35,11 +35,11 @@
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php">
+                <a href="SalesTransaction.php" class="active">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php" class="active">
+                <a href="SalesReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>

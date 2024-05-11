@@ -71,8 +71,23 @@
                     </div>
                 </div>
             </header>
+
+            <!-- <head>
+                <div class="head-display">
+                    <h5 class="material-symbols-sharp" id="icon_arrow">arrow_right</h5>
+                    <label class="adjust-size">Iphone15 Promax</label>
+                    
+                </div>
+            </head> -->
             <main>
-                 <?php
+                <div class="home">
+                    <div class="home-text">
+                        <form action="api//Product//update-product.php" method="post" enctype="multipart/form-data">
+                            <span>
+                                Product
+                            </span>
+                            
+                            <?php
                             if(isset($_GET['ProductID'])) {
                                 $product_id = $_GET['ProductID'];
                                 
@@ -87,13 +102,7 @@
                                 if ($result && mysqli_num_rows($result) > 0) {
                                     $row = mysqli_fetch_assoc($result);
                         ?>
-                <div class="home">
-                    <div class="home-text">
-                        <form action="api//Product//update-product.php" method="post">
-                            <span>
-                                Product
-                            </span>
-                      
+                        
                         <h1 class="white" name="ProductName" ><?= $row['ProductName'] ?> </h1>
                         <table>
                             <tr>
@@ -149,21 +158,20 @@
                         
                             </table>
                             <div class="main-btn">
-                                <input type="submit" class="btn2" value="Save"></input>                            
-                            
-                            <a href="AdminProdMana.php" class="btn3"><input type="submit" value="Cancel"></a>
-                            
+                            <input type="submit" class="btn3" value="Save" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
+                            <input type="submit" class="btn3" value="Cancel" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
+                                <!-- <input type="submit" class="btn2" value="Save"></input>
+                                <a href="AdminProdDetails.php" class="btn3"><input type="submit" value="Cancel"></a> -->
                             </div>
-                           
-                    </div>
-                    <div class="home-img">
-                        <img src="<?php echo $row['Images']; ?>">
-                    </div>
-                    <?php
+                        <?php
                                 }
                             }
-                        ?> 
+                        ?>    
                         </form>
+                    </div>
+                    <div class="home-img">
+                        <img src="images/product1.png">
+                    </div>
                 </div>
             </main>
             <div class="right-aligned4 card-single3 cart-icon">

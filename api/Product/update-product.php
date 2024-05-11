@@ -20,17 +20,15 @@
         $stmt = $dbCon->prepare($sql);
         $stmt->execute(array($barcode,$imort_price,$retail_price,$category,$date,$pid));
         $count = $stmt->rowCount();
-        if ($count == 1) {
-            echo json_encode(array('status' => true, 'data' => 'Product successfully updated'));
-
-        }else {
-            die(json_encode(array('status' => false, 'data' => 'Invalid update')));
-        }
-    }
-    catch(PDOException $ex){
+    } catch (PDOException $ex) {
         die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
     }
-
+    echo '<script>
+            function redirectPage() {
+                window.location.href = "../../../../AdminProdMana.php";
+            }
+            redirectPage();
+        </script>';
    
 
 

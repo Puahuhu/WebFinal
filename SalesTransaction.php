@@ -327,14 +327,14 @@
                         </button>
                         </div>
                         <div>
-                            <img src="images/product1.png" width="150px" height="150px" alt="">
+                            <img src="<?= $row['Images'] ?>" width="150px" height="150px" alt="">
                         </div>
                         <div class="product-name ">
                             <?= $row['ProductName'] ?>
                         </div>
                         <div class="product-cost card-header">
                             <?= $row['RetailPrice'] ?>
-                            <button>More <label class="las la-arrow-right"></label></button>
+                            <!-- <a href="SalesProductDetails.php?ProductID=<?= $row['ProductID'] ?>"><button> More <label class="las la-arrow-right"></label></button></a> -->
                         </div>
                      </div>   
                     <?php 

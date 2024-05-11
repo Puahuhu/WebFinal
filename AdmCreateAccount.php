@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $body = 'Your account has been successfully created with the following details:<br><br>'
                     . 'Username: ' . $username . '<br>'
                     . 'Password: ' . $username . '<br><br>'
-                    . 'First login link here: http://localhost:8080/WebFinal/FirstLogin.php';
+                    . 'First login link here: http://localhost/WebFinal/FirstLogin.php';
             require("send-email.php");
         } else {
             $createSuccess = "Error: Unable to create account.";
@@ -208,7 +208,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <script src="js/click.js"></script>
 </body>
-<<<<<<< HEAD
 <script>
     $(document).ready(function(){
         // Khi nút "Create" được click
@@ -222,6 +221,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     });
 </script>
-=======
->>>>>>> f66853ffe8e0c9f85e89fb87e396ae0f4aeb6c7b
 </html>

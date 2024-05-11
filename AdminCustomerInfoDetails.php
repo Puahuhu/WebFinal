@@ -121,6 +121,7 @@
                                 
                                 if($result && mysqli_num_rows($result) > 0) {
                                     $row = mysqli_fetch_assoc($result);
+                            
                         ?>
                         <h1 class="white"><?= $row['FullName'] ?></h1>
                         <table>
@@ -129,7 +130,7 @@
                                     <p>Gmail:</p>
                                 </td>
                                 <td>
-                                    <p><a>abcxyzhsnn@gmail.com</a></p>
+                                    <p><a><?= $row['Email'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -137,7 +138,7 @@
                                     <p>Birthday</p>
                                 </td>
                                 <td>
-                                    <p><a>xx/xx/xxxx</a></p>
+                                    <p><a><?= $row['BirthDay'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -175,9 +176,9 @@
                         
                         ?>
                     </div>
-                    <div class="home-img">
+                    <!-- <div class="home-img">
                         <img src="images/tuan.png">
-                    </div>
+                    </div> -->
                 </div>
             </main>
             <div class="right-aligned4 card-single3 cart-icon">

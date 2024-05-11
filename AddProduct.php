@@ -78,7 +78,7 @@
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <form action="api/Product/add-product.php" method="POST">
+                        <form action="api/Product/add-product.php" method="POST" enctype="multipart/form-data">
                             <table>
                                 <tr>
                                     <td>
@@ -86,7 +86,7 @@
                                     </td>
                                     <td>
                                         <p>
-                                            <a><input name="ProductID" type="text" id="" placeholder="-" required></a>
+                                            <a><input name="ProductID" type="text" id="" placeholder="-"></a>
                                         </p>
                                     </td>
                                 </tr>
@@ -96,7 +96,7 @@
                                     </td>
                                     <td>
                                         <p>
-                                            <a><input name="Barcode" type="text" id="" placeholder="-" required></a>
+                                            <a><input name="Barcode" type="text" id="" placeholder="-"></a>
                                         </p>
                                     </td>
                                 </tr>
@@ -150,22 +150,29 @@
                                         </p>
                                     </td>
                                 </tr>
-                                <!-- <tr>
+                                <tr>
                                     <td>
                                         <p>Image Import:</p>
                                     </td>
                                     <td>
                                         <p>
-                                            <a><button id="choose_avatar">Import</button></a>
+                                            <a><input type="file" name="Images" id="img" enctype="multipart/form-data"required></a>
                                         </p>
                                     </td>
-                                </tr> -->
+                                </tr>
+
+
                             </table>
                         
                         <div class="main-btn">
-                            <input type="submit" class="btn2" value="Add"></input>
+                            <!-- <a href="api//Product//add-product.php" method="POST" class="btn2"><input type="submit" value="Add"></a> -->
+                            <!-- <form action="api//Product//add-product.php" method="post">
+                                <button type="submit" class="btn2">Add</button>
+                            </form> -->
+                            
                         </form>
-                            <a href="AdminProdMana.php" class="btn3"><input type="submit" value="Cancel"></a>
+                            <input type="submit" class="btn3" value="Add" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
+                            <input type="submit" class="btn3" value="Cancel" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
                         </div>
                         
                     </div>

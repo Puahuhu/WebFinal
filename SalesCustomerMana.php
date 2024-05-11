@@ -29,11 +29,11 @@
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="#" >
+                <a href="#"  class="active">
                     <span class="material-symbols-sharp ">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php" class="active">
+                <a href="SalesTransaction.php">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
@@ -179,7 +179,6 @@
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
-                                        <img src="images/user_icon.png" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> <?= $row['FullName'] ?> </h4>
                                             <span class="dateadd"><?= $today ?></span>
