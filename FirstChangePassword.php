@@ -67,17 +67,16 @@
             }, function (data, status) {
                 if (status === "success") {
                     alert("Password changed successfully.");
-                    window.location.href = "SalesAccMana.php?username=" + username;
                 } else {
                     alert("An error occurred while processing your request.");
                 }
             }, "json");
-
-            $.post("api/Account/update-isActiveAccount.php", {
-                Username: username 
+            
+            $.post("api/Account/update-isNew.php", {
+                Username: username
             }, function (data, status) {
                 if (status === "success") {
-                    alert('User is now active.');
+                    alert('User is no longer new.');
                     window.location.href = "SalesAccMana.php?username=" + username;
                 } else {
                     alert("An error occurred while processing your request.");

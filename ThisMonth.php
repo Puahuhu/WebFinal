@@ -45,7 +45,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -298,6 +298,6 @@
             </div>
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>
