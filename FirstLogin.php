@@ -35,8 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['username'] = $username;
                     $_SESSION['timeout'] = time() + 60; // Thiết lập timeout là 60 giây
                     // Chuyển hướng người dùng đến trang SalesAccMana.php hoặc trang chính của ứng dụng
-                    header("Location: SalesAccMana.php");
-                    exit();
+                    $error = "Account does not need to log in for the first time";
                 } else {
                     // Chuyển sang màn hình đổi mật khẩu
                     header("Location: FirstChangePassword.php?username=$username");
