@@ -32,8 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 if ($result['IsNew'] == 0) {
                     // Thiết lập session khi đăng nhập thành công
-                    $_SESSION['username'] = $username;
-                    $_SESSION['timeout'] = time() + 60; // Thiết lập timeout là 60 giây
                     // Chuyển hướng người dùng đến trang SalesAccMana.php hoặc trang chính của ứng dụng
                     $error = "Account does not need to log in for the first time";
                 } else {
@@ -56,15 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-}
-
-// Kiểm tra nếu thời gian đã hết
-if (isset($_SESSION['timeout']) && time() > $_SESSION['timeout']) {
-    session_unset(); // Xóa tất cả các biến session
-    session_destroy(); // Hủy session
-    $_SESSION['logout_message'] = "Session has expired. Please contact the admin to reopen the login link."; // Thông báo hết thời gian
-    header("Location: SalesLogin.php"); // Chuyển hướng người dùng đến trang đăng nhập
-    exit(); // Dừng việc thực thi script
 }
 ?>
 
