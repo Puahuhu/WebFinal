@@ -103,9 +103,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="error"><?php echo $error; ?></div>
                 <?php } ?>
             </form>
-            <button type="submit" onclick="resetTimeout()">Reset
-						<i class="zmdi zmdi-arrow-right"></i>
-			</button>
         </div>
     </div>
     <script>
