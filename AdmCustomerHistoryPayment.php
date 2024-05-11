@@ -111,13 +111,14 @@
                     
                     $sql = "SELECT * FROM orders WHERE orders.CustomerID = $CustomerID";
                     $result = mysqli_query($conn, $sql);
-                    $sql1 = "SELECT SUM(TotalAmount) as TotalAmount FROM orders , orderdetails
+                    $sql1 = "SELECT SUM(TotalAmount * Quantity) as TotalAmount FROM orders , orderdetails
                             WHERE orders.OrderID =orderdetails.OrderID and CustomerID = $CustomerID" ;
                     $result1 = mysqli_query($conn, $sql1);
                     $row1 = mysqli_fetch_assoc($result1);
                     $totalAmount = $row1['TotalAmount'];
 
-                    $sql2 = "SELECT Count(CustomerID) as Quantity FROM orders
+                    $sql2 = "SELECT SUM(Quantity) as Quantity FROM orderdetails
+                    INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
                     WHERE orders.CustomerID = $CustomerID";
                     $sql3 = "SELECT * from customers where customers.CustomerID = $CustomerID";
                     $result2 = mysqli_query($conn, $sql2);
@@ -133,8 +134,7 @@
 
                     }
                     if($result3 && mysqli_num_rows($result3) > 0) {
-                        $row3 = mysqli_fetch_assoc($result3);       
-
+                        $row3 = mysqli_fetch_assoc($result3);
             ?>
             <div class="cards">
                 <div class="card-single">
@@ -160,6 +160,9 @@
                         <small class="success quantity">Customer</small>
                         <h6><?= $row3['FullName'] ?></h6>
                     </div>
+                    <div class="avatar">
+                        <img src="images/phuong.png">
+                    </div>
                 </div>
             </div>
             <?php
@@ -180,6 +183,8 @@
                                         <td class="danger adjust-size center-aligned">Money Given</td>
                                         <td class="danger adjust-size center-aligned">Money Back</td>
                                         <td class="danger adjust-size center-aligned">Creation Date</td>
+                                        <td class="danger adjust-size center-aligned">Product Quantity</td>
+
                                         <td class="danger adjust-size center-aligned">Details</td>
                                     </tr>
                                 </thead>
@@ -210,6 +215,9 @@
                                             <span class="adjust-size"></span> $ <?= $row2['MoneyBack'] ?>
                                         </td>
                                         <td class="adjust-size1 center-aligned"><?= $row2['OrderDate'] ?></td>
+                                        <td class="adjust-size1 center-aligned">
+                                            <span class="adjust-size"></span> <?= $row2['Quantity'] ?>
+                                        </td>
                                         <td class="operation_actived center-aligned">
                                         <a href="AdminCustomerInfoDetails.php?CustomerID=<?= $CustomerID ?>">
                                             <span class="material-symbol card-header1"><button>More</button></span>

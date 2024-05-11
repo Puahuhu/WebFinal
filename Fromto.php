@@ -1,5 +1,3 @@
-
-
     <!DOCTYPE html>
     <html lang="en">
 
@@ -27,7 +25,7 @@
                     </div>
                 </div>
                 <div class="sidebar">
-                    <a href="AccountManagement.php" class="active">
+                    <a href="AccountManagement.php">
                         <span class="material-symbols-sharp">settings</span>
                         <h3> Account Management </h3>
                     </a>
@@ -43,7 +41,7 @@
                         <span class="material-symbols-sharp">paid</span>
                         <h3> Transaction </h3>
                     </a>
-                    <a href="AdminReport.php">
+                    <a href="AdminReport.php" class="active">
                         <span class="material-symbols-sharp">summarize</span>
                         <h3> Reporting and Analytics </h3>
                     </a>
@@ -123,10 +121,13 @@
                                 $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : date("m-d-y");
 
                                 // Truy vấn dữ liệu tổng số tiền nhận được
-                                $sql = "SELECT SUM(TotalAmount) AS TotalAmount FROM orders WHERE OrderDate BETWEEN '$startDate' AND '$endDate'";
+                                $sql = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
+                                FROM products 
+                                INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE date(orders.OrderDate) BETWEEN '$startDate' AND '$endDate'";
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
-                                $totalAmountReceived = $row['TotalAmount'];
+                                $totalAmountReceived = $row['totalmoney'];
 
                                 // Truy vấn dữ liệu số lượng đơn hàng
                                 $sql = "SELECT COUNT(*) AS NumberOfOrder FROM orders WHERE OrderDate BETWEEN '$startDate' AND '$endDate'";
@@ -139,11 +140,23 @@
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
                                 $numberOfProducts = $row['TotalQuantity'];
+                                $sql3 = "SELECT SUM(products.ImportPrice) AS Totalprofit 
+                                    FROM products 
+                                    INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID 
+                                    INNER JOIN orders ON orders.OrderID = orderdetails.OrderID 
+                                    WHERE DATE(orders.OrderDate) BETWEEN '$startDate' AND '$endDate'";
+
+                                $result3 = mysqli_query($conn, $sql3);
+                                $row3 = mysqli_fetch_assoc($result3);
+                                $TotalProfit =$row3['Totalprofit'];
+                                
+
                             }
                         ?>
 
                             <div>
-                                <h1 class="white"> <?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?>$</h1>
+                                <h1 class="white"> $<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
+
                                 <span>Total Amount Received</span>
                             </div>
                             <div>
@@ -172,7 +185,7 @@
                         </div>
                         <div class="card-single">
                             <div>
-                                <h1 class="white">999999$</h1>
+                                <h1 class="white">$<?= isset($totalAmountReceived) ?$totalAmountReceived-  $TotalProfit : "0" ?></h1>
                                 <span> Total Profit</span>
                             </div>
                             <div>
@@ -203,36 +216,32 @@
                                         </thead>
                                         <tbody class="info1">
                                         <?php
-                                        // Đảm bảo rằng $conn đã được khởi tạo trước đó
                                         $conn = mysqli_connect("localhost", "root", "", "finalweb");
                                         if (!$conn) {
                                             die("Connection failed: " . mysqli_connect_error());
                                         }
                                         $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : date("m-d-y");
                                         $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : date("m-d-y");
-                                        // Thực hiện truy vấn để lấy dữ liệu từ cơ sở dữ liệu
                                         $query = "SELECT * FROM orders ,orderdetails WHERE orders.OrderID = orderdetails.OrderID and OrderDate BETWEEN '$startDate' AND '$endDate'";
                                         $result = mysqli_query($conn, $query);
 
-                                        // Kiểm tra xem có dữ liệu trả về không
                                         if (mysqli_num_rows($result) > 0) {
-                                            // Duyệt qua từng dòng dữ liệu và hiển thị trong bảng HTML
                                             while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
                                             <tr>
-                                                <td class="adjust-size1 center-aligned"><?= $row['TotalAmount'] ?></td>
+                                                <td class="adjust-size1 center-aligned">$<?= $row['TotalAmount'] ?></td>
                                                 <td class="adjust-size1 center-aligned">
-                                                    <span class="adjust-size center-aligned"></span> <?= $row['MoneyGiven'] ?>
+                                                    <span class="adjust-size center-aligned">$</span> <?= $row['MoneyGiven'] ?>
                                                 </td>
                                                 <td class="adjust-size1 center-aligned">
-                                                    <span class="adjust-size"></span> <?= $row['MoneyBack'] ?>
+                                                    <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
                                                 </td>
                                                 <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
                                                 <td class="adjust-size1 center-aligned">
                                                     <span class="adjust-size"></span> <?= $row['Quantity'] ?>
                                                 </td>
                                                 <td class="operation_actived center-aligned">
-                                                    <span class="material-symbol"><button>More</button></span>
+                                                    <a href="ReceiptDetails.php?ProductID=<?= $row['ProductID'] ?>" ><span class="material-symbol"><button>More</button></span></a>
                                                 </td>
                                             </tr>
                                             <?php
@@ -245,81 +254,54 @@
                             </div>
                         </div>
                         <div class="customers scrollable-content">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="yellow"> New Receipt</h3>
-                                </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="yellow"> New Receipt</h3>
+                            </div>
+                            
+                                    <?php
+                                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                        if (!$conn) {
+                                            die("Connection failed: " . mysqli_connect_error());
+                                        }
+                                        $today = date("Y-m-d");
+                                        $sql = "SELECT *
+                                        FROM products 
+                                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                        $result = mysqli_query($conn, $sql);
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
                                 <div class="card-body">
                                     <div class="customer">
-                                        <div class="info">
-                                            <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                            <div>
-                                                <h4> 10000$ </h4>
-                                                <span class="dateadd">11/10/2023</span>
-                                                <span class="material-symbol card-header1"><button>More</button></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="customer">
-                                        <div class="info">
-                                            <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                            <div>
-                                                <h4> 10000$ </h4>
-                                                <span class="dateadd">11/10/2023</span>
-                                                <span class="material-symbol card-header1"><button>More</button></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="customer">
-                                        <div class="info">
-                                            <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                            <div>
-                                                <h4> 10000$ </h4>
-                                                <span class="dateadd">11/10/2023</span>
-                                                <span class="material-symbol card-header1"><button>More</button></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="customer">
-                                        <div class="info">
-                                            <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                            <div>
-                                                <h4> 10000$ </h4>
-                                                <span class="dateadd">11/10/2023</span>
-                                                <span class="material-symbol card-header1"><button>More</button></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="customer">
-                                        <div class="info">
-                                            <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                            <div>
-                                                <h4> 10000$ </h4>
-                                                <span class="dateadd">11/10/2023</span>
-                                                <span class="material-symbol card-header1"><button>More</button></span>
-                                            </div>
+                                    <div class="info">
+                                        <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
+                                        <div>
+                                            <h4> <?= $row['RetailPrice'] ?> $</h4>
+                                            <span class="dateadd"><?= $today ?></span>
+                                            <a href="ReceiptDetails.php?ProductID=<?= $row['ProductID'] ?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                                    <?php
+                                            }
+                                        }
+                                    ?>
+                                
+                            
+
                         </div>
                     </div>
-                </main>
-                <div class="right-aligned4 card-single3 cart-icon">
-                    <div class="avatar1">
-                        <button><img src="images/cart_icon.png"></button>
-                    </div>
+                </div>
+            </main>
+            <div class="right-aligned4 card-single3 cart-icon">
+                <div class="avatar1">
+                    <button><img src="images/cart_icon.png"></button>
                 </div>
             </div>
         </div>
-    </body>
-
-    </html>
+    </div>
+</body>
+</html>

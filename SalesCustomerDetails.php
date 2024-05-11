@@ -31,7 +31,7 @@
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="SalesCustomerMana.php">
+                <a href="SalesCustomerMana.php" class="active">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -39,7 +39,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php" class="active">
+                <a href="SalesReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -70,19 +70,55 @@
             </header>
 
             <head>
+            <?php
+                if(isset($_GET['CustomerID'])) {
+                    $CustomerID = $_GET['CustomerID'];
+                    
+                    $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                    if (!$conn) {
+                        die("Kết nối không thành công: " . mysqli_connect_error());
+                    }
+                    
+                    $sql = "SELECT * FROM customers WHERE CustomerID = $CustomerID";
+                    $result = mysqli_query($conn, $sql);
+        
+                    
+                    if($result && mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                ?>
                 <div class="head-display">
                     <h5 class="material-symbols-sharp" id="icon_arrow">arrow_right</h5>
-                    <label class="adjust-size">Tuan Nguyen</label>
+                    <label class="adjust-size"><?= $row['FullName'] ?></label>
+                <?php
+                    }
+                }
+                ?>
                 </div>
             </head>
             <main>
                 <div class="home">
                     <div class="home-text">
+                        
                         <span>
                             Customer
                         </span>
-                        
-                        <h1 class="white">Tuan Nguyen </h1>
+                        <?php
+                            if(isset($_GET['CustomerID'])) {
+                                $CustomerID = $_GET['CustomerID'];
+                                
+                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                if (!$conn) {
+                                    die("Kết nối không thành công: " . mysqli_connect_error());
+                                }
+                                
+                                $sql = "SELECT * FROM customers WHERE CustomerID = $CustomerID";
+                                $result = mysqli_query($conn, $sql);
+                    
+                                
+                                if($result && mysqli_num_rows($result) > 0) {
+                                    $row = mysqli_fetch_assoc($result);
+                        ?>
+                        <h1 class="white"><?= $row['FullName'] ?></h1>
                         <table>
                             <tr>
                                 <td>
@@ -105,7 +141,7 @@
                                     <p>Mobile</p>
                                 </td>
                                 <td>
-                                    <p><a>09xxxxxxxx</a></p>
+                                    <p><a><?= $row['Phone'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -113,7 +149,7 @@
                                     <p>Address:</p>
                                 </td>
                                 <td>
-                                    <p><a> Tan Binh, HCM city</a></p>
+                                    <p><a> <?= $row['CustomerAddress'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -121,13 +157,19 @@
                                     <p>Creation Date</p>
                                 </td>
                                 <td>
-                                    <p><a>31/03/2024</a></p>
+                                    <p><a><?= $row['CreatedDate'] ?></a></p>
                                 </td>
                             </tr>
                         </table>
+                        
                         <div class="main-btn">
-                            <a href="#" class="btn2"> History Transaction</a>
+                            <a href="SalesCustomerHisTransaction.php ?CustomerID=<?= $CustomerID?>" class="btn2"> History Transaction</a>
                         </div>
+                        <?php
+                                }
+                            }
+                        
+                        ?>
                     </div>
                     <div class="home-img">
                         <img src="images/tuan.png">

@@ -1,3 +1,6 @@
+
+
+</html>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,39 +71,69 @@
                 </div>
             </header>
             <main>
-                <div class="right-aligned7">
-                    <span class="silver">Start date</span>
-                </div>
-                <div class="right-aligned8">
-                    <span class="silver">End date</span>
-                </div>
-                <div class="right-aligned">
-                    <input type="date">
-                </div>
-                <div class="right-aligned5">
-                    <input type="date">
-                </div>
-                <div class="right-aligned6">
-                    <input type="submit">
-                </div>
+                
                 <div class="cards1">
                     <div class="card-single5 active-button">
                         <button>Today</button>
                     </div>
                     <div class="card-single5 hover-button">
-                        <button>Yesterday</button>
+                        <a href="YesterdayofSale.php"> <button>Yesterday</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <button>The last 7 days</button>
+                        <a href="SaleTheLastSevenDays.php"> <button>The last 7 days</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <button>This month</button>
+                        <a href="ThisMonthOfSales.php"> <button>This month</button></a>
+                    </div>
+                    <div class="card-single5 hover-button">
+                        <a href="FromToOfSales.php"> <button>From-To</button></a>
                     </div>
                 </div>
                 <div class="cards">
                     <div class="card-single">
+                <?php 
+                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                        if (!$conn) {
+                            die("Connection failed: " . mysqli_connect_error());
+                        }
+                        $today = date("Y-m-d");
+                        
+                        $sql = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
+                        FROM products 
+                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID 
+                        WHERE DATE(orders.OrderDate) = '$today'";
+
+                        $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) = '$today'";
+                        $sql2 = "SELECT orders.*, orderDetails.*
+                        FROM orders
+                        INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'";
+                        $result = mysqli_query($conn, $sql);
+                        $result1 = mysqli_query($conn, $sql1);
+                        $result2 = mysqli_query($conn, $sql2);
+                        $totalAmountReceived = 0;
+                        $NumberOfOrder = 0;
+                        $NumberOfProduct = 0;
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $totalAmountReceived = $row['totalmoney'];
+                            }
+                        }
+                        if (mysqli_num_rows($result1) > 0) {
+                            $row1 = mysqli_fetch_assoc($result1);
+                            $NumberOfOrder = $row1['OrderID'];
+                        }
+                        if (mysqli_num_rows($result2) > 0) {
+                            while ($row2 = mysqli_fetch_assoc($result2)) {
+                                $NumberOfProduct += $row2['Quantity'];
+                            }
+                        }
+                    
+                    ?>
+                
+                
                         <div>
-                            <h1 class="white">1000000$</h1>
+                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
                             <span>Total Amount Received</span>
                         </div>
                         <div>
@@ -109,7 +142,7 @@
                     </div>
                     <div class="card-single">
                         <div>
-                            <h1 class="white">15</h1>
+                            <h1 class="white"><?= isset($NumberOfOrder) ? $NumberOfOrder : "0" ?></h1>
                             <span> Number Of Order </span>
                         </div>
                         <div>
@@ -119,13 +152,16 @@
                     <div>
                         <div class="card-single">
                             <div>
-                                <h1 class="white">29</h1>
+                                <h1 class="white"><?= isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
                                 <span>Number Of Products</span>
                             </div>
                             <div>
                                 <span class="material-symbols-sharp">inventory_2</span>
                             </div>
                         </div>
+                        <?php
+                            
+                        ?>
                     </div>
                 </div>
                 <div class="recent-grid ">
@@ -146,101 +182,38 @@
                                         </tr>
                                     </thead>
                                     <tbody class="info1">
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1">3824826434</td>
-                                            <td class="adjust-size1">
-                                                <span class="adjust-size"></span> Iphone 14 promax
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 20$
-                                            </td>
-                                            <td class="adjust-size1">04/04/2024</td>
-                                            <td class="operation_actived">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
+                                    <?php 
+                                            $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                            if (!$conn) {
+                                                die("Connection failed: " . mysqli_connect_error());
+                                            }
+                                            $today = date("Y-m-d");
+                                            $sql = "SELECT *
+                                                FROM products 
+                                                INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                            $result = mysqli_query($conn, $sql);
+                                            if (mysqli_num_rows($result) > 0) {
+                                                while ($row = mysqli_fetch_assoc($result)) {
 
-
-
-
+                                        ?>
+                                        <tr>
+                                            <td class="adjust-size1"><?= $row['Barcode'] ?></td>
+                                            <td class="adjust-size1">
+                                                <span class="adjust-size"></span> <?= $row['ProductName'] ?>
+                                            </td>
+                                            <td class="adjust-size1 center-aligned">
+                                                <span class="adjust-size"></span> <?= $row['RetailPrice'] ?>
+                                            </td>
+                                            <td class="adjust-size1"><?= $row['OrderDate'] ?></td>
+                                            <td class="operation_actived">
+                                                <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
+                                            </td>
+                                        </tr> 
+                                        <?php
+                                                }
+                                            }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -251,55 +224,41 @@
                             <div class="card-header">
                                 <h3 class="yellow"> New Receipt</h3>
                             </div>
-                            <div class="card-body">
-                                <div class="customer">
+                            
+                                    <?php
+                                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                        if (!$conn) {
+                                            die("Connection failed: " . mysqli_connect_error());
+                                        }
+                                        $today = date("Y-m-d");
+                                        $sql = "SELECT *
+                                        FROM products 
+                                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                        $result = mysqli_query($conn, $sql);
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                <div class="card-body">
+                                    <div class="customer">
                                     <div class="info">
-                                        <img src="images/product4.png" width="50px" height="50px" alt="">
+                                            <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                         <div>
-                                            <h4> Iphone 14 </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
+                                            <h4> <?= $row['ProductName'] ?> </h4>
+                                            <span class="dateadd"><?= $today ?></span>
+                                            <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/product1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> Iphone 15 Promax </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/product2.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> Iphone15 Promax </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/product3.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> Apple Watch SE </h4>
-                                            <span class="dateadd">22/22/22</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    <?php
+                                            }
+                                        }
+                                    ?>
+                                
+                            
+
                         </div>
                     </div>
                 </div>

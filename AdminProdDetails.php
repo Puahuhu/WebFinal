@@ -79,12 +79,7 @@
                 </div>
             </head> -->
             <main>
-                <div class="home">
-                    <div class="home-text">
-                        <span>
-                            Product
-                        </span>
-                        <?php
+                <?php
                             if(isset($_GET['ProductID'])) {
                                 $product_id = $_GET['ProductID'];
                                 
@@ -99,7 +94,12 @@
                                 if ($result && mysqli_num_rows($result) > 0) {
                                     $row = mysqli_fetch_assoc($result);
                         ?>
-                        
+                <div class="home">
+                    <div class="home-text">
+                        <span>
+                            Product
+                        </span>
+                       
                         <h1 class="white"><?php echo $row['ProductName'] ?> </h1>
                         <table>
                             <tr>
@@ -115,7 +115,7 @@
                                     <p>Import Price:</p>
                                 </td>
                                 <td>
-                                    <p><a><?= $row['ImportPrice'] ?></a></p>
+                                    <p><a>$<?= $row['ImportPrice'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -123,7 +123,7 @@
                                     <p>Retail Price</p>
                                 </td>
                                 <td>
-                                    <p><a><?= $row['RetailPrice'] ?></a></p>
+                                    <p><a>$<?= $row['RetailPrice'] ?></a></p>
                                 </td>
                             </tr>
                             <tr>
@@ -153,8 +153,9 @@
                         ?>
                     </div>
                     <div class="home-img">
-                        <img src="images/product1.png">
+                        <img src="<?php echo $row['Images']; ?>">
                     </div>
+
                 </div>
             </main>
             <div class="right-aligned4 card-single3 cart-icon">

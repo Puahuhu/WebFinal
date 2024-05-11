@@ -73,11 +73,11 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="sidebar-link">
+                <a href="AccountManagement.php" >
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php" class="active sidebar-link">
+                <a href="AdminProdMana.php" class="active">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
@@ -139,13 +139,13 @@
                                 </form>    
                             </div>
                             <div>
-                                <img src="<?php echo $row['Images'] ;?>" width="150px" height="150px" alt="">
+                                <img src="<?php echo $row['Images']; ?>" width="150" height="150" alt="">
                             </div>
                             <div class="product-name ">
                                 <?php echo $row['ProductName'] ;?>
                             </div>
                             <div class="product-cost card-header">
-                                <?php echo $row['RetailPrice']; echo " $"?>
+                                $<?php echo $row['RetailPrice']; ?>
                                 <a href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>"><button>More <label class="las la-arrow-right"></label></button></a>
                             </div>
                         </div>
@@ -171,13 +171,20 @@
                         </div>
                         <div class="card-body">
                             <div class="customer">
+                                <?php
+
+                                    ?>
                                 <div class="info">
+                                    
                                     <img src="images/product3.png" width="40px" height="40px" alt="">
                                     <div>
                                         <h4 class="text-hover"> Samsung Galaxy </h4>
                                         <h5> 28/04/2024 </h5>
                                     </div>
                                 </div>
+                                <?php
+
+                                ?>
                             </div>
                         </div>
                         <div class="card-body">

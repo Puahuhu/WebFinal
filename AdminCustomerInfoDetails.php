@@ -175,6 +175,9 @@
                         
                         ?>
                     </div>
+                    <div class="home-img">
+                        <img src="images/tuan.png">
+                    </div>
                 </div>
             </main>
             <div class="right-aligned4 card-single3 cart-icon">

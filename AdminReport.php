@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="sidebar-link">
+                <a href="AccountManagement.php" >
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -88,7 +88,8 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php" class="active sidebar-link">
+                <a href="AdminReport.php" class="active">
+
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -139,22 +140,29 @@
                             die("Connection failed: " . mysqli_connect_error());
                         }
                         $today = date("Y-m-d");
-                        $sql = "SELECT * FROM orders WHERE DATE(orders.OrderDate) = '$today'";
+                        
+                        $sql = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
+                        FROM products 
+                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID 
+                        WHERE DATE(orders.OrderDate) = '$today'";
+
                         $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) = '$today'";
                         $sql2 = "SELECT orders.*, orderDetails.*
                         FROM orders
                         INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'";
+                        $sql3 = "SELECT * FROM products ,orderdetails ,orders WHERE orders.OrderID = orderdetails.OrderID and products.ProductID = orderdetails.ProductID and DATE(orders.OrderDate) = '$today'" ;
                         $result = mysqli_query($conn, $sql);
                         $result1 = mysqli_query($conn, $sql1);
                         $result2 = mysqli_query($conn, $sql2);
-                    
+                        $result3 = mysqli_query($conn, $sql3);
                         $totalAmountReceived = 0;
                         $NumberOfOrder = 0;
                         $NumberOfProduct = 0;
-                    
+                        $TotalProfit=0;
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
-                                $totalAmountReceived += $row['TotalAmount'];
+                                $totalAmountReceived = $row['totalmoney'];
                             }
                         }
                         if (mysqli_num_rows($result1) > 0) {
@@ -166,11 +174,16 @@
                                 $NumberOfProduct += $row2['Quantity'];
                             }
                         }
-                    
+                        if (mysqli_num_rows($result3) > 0) {
+                            while ($row3 = mysqli_fetch_assoc($result3)) {
+                                $TotalProfit = $row3['ImportPrice'];
+                            }
+                        }              
                     ?>
                 
                         <div>
-                            <h1 class="white"><?= $totalAmountReceived ?>$</h1>
+                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
+
                             <span>Total Amount Received</span>
                         </div>
                         <div>
@@ -179,7 +192,7 @@
                     </div>
                     <div class="card-single">
                         <div>
-                            <h1 class="white"><?= $NumberOfOrder ?></h1>
+                            <h1 class="white"><?= isset($NumberOfOrder) ? $NumberOfOrder : "0" ?></h1>
                             <span> Number Of Order </span>
                         </div>
                         <div>
@@ -189,7 +202,7 @@
                     <div>
                         <div class="card-single">
                             <div>
-                                <h1 class="white"><?=$NumberOfProduct ?></h1>
+                                <h1 class="white"><?=isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
                                 <span>Number Of Products</span>
                             </div>
                             <div>
@@ -200,7 +213,7 @@
                     <div class="card-single">
 
                         <div>
-                            <h1 class="white">999999$</h1>
+                            <h1 class="white">$<?=isset( $TotalProfit) ? $totalAmountReceived - $TotalProfit : "0"  ?></h1>
                             <span> Total Profit</span>
                         </div>
                         <div>
@@ -245,19 +258,19 @@
 
                                         ?>
                                         <tr>
-                                            <td class="adjust-size1 center-aligned"><?= $row['TotalAmount'] ?></td>
+                                            <td class="adjust-size1 center-aligned">$<?= $row['TotalAmount'] ?></td>
                                             <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> <?= $row['MoneyGiven'] ?>
+                                                <span class="adjust-size center-aligned"></span> $<?= $row['MoneyGiven'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> <?= $row['MoneyBack'] ?>
+                                                <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
                                             <td class="adjust-size1 center-aligned">
                                                 <span class="adjust-size"></span> <?= $row['Quantity'] ?>
                                             </td>
                                             <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
+                                                <a href="ReceiptDetails.php?ProductID=<?= $row['ProductID'] ?>" ><span class="material-symbol"><button>More</button></span></a>
                                             </td>
                                         </tr>
                                         <?php
@@ -274,68 +287,40 @@
                             <div class="card-header">
                                 <h3 class="yellow"> New Receipt</h3>
                             </div>
-                            <div class="card-body">
-                                <div class="customer">
+                            
+                                    <?php
+                                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                        if (!$conn) {
+                                            die("Connection failed: " . mysqli_connect_error());
+                                        }
+                                        $today = date("Y-m-d");
+                                        $sql = "SELECT *
+                                        FROM products 
+                                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                        $result = mysqli_query($conn, $sql);
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                <div class="card-body">
+                                    <div class="customer">
                                     <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
+                                            <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                         <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
+                                            <h4> $<?= $row['RetailPrice'] ?> </h4>
+                                            <span class="dateadd"><?= $today ?></span>
+                                            <a href="ReceiptDetails.php?ProductID=<?= $row['ProductID'] ?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-
+                                    <?php
+                                            }
+                                        }
+                                    ?>
+                                
+                            
 
                         </div>
                     </div>
