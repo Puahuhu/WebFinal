@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Thêm vào bảng Salesperson
         $avatar = "images/avatar.png";
-        $sql = "INSERT INTO Salesperson (UserID, FullName, Email, Avatar, IsActive, SalesAddress, Phone) VALUES (:userID, :fullName, :email, :avatar, 0, :address, :phone)";
+        $sql = "INSERT INTO Salesperson (UserID, FullName, Email, Avatar, IsActive, IsNew, SalesAddress, Phone) VALUES (:userID, :fullName, :email, :avatar, 1, 1, :address, :phone)";
         $stmt = $dbCon->prepare($sql);
         $stmt->bindParam(':userID', $userID);
         $stmt->bindParam(':fullName', $fullName);

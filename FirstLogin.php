@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                if ($result['IsActive'] == 1) {
+                if ($result['IsNew'] == 0) {
                     // Thiết lập session khi đăng nhập thành công
                     $_SESSION['username'] = $username;
                     $_SESSION['timeout'] = time() + 60; // Thiết lập timeout là 60 giây

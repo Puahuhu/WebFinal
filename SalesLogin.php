@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                if ($result['IsActive'] == 0) {
+                if ($result['IsNew'] == 1) {
                     $error = "The account needs first-time login";
                 } else {
                     // Chuyển sang màn hình chính
