@@ -1,6 +1,12 @@
 <?php
+session_start();
 $_SESSION['logged in'] = true;
 $error = "";
+
+if (isset($_SESSION['logout_message'])) {
+    echo '<script>alert("' . $_SESSION['logout_message'] . '");</script>';
+    unset($_SESSION['logout_message']); // Xóa thông báo sau khi đã hiển thị
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once("connection.php");
@@ -18,14 +24,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute(array(':username' => $username));
 
         if ($stmt->rowCount() > 0) {
-            // Kiểm tra xem tài khoản mật khẩu có trong bảng Accounts hay không
+            // Kiểm tra tài khoản và mật khẩu trong bảng Accounts
             $stmt = $dbCon->prepare("SELECT * FROM Accounts WHERE Username=:username AND pwd=:password");
             $stmt->execute(array(':username' => $username, ':password' => $password));
 
             if ($stmt->rowCount() > 0) {
-                // Chuyển sang màn hình chính
-                header("Location: SalesAccMana.php");
-                exit();
+                // Kiểm tra trạng thái tài khoản
+                $stmt = $dbCon->prepare("SELECT IsActive FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
+                $stmt->execute(array(':username' => $username));
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($result['IsActive'] == 0) {
+                    $error = "The account needs first-time login";
+                } else {
+                    // Chuyển sang màn hình chính
+                    header("Location: SalesAccMana.php?username=$username");
+                    exit();
+                }
             } else {
                 $error = "Wrong password";
             }
@@ -53,13 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Salesperson Login</title>
     <link rel="stylesheet" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .error {
-            color: red;
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/Error.css">
 </head>
 
 <body>
@@ -100,6 +109,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.getElementById("adminButton").addEventListener("click", function () {
             document.getElementById("loginForm").action = "AdminLogin.php";
         });
+
+        document.getElementById("timeoutButton").addEventListener("click", function () {
+        // Gửi yêu cầu để set timeout lại
+        fetch('set_timeout.php')
+        .then(response => response.text())
+        .then(data => {
+            alert(data); // Hiển thị thông báo kết quả từ server
+        });
+    });
     </script>
 </body>
 </html>

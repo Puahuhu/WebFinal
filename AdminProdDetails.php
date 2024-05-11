@@ -46,7 +46,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -99,8 +99,7 @@
                         <span>
                             Product
                         </span>
-                        
-                        
+                       
                         <h1 class="white"><?php echo $row['ProductName'] ?> </h1>
                         <table>
                             <tr>

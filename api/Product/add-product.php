@@ -5,8 +5,16 @@
         die(json_encode(array('status' => false, 'data' => 'Parameters not valid')));
     }
 
-    $pid = $_POST['ProductID'];
-    $barcode = $_POST['Barcode'];
+    if (!isset($_FILES['Images']) || !isset($_FILES['Images']['name'])) {   
+        die(json_encode(array('status' => false, 'data' => 'Image not provided')));
+    }
+
+    if (empty($_POST['Barcode'])) { // Check if Barcode is empty
+        $barcode = generateRandomBarcode(); // Generate a new Barcode
+    } else {
+        $barcode = $_POST['Barcode']; // Use the provided Barcode
+    }
+
     $name = $_POST['ProductName'];
     $import_price = $_POST['ImportPrice'];
     $retail_price = $_POST['RetailPrice'];
@@ -20,8 +28,6 @@
         $stmt->execute(array($pid, $barcode, $name, $import_price, $retail_price, $category, $date));
 
         $lastInsertedId = $dbCon->lastInsertId();
-
-        echo json_encode(array('status' => true, 'data' => array('message' => 'Product successfully added', 'ProductID' => $lastInsertedId)));
     } catch (PDOException $ex) {
         die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
     }

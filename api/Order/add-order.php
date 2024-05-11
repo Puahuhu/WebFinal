@@ -1,7 +1,7 @@
 <?php
     require_once('connection.php');
 
-    if (!isset($_POST['OrderID']) || !isset($_POST['CustomerID']) || !isset($_POST['SalespersonID']) || !isset($_POST['OrderDate']) || !isset($_POST['TotalAmount'])) {
+    if (!isset($_POST['OrderID']) || !isset($_POST['CustomerID']) || !isset($_POST['SalespersonID']) || !isset($_POST['OrderDate']) || !isset($_POST['TotalAmount']) || !isset($_POST['MoneyGiven']) || !isset($_POST['MoneyBack'])){
         die(json_encode(array('status' => false, 'data' => 'Parameters not valid')));
     }
 
@@ -10,12 +10,14 @@
     $sid = $_POST['SalespersonID'];
     $order_date = $_POST['OrderDate'];
     $amount = $_POST['TotalAmount'];
+    $moneygive = $_POST['MoneyGiven'];
+    $moneyback = $_POST['MoneyBack'];
 
-    $sql = 'INSERT INTO Orders(OrderID , CustomerID, SalespersonID, OrderDate, TotalAmount) VALUES(?,?,?,?,?)';
+    $sql = 'INSERT INTO Orders(OrderID , CustomerID, SalespersonID, OrderDate, TotalAmount, MoneyGiven, MoneyBack) VALUES(?,?,?,?,?,?,?)';
 
     try {
         $stmt = $dbCon->prepare($sql);
-        $stmt->execute(array($id, $cid, $sid, $order_date, $amount));
+        $stmt->execute(array($id, $cid, $sid, $order_date, $amount, $moneygive, $moneyback));
 
         $lastInsertedId = $dbCon->lastInsertId();
 

@@ -102,6 +102,7 @@
                         FROM products 
                         INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
                         INNER JOIN orders ON orders.OrderID = orderdetails.OrderID  WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
+
                         $sql1 = "SELECT count(*) as OrderID FROM orders WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
                         $sql2 = "SELECT orders.*, orderDetails.*
                         FROM orders
@@ -142,6 +143,7 @@
                 
                 <div>
                             <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
+
                             <span>Total Amount Received</span>
                         </div>
                         <div>
@@ -151,6 +153,7 @@
                     <div class="card-single">
                         <div>
                             <h1 class="white"><?= isset($NumberOfOrder) ? $NumberOfOrder : "0" ?></h1>
+
                             <span> Number Of Order </span>
                         </div>
                         <div>
@@ -161,6 +164,7 @@
                         <div class="card-single">
                             <div>
                                 <h1 class="white"><?=isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
+
                                 <span>Number Of Products</span>
                             </div>
                             <div>
@@ -172,6 +176,7 @@
 
                         <div>
                             <h1 class="white">$<?=isset( $TotalProfit) ? $totalAmountReceived - $TotalProfit : "0"  ?></h1>
+
                             <span> Total Profit</span>
                         </div>
                         <div>
@@ -212,6 +217,7 @@
                                                     INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID 
                                                     WHERE DATE(orders.OrderDate) BETWEEN '$firstDayOfMonth' AND '$lastDayOfMonth'";
 
+
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -224,6 +230,7 @@
                                             </td>
                                             <td class="adjust-size1 center-aligned">
                                                 <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
+
                                             </td>
                                             <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
                                             <td class="adjust-size1 center-aligned">
@@ -280,8 +287,6 @@
                                         }
                                     ?>
                                 
-                            
-
                         </div>
                     </div>
                 </div>

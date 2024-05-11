@@ -138,7 +138,6 @@
                     ?>
                 
                 <div>
-                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
                             <span>Total Amount Received</span>
                         </div>
                         <div>
@@ -158,6 +157,7 @@
                         <div class="card-single">
                             <div>
                                 <h1 class="white"><?=isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
+
                                 <span>Number Of Products</span>
                             </div>
                             <div>
@@ -220,6 +220,7 @@
                                             </td>
                                             <td class="adjust-size1 center-aligned">
                                                 <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
+
                                             </td>
                                             <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
                                             <td class="adjust-size1 center-aligned">
@@ -242,8 +243,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="yellow"> New Receipt</h3>
-                            </div>
-                            
+                            </div>                            
                                     <?php
                                         $conn = mysqli_connect("localhost", "root", "", "finalweb");
                                         if (!$conn) {
@@ -275,8 +275,7 @@
                                             }
                                         }
                                     ?>
-                                
-                            
+
 
                         </div>
                     </div>

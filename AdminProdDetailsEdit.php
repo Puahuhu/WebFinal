@@ -46,7 +46,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -71,7 +71,6 @@
                     </div>
                 </div>
             </header>
-
             <main>
                  <?php
                             if(isset($_GET['ProductID'])) {
@@ -94,7 +93,7 @@
                             <span>
                                 Product
                             </span>
-                        
+                      
                         <h1 class="white" name="ProductName" ><?= $row['ProductName'] ?> </h1>
                         <table>
                             <tr>
@@ -150,14 +149,12 @@
                         
                             </table>
                             <div class="main-btn">
-                                <input type="submit" class="btn2" value="Save"></input>
-                            
+                                <input type="submit" class="btn2" value="Save"></input>                            
                             
                             <a href="AdminProdMana.php" class="btn3"><input type="submit" value="Cancel"></a>
                             
                             </div>
                            
-                        
                     </div>
                     <div class="home-img">
                         <img src="<?php echo $row['Images']; ?>">

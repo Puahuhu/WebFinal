@@ -1,5 +1,3 @@
-
-
     <!DOCTYPE html>
     <html lang="en">
 
@@ -152,11 +150,13 @@
                                 $row3 = mysqli_fetch_assoc($result3);
                                 $TotalProfit =$row3['Totalprofit'];
                                 
+
                             }
                         ?>
 
                             <div>
                                 <h1 class="white"> $<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
+
                                 <span>Total Amount Received</span>
                             </div>
                             <div>
@@ -184,7 +184,6 @@
                             </div>
                         </div>
                         <div class="card-single">
-
                             <div>
                                 <h1 class="white">$<?= isset($totalAmountReceived) ?$totalAmountReceived-  $TotalProfit : "0" ?></h1>
                                 <span> Total Profit</span>
@@ -286,7 +285,6 @@
                                     </div>
                                 </div>
                             </div>
-
                                     <?php
                                             }
                                         }
@@ -306,5 +304,4 @@
         </div>
     </div>
 </body>
-
 </html>

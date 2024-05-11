@@ -11,7 +11,11 @@
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/CreateAccount.css">
 </head>
-
+<script>
+    function redirectPage() {
+        window.location.href = "AdminProdMana.php";
+    }
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -46,7 +50,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -156,8 +160,6 @@
                                         </p>
                                     </td>
                                 </tr> -->
-
-
                             </table>
                         
                         <div class="main-btn">
@@ -168,7 +170,7 @@
                         
                     </div>
                     <div class="home-img">
-                        <img src="images/product2.png">
+                        <img src="images/logoteam.png">
                     </div>
                 </div>
             </main>

@@ -128,8 +128,6 @@
                     $totalPayment=0;
                     $totalNumberofProduct =0;
                     
-
-                    
                     if($result2 && mysqli_num_rows($result2) > 0) {
                         $row2 = mysqli_fetch_assoc($result2);
                         $totalPayment = $row2['Quantity'];
@@ -137,9 +135,6 @@
                     }
                     if($result3 && mysqli_num_rows($result3) > 0) {
                         $row3 = mysqli_fetch_assoc($result3);
-
-                  
-
             ?>
             <div class="cards">
                 <div class="card-single">
@@ -189,6 +184,7 @@
                                         <td class="danger adjust-size center-aligned">Money Back</td>
                                         <td class="danger adjust-size center-aligned">Creation Date</td>
                                         <td class="danger adjust-size center-aligned">Product Quantity</td>
+
                                         <td class="danger adjust-size center-aligned">Details</td>
                                     </tr>
                                 </thead>
@@ -279,10 +275,6 @@
                             }
                         
                         ?>
-                        
-                        
-
-
                     </div>
                 </div>
             </div>

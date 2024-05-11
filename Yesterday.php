@@ -71,7 +71,6 @@
                 </div>
             </header>
             <main>
-              
                 <div class="cards1">
                     <div class="card-single5 hover-button">
                         <a href="AdminReport.php"> <button>Today</button></a>
@@ -243,8 +242,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="yellow"> New Receipt</h3>
-                            </div>
-                            
+                            </div>                            
                                     <?php
                                         $conn = mysqli_connect("localhost", "root", "", "finalweb");
                                         if (!$conn) {
@@ -271,14 +269,10 @@
                                     </div>
                                 </div>
                             </div>
-
                                     <?php
                                             }
                                         }
                                     ?>
-                                
-                            
-
                         </div>
                     </div>
                 </div>

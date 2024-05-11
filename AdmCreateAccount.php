@@ -1,6 +1,59 @@
+<?php
+require_once("connection.php");
+
+$createSuccess = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['gmail'];
+    $fullName = $_POST['fullName'];
+    $birthday = $_POST['birthday'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+
+    // Lấy phần username từ địa chỉ email
+    $username = explode('@', $email)[0];
+
+    // Thêm vào bảng Accounts
+
+    $sql = "INSERT INTO Accounts (Username, pwd) VALUES (:username, :username)";
+
+    $stmt = $dbCon->prepare($sql);
+    $stmt->bindParam(':username', $username);
+
+    if ($stmt->execute()) {
+        // Lấy ID mới nhất
+        $userID = $dbCon->lastInsertId();
+        
+        // Thêm vào bảng Salesperson
+        $avatar = "images/avatar.png";
+        $sql = "INSERT INTO Salesperson (UserID, FullName, Email, Avatar, IsActive, SalesAddress, Phone) VALUES (:userID, :fullName, :email, :avatar, 0, :address, :phone)";
+        $stmt = $dbCon->prepare($sql);
+        $stmt->bindParam(':userID', $userID);
+        $stmt->bindParam(':fullName', $fullName);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':avatar', $avatar);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':phone', $phone);
+        
+        if ($stmt->execute()) {
+            $createSuccess = "Account created successfully.";
+            $subject = 'Your account successfully created';
+            $body = 'Your account has been successfully created with the following details:<br><br>'
+                    . 'Username: ' . $username . '<br>'
+                    . 'Password: ' . $username . '<br><br>'
+                    . 'First login link here: http://localhost/WebFinal/FirstLogin.php';
+            require("send-email.php");
+        } else {
+            $createSuccess = "Error: Unable to create account.";
+        }
+    } else {
+        $createSuccess = "Error: Unable to create account.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE-edge">
@@ -46,7 +99,7 @@
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
-                <a href="#">
+                <a onclick="redirectToLogout()">
                     <span class="material-symbols-sharp">logout</span>
                     <h3> Logout </h3>
                 </a>
@@ -74,87 +127,82 @@
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <table>
-                            <tr>
-                                <td>
-                                    <p>Gmail:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" id="" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Password:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Confirm Password</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Full Name:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" required placeholder="-"></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Birthday</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="date" id="dateproduct" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Address</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><input type="text" placeholder="-" required></a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Avatar Import:</p>
-                                </td>
-                                <td>
-                                    <p>
-                                        <a><button id="choose_avatar">Import</button></a>
-                                    </p>
-                                </td>
-                            </tr>
-
-
-                        </table>
-                        <div class="main-btn">
-                            <a href="#" class="btn2"><input type="submit" value="Create"></a>
-                            <a href="#" class="btn3"><input type="submit" value="Cancel"></a>
-                        </div>
+                        <form method="POST">
+                            <table>
+                                    <tr>
+                                        <td>
+                                            <p>Gmail</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a><input name="gmail" type="text" id="" placeholder="-" required></a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Full Name</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a><input name="fullName" type="text" required placeholder="-"></a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Birthday</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a><input name="birthday" type="date" id="dateproduct" placeholder="-" required></a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Address</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a><input name="address" type="text" placeholder="-" required></a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Phone</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a><input name="phone" type="text" required placeholder="-"></a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>Avatar Import</p>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <a><button id="choose_avatar">Import</button></a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <div class="main-btn">
+                                <a class="btn2"><input type="submit" value="Create"></a>
+                                <a href="AccountManagement.php" class="btn3"><input type="submit" value="Cancel"></a>
+                            </div>
+                        </form>
+                        <?php if (!empty($createSuccess)): ?>
+                            <script>
+                                alert("<?php echo $createSuccess; ?>");
+                            </script>
+                        <?php endif; ?>
                     </div>
                     <div class="home-img">
-                        <img src="images/phuong.png">
+                        <img src="images/avatar.png">
                     </div>
                 </div>
             </main>
