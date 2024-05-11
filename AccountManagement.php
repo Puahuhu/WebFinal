@@ -35,7 +35,8 @@
                     var statusClass = employ.IsActive === 1 ? "green" : "gray";
                     var statusText = employ.IsActive === 1 ? "Active" : "Locked";
                     var operationClass = employ.IsActive === 1 ? "operation_locked" : "operation_actived";
-                    var row = "<tr data-id='" + employ.SalespersonID + "'>" + // Thêm thuộc tính data-id
+                    var isNew = employ.IsNew;
+                    var row = "<tr data-id='" + employ.SalespersonID + "'>" + 
                         "<td>" +
                         "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
                         "</td>" +
@@ -47,8 +48,16 @@
                         "</td>" +
                         "<td class='" + operationClass + "'>" +
                         "<span><button>" + (employ.IsActive === 1 ? "Locked" : "Actived") + "</button></span>" +
-                        "</td>" +
-                        "</tr>";
+                        "</td>";
+                    // Thêm điều kiện kiểm tra isNew
+                    if (isNew === 1) {
+                        row += "<td class='operation_sendmail'>" +
+                            "<span><button>Send Mail</button></span>" +
+                            "</td>";
+                    } else {
+                        row += "<td></td>"; 
+                    }
+                    row += "</tr>";
                     tableBody.append(row);
 
                     $("#newacc").append(
@@ -240,6 +249,7 @@
                                             <td class="danger">Fullname</td>
                                             <td class="danger">Account Status</td>
                                             <td class="danger"> Operation </td>
+                                            <td class="danger"> Send Mail </td>
                                         </tr>
                                     </thead>
                                     <tbody class="info1">
