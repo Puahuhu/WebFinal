@@ -177,7 +177,7 @@
                         
                     </div>
                     <div class="home-img">
-                        <img src="images/product2.png">
+                        <img src="images/logoteam.png">
                     </div>
                 </div>
             </main>

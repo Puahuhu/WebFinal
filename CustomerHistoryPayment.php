@@ -101,9 +101,6 @@
                             <small class="success quantity">Customer</small>
                             <h6>Nguyen Le Tuan Phuong</h6>
                         </div>
-                        <div class="avatar">
-                            <img src="images/phuong.png">
-                        </div>
                     </div>
                 </div>
                 <div class="recent-grid ">
