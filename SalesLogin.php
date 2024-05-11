@@ -30,11 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Kiểm tra trạng thái tài khoản
-                $stmt = $dbCon->prepare("SELECT IsActive FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
+                $stmt = $dbCon->prepare("SELECT IsNew FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                if ($result['IsActive'] == 0) {
+                if ($result['IsNew'] == 1) {
                     $error = "The account needs first-time login";
                 } else {
                     // Chuyển sang màn hình chính

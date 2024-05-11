@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Thêm vào bảng Salesperson
         $avatar = "images/avatar.png";
-        $sql = "INSERT INTO Salesperson (UserID, FullName, Email, Avatar, IsActive, SalesAddress, Phone) VALUES (:userID, :fullName, :email, :avatar, 0, :address, :phone)";
+        $sql = "INSERT INTO Salesperson (UserID, FullName, Email, Avatar, IsActive, IsNew, SalesAddress, Phone) VALUES (:userID, :fullName, :email, :avatar, 1, 1, :address, :phone)";
         $stmt = $dbCon->prepare($sql);
         $stmt->bindParam(':userID', $userID);
         $stmt->bindParam(':fullName', $fullName);
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $body = 'Your account has been successfully created with the following details:<br><br>'
                     . 'Username: ' . $username . '<br>'
                     . 'Password: ' . $username . '<br><br>'
-                    . 'First login link here: http://localhost/WebFinal/FirstLogin.php';
+                    . 'First login link here: http://localhost:8080/WebFinal/FirstLogin.php';
             require("send-email.php");
         } else {
             $createSuccess = "Error: Unable to create account.";
@@ -176,16 +176,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <td>
                                             <p>
                                                 <a><input name="phone" type="text" required placeholder="-"></a>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p>Avatar Import</p>
-                                        </td>
-                                        <td>
-                                            <p>
-                                                <a><button id="choose_avatar">Import</button></a>
                                             </p>
                                         </td>
                                     </tr>
