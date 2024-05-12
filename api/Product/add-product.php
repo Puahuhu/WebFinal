@@ -20,6 +20,7 @@
         $barcode = $_POST['Barcode']; // Use the provided Barcode
     }
 
+    $barcode = $_POST['Barcode'];
     $name = $_POST['ProductName'];
     $import_price = $_POST['ImportPrice'];
     $retail_price = $_POST['RetailPrice'];

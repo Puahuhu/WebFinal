@@ -119,7 +119,7 @@
                     <div class="home-text">
                         <form action="api/Product/add-product.php" method="POST" enctype="multipart/form-data">
                             <table>
-                                <tr>
+                                <!-- <tr>
                                     <td>
                                         <p>Product ID:</p>
                                     </td>
@@ -128,7 +128,7 @@
                                             <a><input name="ProductID" type="text" id="" placeholder="-"></a>
                                         </p>
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <td>
                                         <p>Barcode:</p>

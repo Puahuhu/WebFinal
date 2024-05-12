@@ -2,7 +2,8 @@
     require_once('connection.php');
 
     if (!isset($_POST['ProductID']) || !isset($_POST['Barcode']) || !isset($_POST['ImportPrice']) || !isset($_POST['RetailPrice']) || !isset($_POST['CategoryID']) || !isset($_POST['CreatedDate'])) {
-        die(json_encode(array('status' => false, 'data' => 'Parameters not valid')));
+        // die(json_encode(array('status' => false, 'data' => 'Parameters not valid')));
+        echo '<script>alert("Not change."); window.location.href = "../../../AdminProdMana.php";</script>';
     }
 
     $pid = $_POST['ProductID'];
@@ -20,12 +21,31 @@
         $stmt = $dbCon->prepare($sql);
         $stmt->execute(array($barcode,$imort_price,$retail_price,$category,$date,$pid));
         $count = $stmt->rowCount();
-    } catch (PDOException $ex) {
-        die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
+        if ($count == 1) {
+            echo json_encode(array('status' => true, 'data' => 'Product successfully updated'));
+
+        }else {
+            // die(json_encode(array('status' => false, 'data' => 'Invalid update')));
+            echo '<script>
+                function redirectPage() {
+                    window.location.href = "../../AdminProdMana.php";
+                }
+                redirectPage();
+            </script>';
+        }
+    }
+    catch(PDOException $ex){
+        // json_encode(array('status' => false, 'data' => $ex->getMessage())));
+        echo '<script>
+            function redirectPage() {
+                window.location.href = "../../AdminProdMana.php";
+            }
+            redirectPage();
+        </script>';
     }
     echo '<script>
             function redirectPage() {
-                window.location.href = "../../../../AdminProdMana.php";
+                window.location.href = "../../AdminProdMana.php";
             }
             redirectPage();
         </script>';

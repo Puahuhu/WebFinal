@@ -222,16 +222,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </p>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <p>Avatar Import</p>
-                                        </td>
-                                        <td>
-                                            <p>
-                                                <a><button id="choose_avatar">Import</button></a>
-                                            </p>
-                                        </td>
-                                    </tr>
                             </table>
                             <div class="main-btn">
                                 <a class="btn2"><input id="createBtn" type="submit" value="Create"></a>

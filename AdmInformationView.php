@@ -36,9 +36,7 @@
 
                         if(employ.IsNew === 1){
                             $(".home-text").append(
-                                "<div class='operation_sendmail'>" +
-                                "<span ><button id='sendMailButton'>Send Mail</button></span>" +
-                                "</div>"
+                                "<a href='#' class='btn2' id='sendMailButton'>Send Mail</a>"
                             );
                         }
                         $(".home-text").append(
@@ -176,6 +174,7 @@
             </div>
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
 <script>
     $(document).ready(function () {
@@ -199,5 +198,4 @@
         });
     });
 </script>
-
 </html>
