@@ -153,11 +153,7 @@
                                     <p>Product ID:</p>
                                 </td>
                                 <td>
-<<<<<<< HEAD
-                                <p><a ><input name="ProductID" type="text" value="<?php echo $row['ProductID']; ?>" readonly ></a></p>
-=======
                                 <p><a><input name="ProductID" type="text" value="<?php echo $row['ProductID']; ?>"></a></p>
->>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                                 </td>
                             </tr>
                             <tr>
@@ -202,15 +198,10 @@
                             </tr>
                             </table>
                             <div class="main-btn">
-<<<<<<< HEAD
-                                <input type="submit" class="btn3 sidebar-link" value="Save" style="background-color: silver;" return false;></input>
-                                <a href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>" class="btn3 sidebar-link"> Cancel </a>
-=======
                                 <input type="submit" class="btn3" value="Save" style="background-color: silver;" return false;></input>
                                 <a href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>" class="btn3 sidebar-link"> Cancel </a>
                                 <!-- <input type="submit" class="btn2" value="Save"></input>
                                 <a href="AdminProdDetails.php" class="btn3"><input type="submit" value="Cancel"></a> -->
->>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                             </div>
                         <?php
                                 }

@@ -260,11 +260,7 @@
                                         <td class="adjust-size1 center-aligned">
                                             <span class="adjust-size"></span> <?= $row2['Quantity'] ?>
                                         </td>
-<<<<<<< HEAD
                                         <!-- <td class="operation_actived center-aligned">
-=======
-                                        <td class="operation_actived center-aligned">
->>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                                         <a class="sidebar-link" href="AdminCustomerInfoDetails.php?CustomerID=<?= $CustomerID ?>">
                                             <span class="material-symbol card-header1"><button>More</button></span>
                                         </a>

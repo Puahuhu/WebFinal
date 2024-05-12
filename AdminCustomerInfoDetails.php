@@ -112,15 +112,11 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-<<<<<<< HEAD
                     <!-- <img src="images/quynh.png" width="40px" height="40px" alt="">
                     <div>
                         <h4 class="yellow text-hover1"> Dang Nhu Quynh </h4>
                         <small> Admin</small>
                     </div> -->
-=======
-                    <!--  -->
->>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                 </div>
             </header>
             
@@ -219,11 +215,7 @@
                         </table>
                         
                         <div class="main-btn">
-<<<<<<< HEAD
                             <a class="sidebar-link" href="AdmCustomerHistoryPayment.php?CustomerID=<?= $CustomerID?>" ><button class="btn2">History Transaction</button></a>
-=======
-                            <a href="AdmCustomerHistoryPayment.php?CustomerID=<?= $CustomerID?>" class="btn2 sidebar-link"> History Transaction</a>
->>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                         </div>
                         <?php
                                 }

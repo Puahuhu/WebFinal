@@ -186,11 +186,7 @@
                                                 <address> <?= $row['CustomerAddress']?></address>
                                             </td>
                                             <td class="operation_actived">
-<<<<<<< HEAD
                                                 <a class="sidebar-link" href="AdminCustomerInfoDetails.php?CustomerID=<?= $row['CustomerID'] ?>"> <span class="material-symbol"><button>More</button></span></a>
-=======
-                                                <a class="sidebar-link" href="AdmCustomerHistoryPayment.php?CustomerID=<?= $row['CustomerID'] ?>"> <span class="material-symbol"><button>More</button></span></a>
->>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                                             </td>
                                         </tr>
                                         <tr>
