@@ -120,16 +120,16 @@
                         <button>Today</button>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="yesterday.php"> <button>Yesterday</button></a>
+                        <a href="Yesterday.php" class="sidebar-link"> <button>Yesterday</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="TheLastSevenDays.php"> <button>The last 7 days</button></a>
+                        <a href="TheLastSevenDays.php" class="sidebar-link"> <button>The last 7 days</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="ThisMonth.php"> <button>This month</button></a>
+                        <a href="ThisMonth.php" class="sidebar-link"> <button>This month</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="Fromto.php"> <button>From-To</button></a>
+                        <a href="Fromto.php" class="sidebar-link"> <button>From-To</button></a>
                     </div>
                 </div>
                 <div class="cards">
