@@ -1,3 +1,6 @@
+<?php
+    $username = $_GET['username'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -134,9 +137,9 @@
                        <div class="card-single">
                             <div class="delete-product">
                                 <form action="api/Product/delete-product.php" method="post">
+                                    <input type="hidden" name="username" value="<?php echo $username; ?>">
                                     <input type="hidden" name="ProductID" value="<?php echo $row['ProductID']; ?>">
                                     <button id="button_delete1"><span class="material-symbols-sharp" id="delete1">close</span></button>
-                                    
                                 </form>    
                             </div>
                             <div>
