@@ -162,7 +162,7 @@
                 </div>
             </div>
             <div class="right-aligned card-single2">
-                <button id="add" class="material-symbols-sharp"><span> <a href="AddProduct.php"> Add Product</a></span> add_shopping_cart</button>
+                <button id="add" class="material-symbols-sharp"><span> <a class="sidebar-link" href="AddProduct.php"> Add Product</a></span> add_shopping_cart</button>
             </div>
         </div>
     </div>

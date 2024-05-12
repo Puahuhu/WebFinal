@@ -10,8 +10,55 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@lastest/css/boxicons.min.css">
     <link rel="stylesheet" href="css/ProductDetailsEdit.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+    $(document).ready(function () {
+        $.get("api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("api/Admin/get-admin.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var adms = data.data;
+                                adms.forEach(function (adm) {
+                                    if (adm.UserID === userId) {
+                                        $(".user-wrapper").append(
+                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
 
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
+    });
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -26,15 +73,15 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php">
+                <a href="AdminProdMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php">
+                <a href="AdmCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -42,7 +89,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php">
+                <a href="AdminReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -64,11 +111,7 @@
                 <div>
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
-                        <small> Admin</small>
-                    </div>
+                    <!--  -->
                 </div>
             </header>
 
@@ -82,7 +125,7 @@
             <main>
                 <div class="home">
                     <div class="home-text">
-                        <form action="api//Product//update-product.php" method="post" enctype="multipart/form-data">
+                        <form action="api/Product/update-product.php" method="post" enctype="multipart/form-data">
                             <span>
                                 Product
                             </span>
@@ -153,13 +196,10 @@
                                     <p><a ><input name="CreatedDate" type="text" value="<?php echo $row['CreatedDate']; ?>"></a></p>
                                 </td>
                             </tr>
-
-                        
-                        
                             </table>
                             <div class="main-btn">
-                            <input type="submit" class="btn3" value="Save" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
-                            <input type="submit" class="btn3" value="Cancel" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
+                                <input type="submit" class="btn3" value="Save" style="background-color: silver;" return false;></input>
+                                <a href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>" class="btn3 sidebar-link"> Cancel </a>
                                 <!-- <input type="submit" class="btn2" value="Save"></input>
                                 <a href="AdminProdDetails.php" class="btn3"><input type="submit" value="Cancel"></a> -->
                             </div>
