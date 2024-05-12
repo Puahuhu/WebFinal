@@ -29,14 +29,25 @@
                             "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
                             "<tr><td><p>Address:</p></td><td><p>" + employ.SalesAddress + "</p></td></tr>" +
                             "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
-                            // Thêm các trường thông tin khác nếu cần
                             "</table>" +
                             "<div class='main-btn'>" +
-                            "<a href='#' class='btn2'> Sales Details</a>" +
+                            "<a href='#' class='btn2'>Sales Details</a>"
+                        );
+
+                        if(employ.IsNew === 1){
+                            $(".home-text").append(
+                                "<div class='operation_sendmail'>" +
+                                "<span ><button id='timeoutButton'>Send Mail</button></span>" +
+                                "</div>"
+                            );
+                        }
+                        $(".home-text").append(
                             "</div>"
                         );
 
                         $(".home-img").append("<img src='" + employ.Avatar + "'>");
+
+
                     }
                 });
             } else {

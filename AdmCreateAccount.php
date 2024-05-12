@@ -234,8 +234,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </tr>
                             </table>
                             <div class="main-btn">
-                                <a class="btn2"><input type="submit" value="Create"></a>
-                                <a href="AccountManagement.php" class="btn3"><input type="submit" value="Cancel"></a>
+                                <a class="btn2"><input id="createBtn" type="submit" value="Create"></a>
+                                <a href="AccountManagement.php" class="btn3 sidebar-link"><h2>Cancel</h2></a>
                             </div>
                         </form>
                         <?php if (!empty($createSuccess)): ?>
@@ -257,5 +257,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </body>
-
+<script>
+    $(document).ready(function(){
+        // Khi nút "Create" được click
+        $("#createBtn").click(function(e){
+            // Ngăn chặn hành động mặc định của nút submit
+            e.preventDefault();
+            // Disable nút để ngăn chặn việc click nhiều lần
+            $("#createBtn").prop("disabled", true);
+            // Tiến hành gửi dữ liệu
+            $("form").submit();
+        });
+    });
+</script>
 </html>
