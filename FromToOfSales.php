@@ -157,66 +157,87 @@
                     <div class="card-single">
                 <?php 
                         $conn = mysqli_connect("localhost", "root", "", "finalweb");
+
+                        // Check connection
                         if (!$conn) {
                             die("Connection failed: " . mysqli_connect_error());
                         }
-                        $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : date("m-d-y");
-                        $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : date("m-d-y");
-
-                        // Truy vấn dữ liệu tổng số tiền nhận được
+            
+                        // Escape user inputs for security
+                        $startDate = isset($_POST['startDate']) ? mysqli_real_escape_string($conn, $_POST['startDate']) : date("m-d-y");
+                        $endDate = isset($_POST['endDate']) ? mysqli_real_escape_string($conn, $_POST['endDate']) : date("m-d-y");
+            
+                        // Query total amount received
                         $sql = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
-                        FROM products 
-                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
-                        INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE date(orders.OrderDate) BETWEEN '$startDate' AND '$endDate'";
+                                FROM products 
+                                INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID 
+                                WHERE date(orders.OrderDate) BETWEEN '$startDate' AND '$endDate'";
                         $result = mysqli_query($conn, $sql);
+            
+                        if (!$result) {
+                            die("Query failed: " . mysqli_error($conn));
+                        }
+            
                         $row = mysqli_fetch_assoc($result);
                         $totalAmountReceived = $row['totalmoney'];
-
-                        // Truy vấn dữ liệu số lượng đơn hàng
-                        $sql = "SELECT COUNT(*) AS NumberOfOrder FROM orders WHERE OrderDate BETWEEN '$startDate' AND '$endDate'";
+            
+                        // Query number of orders
+                        $sql = "SELECT COUNT(orderID) AS NumberOfOrders 
+                                FROM orders 
+                                WHERE date(OrderDate) BETWEEN '$startDate' AND '$endDate'";
                         $result = mysqli_query($conn, $sql);
+            
+                        if (!$result) {
+                            die("Query failed: " . mysqli_error($conn));
+                        }
+            
                         $row = mysqli_fetch_assoc($result);
-                        $numberOfOrders = $row['NumberOfOrder'];
-
-                        // Truy vấn dữ liệu số lượng sản phẩm
-                        $sql = "SELECT SUM(Quantity) AS TotalQuantity FROM orderdetails WHERE OrderID IN (SELECT OrderID FROM orders WHERE OrderDate BETWEEN '$startDate' AND '$endDate')";
+                        $numberOfOrders = $row['NumberOfOrders'];
+            
+                        // Query total quantity of products
+                        $sql = "SELECT SUM(Quantity) AS TotalQuantity 
+                                FROM orderdetails 
+                                WHERE OrderID IN (SELECT OrderID FROM orders WHERE date(OrderDate) BETWEEN '$startDate' AND '$endDate')";
                         $result = mysqli_query($conn, $sql);
+            
+                        if (!$result) {
+                            die("Query failed: " . mysqli_error($conn));
+                        }
+            
                         $row = mysqli_fetch_assoc($result);
                         $numberOfProducts = $row['TotalQuantity'];
                     ?>
                 
                 
-                        <div>
-                            <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
-                            <span>Total Amount Received</span>
-                        </div>
-                        <div>
-                            <span class="material-symbols-sharp">payments</span>
-                        </div>
-                    </div>
-                    <div class="card-single">
-                        <div>
-                            <h1 class="white"><?= isset($NumberOfOrder) ? $NumberOfOrder : "0" ?></h1>
-                            <span> Number Of Order </span>
-                        </div>
-                        <div>
-                            <span class="material-symbols-sharp">receipt_long</span>
-                        </div>
+                <div>
+                        <h1 class="white">$<?= isset($totalAmountReceived) ? $totalAmountReceived : "0" ?></h1>
+                        <span>Total Amount Received</span>
                     </div>
                     <div>
-                        <div class="card-single">
-                            <div>
-                                <h1 class="white"><?= isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
-                                <span>Number Of Products</span>
-                            </div>
-                            <div>
-                                <span class="material-symbols-sharp">inventory_2</span>
-                            </div>
-                        </div>
-                        <?php
-                            
-                        ?>
+                        <span class="material-symbols-sharp">payments</span>
                     </div>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <h1 class="white"><?= isset($numberOfOrders) ? $numberOfOrders : "0" ?></h1>
+                        <span> Number Of Order </span>
+                    </div>
+                    <div>
+                        <span class="material-symbols-sharp">receipt_long</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="card-single">
+                        <div>
+                            <h1 class="white"><?= isset($numberOfProducts) ? $numberOfProducts : "0" ?></h1>
+                            <span>Number Of Products</span>
+                        </div>
+                        <div>
+                            <span class="material-symbols-sharp">inventory_2</span>
+                        </div>
+                    </div>
+                </div>
                 </div>
                 <div class="recent-grid ">
                     <div class="projects scrollable-content">
@@ -255,9 +276,9 @@
 
                                         ?>
                                         <tr>
-                                            <td class="adjust-size1">$<?= $row['Barcode'] ?></td>
+                                            <td class="adjust-size1"><?= $row['Barcode'] ?></td>
                                             <td class="adjust-size1">
-                                                <span class="adjust-size"></span> $<?= $row['ProductName'] ?>
+                                                <span class="adjust-size"></span> <?= $row['ProductName'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned">
                                                 <span class="adjust-size"></span> $<?= $row['RetailPrice'] ?>

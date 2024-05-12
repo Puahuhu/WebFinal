@@ -226,7 +226,7 @@
                         ?>
                     </div>
                     <div class="card-single2 align3">
-                        <a href="SalesReport.php"> <button>Cancel</button></a>
+                        <a class="sidebar-link" href="SalesReport.php"> <button>Cancel</button></a>
                     </div>
             </main>
             </div>
