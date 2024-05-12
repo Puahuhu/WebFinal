@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -34,7 +34,7 @@
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php">
+                <a href="AdmCustomerMana.php" class="active">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -73,260 +73,219 @@
             </header>
 
             <head>
+
+            <?php
+                if(isset($_GET['CustomerID'])) {
+                    $CustomerID = $_GET['CustomerID'];
+                    
+                    $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                    if (!$conn) {
+                        die("Kết nối không thành công: " . mysqli_connect_error());
+                    }
+                    
+                    $sql = "SELECT * FROM customers WHERE CustomerID = $CustomerID";
+                    $result = mysqli_query($conn, $sql);
+        
+                    
+                    if($result && mysqli_num_rows($result) > 0) {
+                        $row = mysqli_fetch_assoc($result);
+                ?>
                 <div class="head-display">
                     <h5 class="material-symbols-sharp" id="icon_arrow">arrow_right</h5>
-                    <label class="adjust-size3">Nguyen Le Tuan Phuong</label>
+                    <label class="adjust-size3"><?= $row['FullName'] ?></label>
                 </div>
+                <?php
+                    }
+                }
+                ?>
             </head>
             <main>
-                <div class="cards">
-                    <div class="card-single">
-                        <div>
-                            <h1 class="white quantity">9999999$</h1>
-                            <span>Total Payment</span>
-                        </div>
-                        <div>
-                            <span class="material-symbols-sharp">paid</span>
-                        </div>
+                <?php
+                if(isset($_GET['CustomerID'])) {
+                    $CustomerID = $_GET['CustomerID'];
+                    
+                    $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                    if (!$conn) {
+                        die("Kết nối không thành công: " . mysqli_connect_error());
+                    }
+                    
+                    $sql = "SELECT * FROM orders WHERE orders.CustomerID = $CustomerID";
+                    $result = mysqli_query($conn, $sql);
+                    $sql1 = "SELECT SUM(TotalAmount * Quantity) as TotalAmount FROM orders , orderdetails
+                            WHERE orders.OrderID =orderdetails.OrderID and CustomerID = $CustomerID" ;
+                    $result1 = mysqli_query($conn, $sql1);
+                    $row1 = mysqli_fetch_assoc($result1);
+                    $totalAmount = $row1['TotalAmount'];
+
+                    $sql2 = "SELECT SUM(Quantity) as Quantity FROM orderdetails
+                    INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
+                    WHERE orders.CustomerID = $CustomerID";
+                    $sql3 = "SELECT * from customers where customers.CustomerID = $CustomerID";
+                    $result2 = mysqli_query($conn, $sql2);
+                    $result3 = mysqli_query($conn, $sql3);
+
+
+                    $totalPayment=0;
+                    $totalNumberofProduct =0;
+                    
+                    if($result2 && mysqli_num_rows($result2) > 0) {
+                        $row2 = mysqli_fetch_assoc($result2);
+                        $totalPayment = $row2['Quantity'];
+
+                    }
+                    if($result3 && mysqli_num_rows($result3) > 0) {
+                        $row3 = mysqli_fetch_assoc($result3);
+            ?>
+            <div class="cards">
+                <div class="card-single">
+                    <div>
+                        <h1 class="white quantity">$<?= $totalAmount ?></h1>
+                        <span>Total Payment</span>
                     </div>
-                    <div class="card-single">
-                        <div>
-                            <h1 class="white quantity">99</h1>
-                            <span>Total Numbers Of Transaction</span>
-                        </div>
-                        <div>
-                            <span class="material-symbols-sharp">contract</span>
-                        </div>
+                    <div>
+                        <span class="material-symbols-sharp">paid</span>
                     </div>
-                    <div class="card-single">
-                        <div>
-                            <small class="success quantity">Customer</small>
-                            <h6>Nguyen Le Tuan Phuong</h6>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <h1 class="white quantity"><?=$totalPayment?></h1>
+                        <span>Total Numbers Of Transaction</span>
+                    </div>
+                    <div>
+                        <span class="material-symbols-sharp">contract</span>
+                    </div>
+                </div>
+                <div class="card-single">
+                    <div>
+                        <small class="success quantity">Customer</small>
+                        <h6><?= $row3['FullName'] ?></h6>
+                    </div>
+                    <!-- <div class="avatar">
+                        <img src="images/phuong.png">
+                    </div> -->
+                </div>
+            </div>
+            <?php
+                  }
+                }
+            ?>
+            <div class="recent-grid ">
+                <div class="projects scrollable-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="yellow"> List of Receipts </h3>
                         </div>
-                        <div class="avatar">
-                            <img src="images/phuong.png">
+                        <div class="card-body">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td class="danger adjust-size center-aligned">Total Amount:</td>
+                                        <td class="danger adjust-size center-aligned">Money Given</td>
+                                        <td class="danger adjust-size center-aligned">Money Back</td>
+                                        <td class="danger adjust-size center-aligned">Creation Date</td>
+                                        <td class="danger adjust-size center-aligned">Product Quantity</td>
+
+                                        <td class="danger adjust-size center-aligned">Details</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="info1">
+                                    <?php 
+                                    if(isset($_GET['CustomerID'])) {
+                                        $CustomerID = $_GET['CustomerID'];
+                                        
+                                        $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                        if (!$conn) {
+                                            die("Kết nối không thành công: " . mysqli_connect_error());
+                                        }
+                                        
+                                        $sql = "SELECT * FROM orders ,orderdetails,customers WHERE orders.OrderID =orderdetails.OrderID and orders.CustomerID = customers.CustomerID and orders.CustomerID = $CustomerID";
+                                        $result = mysqli_query($conn, $sql);
+                            
+                                        
+                                        if($result && mysqli_num_rows($result) > 0) {
+                                            $row2 = mysqli_fetch_assoc($result);
+                
+                                    ?>
+                                    <tr>
+                                        <td class="adjust-size1 center-aligned">$<?= $row2['TotalAmount'] ?></td>
+                                        <td class="adjust-size1 center-aligned">
+                                            <span class="adjust-size center-aligned"></span> $ <?= $row2['MoneyGiven'] ?>
+                                        </td>
+                                        <td class="adjust-size1 center-aligned">
+                                            <span class="adjust-size"></span> $ <?= $row2['MoneyBack'] ?>
+                                        </td>
+                                        <td class="adjust-size1 center-aligned"><?= $row2['OrderDate'] ?></td>
+                                        <td class="adjust-size1 center-aligned">
+                                            <span class="adjust-size"></span> <?= $row2['Quantity'] ?>
+                                        </td>
+                                        <td class="operation_actived center-aligned">
+                                        <a href="AdminCustomerInfoDetails.php?CustomerID=<?= $CustomerID ?>">
+                                            <span class="material-symbol card-header1"><button>More</button></span>
+                                        </a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+
+                                    
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <div class="recent-grid ">
-                    <div class="projects scrollable-content">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="yellow"> List of Receipts </h3>
-                            </div>
-                            <div class="card-body">
-                                <table width="100%">
-                                    <thead>
-                                        <tr>
-                                            <td class="danger adjust-size center-aligned">Total Amount:</td>
-                                            <td class="danger adjust-size center-aligned">Money Given</td>
-                                            <td class="danger adjust-size center-aligned">Money Back</td>
-                                            <td class="danger adjust-size center-aligned">Creation Date</td>
-                                            <td class="danger adjust-size center-aligned">Product Quantity</td>
-                                            <td class="danger adjust-size center-aligned">Details</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="info1">
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
+                <div class="customers scrollable-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="yellow"> New Receipt</h3>
+                        </div>
+                        <?php
+                        if(isset($_GET['CustomerID'])) {
+                             $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                             $CustomerID = $_GET['CustomerID'];
 
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="adjust-size1 center-aligned">10000$</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> 20000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 10000$
-                                            </td>
-                                            <td class="adjust-size1 center-aligned">04/04/2024</td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> 5
-                                            </td>
-                                            <td class="operation_actived center-aligned">
-                                                <span class="material-symbol"><button>More</button></span>
-                                            </td>
-                                        </tr>
+                             if (!$conn) {
+                                 die("Kết nối không thành công: " . mysqli_connect_error());
+                             }
+                             $today = date('Y-m-d');
+                             $sql = "SELECT * FROM customers ,orders WHERE customers.CustomerID = orders.CustomerID and orders.CustomerID = $CustomerID and date(CreatedDate) = '$today'";
 
+                             
+                             $result = mysqli_query($conn, $sql);
+                             // var_dump($result);
+                         if ($result && mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_array($result);
+                        ?>
+                        <div class="card-body">
+                            <div class="customer">
+                                <div class="info">
 
-
-                                    </tbody>
-                                </table>
+                                    <img src="images/receipt1.png" width="50px" height="50px" alt="">
+                                    <div>
+                                        <h4> $<?= $row['TotalAmount'] ?> </h4>
+                                        <span class="dateadd"><?=$today?></span>
+                                        <a href="AdminCustomerInfoDetails.php?CustomerID=<?= $row['CustomerID'] ?>"><span class="material-symbol card-header1"><button>More</button></span></a> 
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="customers scrollable-content">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="yellow"> New Receipt</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/receipt1.png" width="50px" height="50px" alt="">
-                                        <div>
-                                            <h4> 10000$ </h4>
-                                            <span class="dateadd">11/10/2023</span>
-                                            <span class="material-symbol card-header1"><button>More</button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                        </div>
+                        <?php
+                             }
+                            }
+                        
+                        ?>
                     </div>
                 </div>
-            </main>
-            <div class="right-aligned4 card-single3 cart-icon">
-                <div class="avatar1">
-                    <button><img src="images/cart_icon.png"></button>
-                </div>
+            </div>
+        </main>
+        <div class="right-aligned4 card-single3 cart-icon">
+            <div class="avatar1">
+                <button><img src="images/cart_icon.png"></button>
             </div>
         </div>
     </div>
+</div>
+<script src="js/click.js"></script>
 </body>
-
 </html>

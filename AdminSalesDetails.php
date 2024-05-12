@@ -218,10 +218,6 @@
                                                 <span class="material-symbol"><button>More</button></span>
                                             </td>
                                         </tr>
-
-
-
-
                                     </tbody>
                                 </table>
                             </div>
@@ -292,6 +288,6 @@
             </div>
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>

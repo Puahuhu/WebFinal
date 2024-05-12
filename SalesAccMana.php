@@ -61,9 +61,9 @@
     }
 </style>
 <script>
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
     $(document).ready(function () {
         var salespersonid;
-        var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
         $.get("api/Account/get-account.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var accs = data.data;
@@ -85,7 +85,7 @@
                                             "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
                                             "</table>" +
                                             "<div class='main-btn'>" +
-                                            "<a href='#' id='changeAvatarLink' class='btn two'>Change Avatar</a>" +
+                                            "<a id='changeAvatarLink' class='btn two'>Change Avatar</a>" +
                                             "<a href='SalesChangePassword.php?username=" + encodeURIComponent(username) + "'class='btn two'>Change Password</a>" +
                                             "</div>" +
                                             "<div class='main-btn'>" +
@@ -109,6 +109,47 @@
                 alert("Không thể tải dữ liệu từ server");
             }
         }, "json");
+
+        $.get("api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("api/Admin/get-admin.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var adms = data.data;
+                                adms.forEach(function (adm) {
+                                    if (adm.UserID === userId) {
+                                        $(".user-wrapper").append(
+                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
         
 
         // Hiển thị cửa sổ nhỏ khi click vào nút "Change Avatar"
@@ -132,22 +173,33 @@
             }
         });
 
-        $(document).on("click", "#changeAvatarBtn", function () {
-            console.log("SalespersonID:", salespersonid); // Log giá trị của salespersonid
-            console.log("fileName:", fileName); // Log giá trị của fileName
+        $(document).on("submit", "#avatarForm", function (event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của form
 
-            $.post("api/Salesperson/update-SalepersonAvatar.php", {
-                SalespersonID: salespersonid,
-                Avatar: fileName
-            }, function (data, status) {
-                if (status === "success") {
-                    alert("Avatar changed successfully.");
-                    location.reload();
-                } else {
+            var formData = new FormData(this);
+            formData.append('SalespersonID', salespersonid); 
+            formData.append('Avatar', fileName); 
+
+            $.ajax({
+                url: "api/Salesperson/update-SalepersonAvatar.php",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data, status) {
+                    if (status === "success") {
+                        alert("Avatar changed successfully.");
+                        location.reload();
+                    } else {
+                        alert("An error occurred while processing your request.");
+                    }
+                },
+                error: function (xhr, desc, err) {
                     alert("An error occurred while processing your request.");
                 }
-            }, "json");
+            });
         });
+
     });
 </script>
 <body>
@@ -164,20 +216,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a onclick="reloadPage()" class="active">
+                <a href="SalesAccMana.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="SalesCustomerMana.php">
+                <a href="SalesCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php">
+                <a href="SalesTransaction.php" class="sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php">
+                <a href="SalesReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -230,10 +282,13 @@
     <div class="avatar-change-modal-content">
         <span class="close">&times;</span>
         <h2>Change Avatar</h2>
-        <input type="file" id="avatarInput">
-        <button id="changeAvatarBtn">Change</button>
+        <form id="avatarForm" enctype="multipart/form-data">
+            <input type="file" id="avatarInput" name="avatarInput">
+            <button type="submit" id="changeAvatarBtn">Change</button>
+        </form>
+
     </div>
 </div>
+<script src="js/click.js"></script>
 </body>
-
 </html>

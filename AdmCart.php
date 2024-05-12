@@ -133,7 +133,6 @@
                             <div class="card-body">
                                 <div class="customer">
                                     <input type="checkbox">
-
                                     <div class="info">
                                         <img src="images/product6.png" width="40px" height="40px" alt="">
                                         <div class="operation_actived">
@@ -316,6 +315,6 @@
             </main>
 
         </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>

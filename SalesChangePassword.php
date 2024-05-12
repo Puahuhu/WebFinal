@@ -17,13 +17,13 @@
 <script>
     var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
     $(document).ready(function () {
-        $.get("http://localhost:8080/WebFinal/api/Account/get-account.php", function (data, status) {
+        $.get("api/Account/get-account.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var accs = data.data;
                 accs.forEach(function (acc) {
                     if (acc.Username === username) {
                         var userId = acc.UserID;
-                        $.get("http://localhost:8080/WebFinal/api/Salesperson/get-saleperson.php", function (data, status) {
+                        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
                             if (status === "success" && data.status === true) {
                                 var employs = data.data;
                                 employs.forEach(function (employ) {
@@ -62,7 +62,7 @@
             }
 
 
-            $.post("http://localhost:8080/WebFinal/api/Account/update-accountpwd.php", {
+            $.post("api/Account/update-accountpwd.php", {
                 Username: username,
                 pwd: newPassword
             }, function (data, status) {
@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="SalesAccMana.php">
+                <a href="SalesAccMana.php" class="active">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -109,7 +109,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php" class="active">
+                <a href="SalesReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -179,5 +179,5 @@
         </div>
     </div>
 </body>
-
+<script src="js/click.js"></script>
 </html>

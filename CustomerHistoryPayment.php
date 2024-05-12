@@ -101,9 +101,6 @@
                             <small class="success quantity">Customer</small>
                             <h6>Nguyen Le Tuan Phuong</h6>
                         </div>
-                        <div class="avatar">
-                            <img src="images/phuong.png">
-                        </div>
                     </div>
                 </div>
                 <div class="recent-grid ">
@@ -216,9 +213,6 @@
                                             </td>
                                         </tr>
 
-
-
-
                                     </tbody>
                                 </table>
                             </div>
@@ -289,6 +283,6 @@
             </div>
         </div>
     </div>
+    <script src="js/click.js"></script>
 </body>
-
 </html>

@@ -29,14 +29,25 @@
                             "<tr><td><p>Email:</p></td><td><p>" + employ.Email + "</p></td></tr>" +
                             "<tr><td><p>Address:</p></td><td><p>" + employ.SalesAddress + "</p></td></tr>" +
                             "<tr><td><p>Phone:</p></td><td><p>" + employ.Phone + "</p></td></tr>" +
-                            // Thêm các trường thông tin khác nếu cần
                             "</table>" +
                             "<div class='main-btn'>" +
-                            "<a href='#' class='btn2'> Sales Details</a>" +
+                            "<a href='#' class='btn2'>Sales Details</a>"
+                        );
+
+                        if(employ.IsNew === 1){
+                            $(".home-text").append(
+                                "<div class='operation_sendmail'>" +
+                                "<span ><button id='sendMailButton'>Send Mail</button></span>" +
+                                "</div>"
+                            );
+                        }
+                        $(".home-text").append(
                             "</div>"
                         );
 
                         $(".home-img").append("<img src='" + employ.Avatar + "'>");
+
+
                     }
                 });
             } else {
@@ -72,6 +83,19 @@
                 alert("Không thể tải dữ liệu từ server");
             }
         }, "json");
+
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
     });
 </script>
 <body>
@@ -88,15 +112,15 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php">
+                <a href="AdminProdMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php">
+                <a href="AdmCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -104,7 +128,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php">
+                <a href="AdminReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -153,5 +177,27 @@
         </div>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", "#sendMailButton", function () {
+            var fullName = "<?php echo htmlspecialchars($_GET['fullName']); ?>";
+
+            $.ajax({
+                url: "reset_timeout.php",
+                type: "GET",
+                data: {
+                    fullName: fullName
+                },
+                success: function (response) {
+                    alert("Email sent successfully!");
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert("Error sending email. Please try again later.");
+                }
+            });
+        });
+    });
+</script>
 
 </html>

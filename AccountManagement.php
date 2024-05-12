@@ -18,13 +18,23 @@
         $.get("api/Salesperson/get-saleperson.php", function (data, status) {
             if (status === "success" && data.status === true) {
                 var employs = data.data;
+                var totalAccounts = employs.length;
+                var activeAccounts = 0;
+                var lockedAccounts = 0;
+                document.getElementById("totalAccounts").innerText = totalAccounts;
                 var tableBody = $(".info1");
 
                 employs.forEach(function (employ) {
+                    if (employ.IsActive === 1) {
+                        activeAccounts++;
+                    }else{
+                        lockedAccounts++;
+                    }
+
                     var statusClass = employ.IsActive === 1 ? "green" : "gray";
                     var statusText = employ.IsActive === 1 ? "Active" : "Locked";
                     var operationClass = employ.IsActive === 1 ? "operation_locked" : "operation_actived";
-                    var row = "<tr data-id='" + employ.SalespersonID + "'>" + // Thêm thuộc tính data-id
+                    var row = "<tr data-id='" + employ.SalespersonID + "'>" + 
                         "<td>" +
                         "<img src='" + employ.Avatar + "' width='25px' height='25px' alt=''>" +
                         "</td>" +
@@ -36,10 +46,25 @@
                         "</td>" +
                         "<td class='" + operationClass + "'>" +
                         "<span><button>" + (employ.IsActive === 1 ? "Locked" : "Actived") + "</button></span>" +
-                        "</td>" +
-                        "</tr>";
+                        "</td>";
                     tableBody.append(row);
+
+                    $("#newacc").append(
+                        "<div class='card-body'>" +
+                            "<div class='customer'>" +
+                                "<div class='info'>" +
+                                    "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                    "<div>" +
+                                        "<h4 class='text-hover'>" + employ.FullName + "</h4>" +
+                                        "<small> Employee</small>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                        "</div>"
+                    );
                 });
+                document.getElementById("activeAccounts").innerText = activeAccounts;
+                document.getElementById("lockedAccounts").innerText = lockedAccounts;
             } else {
                 alert("Không thể tải dữ liệu từ server");
             }
@@ -89,6 +114,19 @@
             })
             location.reload();
         });
+
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
         
     });
     
@@ -109,23 +147,23 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="active">
+                <a href="AccountManagement.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php">
+                <a href="AdminProdMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php">
+                <a href="AdmCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="#">
+                <a>
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php">
+                <a href="AdminReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -155,7 +193,7 @@
                 <div class="cards">
                     <div class="card-single">
                         <div>
-                            <h1 class="white">54</h1>
+                            <h1 id="totalAccounts" class="white"></h1>
                             <span>Total Account</span>
                         </div>
                         <div>
@@ -164,35 +202,26 @@
                     </div>
                     <div class="card-single">
                         <div>
-                            <h1 class="white">15</h1>
+                            <h1 id="activeAccounts" class="white"></h1>
                             <span> Active Account </span>
                         </div>
                         <div>
                             <span class="material-symbols-sharp">toggle_on</span>
                         </div>
                     </div>
-                    <div>
-                        <div class="card-single">
-                            <div>
-                                <h1 class="white">29</h1>
-                                <span>Inactive Account</span>
-                            </div>
-                            <div>
-                                <span class="material-symbols-sharp">toggle_off</span>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-single">
                         <div>
-                            <h1 class="white">10</h1>
+                            <h1 id="lockedAccounts" class="white"></h1>
                             <span> Locked Account</span>
                         </div>
                         <div>
                             <span class="material-symbols-sharp">block</span>
                         </div>
                     </div>
+                    <div>
+                    </div>
                     <div class="card-single2">
-                        <button class="material-symbols-sharp"><span>Create an account</span> person_add</button>
+                        <a href="AdmCreateAccount.php" class="sidebar-link" ><button class="material-symbols-sharp"><span>Create an account</span> person_add</button></a>
                     </div>
                 </div>
                 <div class="recent-grid ">
@@ -219,11 +248,11 @@
                         </div>
                     </div>
                     <div class="customers scrollable-content">
-                        <div class="card">
+                        <div id="newacc" class="card">
                             <div class="card-header">
                                 <h3 class="yellow"> New account</h3>
                             </div>
-                            <div class="card-body">
+                            <!-- <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
                                         <img src="images/phuong.png" width="40px" height="40px" alt="">
@@ -233,40 +262,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/tram.png" width="40px" height="40px" alt="">
-                                        <div>
-                                            <h4 class="text-hover"> Chau Thi Tram </h4>
-                                            <small> Employee </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/quynh.png" width="40px" height="40px" alt="">
-                                        <div>
-                                            <h4 class="text-hover"> Nguyen Dang Nhu Quynh </h4>
-                                            <small> Admin </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="customer">
-                                    <div class="info">
-                                        <img src="images/hong.png" width="40px" height="40px" alt="">
-                                        <div>
-                                            <h4 class="text-hover"> Dang Thi Kim Hong </h4>
-                                            <small> Admin </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
