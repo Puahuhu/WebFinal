@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" >
+                <a href="AccountManagement.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -88,7 +88,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php" class="active">
+                <a href="AdminReport.php" class="active sidebar-link">
 
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>

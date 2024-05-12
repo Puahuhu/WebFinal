@@ -264,7 +264,7 @@
                                             </td>
                                             <td class="adjust-size1"><?= $row['OrderDate'] ?></td>
                                             <td class="operation_actived">
-                                                <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
+                                                <a class="sidebar-link" href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
                                             </td>
                                         </tr> 
                                         <?php

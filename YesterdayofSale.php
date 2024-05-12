@@ -254,7 +254,7 @@
                                             </td>
                                             <td class="adjust-size1"><?= $row['OrderDate'] ?></td>
                                             <td class="operation_actived">
-                                                <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
+                                                <a class="sidebar-link" href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
                                             </td>
                                         </tr> 
                                         <?php
@@ -292,8 +292,8 @@
                                         <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> <?= $row['ProductName'] ?> </h4>
-                                            <span class="dateadd"><?= $yesterday ?></span>
-                                            <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
+                                            <span class="dateadd"><?= $today ?></span>
+                                            <a class="sidebar-link" href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>">  <span class="material-symbol card-header1"><button>More</button></span></a>  
                                         </div>
                                     </div>
                                 </div>

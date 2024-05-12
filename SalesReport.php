@@ -124,13 +124,13 @@
                     <div class="card-single5 hover-button " >
                         <a href="YesterdayofSale.php" class="sidebar-link"> <button>Yesterday</button></a>
                     </div>
-                    <div class="card-single5 hover-button sidebar-link">
+                    <div class="card-single5 hover-button">
                         <a href="SaleTheLastSevenDays.php" class="sidebar-link"> <button>The last 7 days</button></a>
                     </div>
-                    <div class="card-single5 hover-button sidebar-link">
+                    <div class="card-single5 hover-button">
                         <a href="ThisMonthOfSales.php" class="sidebar-link"> <button>This month</button></a>
                     </div>
-                    <div class="card-single5 hover-button sidebar-link">
+                    <div class="card-single5 hover-button">
                         <a href="FromToOfSales.php" class="sidebar-link"> <button>From-To</button></a>
                     </div>
                 </div>
@@ -252,7 +252,7 @@
                                             </td>
                                             <td class="adjust-size1"><?= $row['OrderDate'] ?></td>
                                             <td class="operation_actived center-aligned">
-                                                <a href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
+                                                <a class="sidebar-link" href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
                                             </td>
                                         </tr> 
                                         <?php
