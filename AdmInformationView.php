@@ -36,9 +36,7 @@
 
                         if(employ.IsNew === 1){
                             $(".home-text").append(
-                                "<div class='operation_sendmail'>" +
-                                "<span ><button id='sendMailButton'>Send Mail</button></span>" +
-                                "</div>"
+                                "<a href='#' class='btn2' id='sendMailButton'>Send Mail</a>"
                             );
                         }
                         $(".home-text").append(
