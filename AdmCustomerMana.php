@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" >
+                <a href="AccountManagement.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -80,7 +80,7 @@
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php" class="active">
+                <a href="AdmCustomerMana.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>

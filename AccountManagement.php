@@ -231,7 +231,7 @@
                     <div>
                     </div>
                     <div class="card-single2">
-                        <button class="material-symbols-sharp" onclick="redirectToCreateAccount()"><span>Create an account</span> person_add</button>
+                        <a href="AdmCreateAccount.php" class="sidebar-link" ><button class="material-symbols-sharp"><span>Create an account</span> person_add</button></a>
                     </div>
                 </div>
                 <div class="recent-grid ">
