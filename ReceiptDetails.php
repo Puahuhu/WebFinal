@@ -67,9 +67,8 @@
         // Tạo tài khoản mới
         $username = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', removeVietnameseAccents($name)));
         $password = $username;
-        $isActive = 1;
 
-        $insertSQL = 'INSERT INTO accounts(username, pwd, IsActive) VALUES (?, ?, ?)';
+        $insertSQL = 'INSERT INTO accounts(username, pwd) VALUES (?, ?, ?)';
 
         try {
             $insertStmt = $dbCon->prepare($insertSQL);
@@ -181,7 +180,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php">
+                <a href="AccountManagement.php" class="active">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
@@ -197,7 +196,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php" class="active">
+                <a href="AdminReport.php">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -216,11 +215,11 @@
                 </h1>
 
                 <div class="user-wrapper">
-                    <!-- <img src="images/hong.png" width="40px" height="40px" alt="">
+                    <img src="images/hong.png" width="40px" height="40px" alt="">
                     <div>
                         <h4 class="yellow text-hover1"> Dang Thi Kim Hong </h4>
                         <small> Salesperson</small>
-                    </div> -->
+                    </div>
                 </div>
 
             </header>
@@ -248,97 +247,73 @@
                                             <td class="danger">Total Price </td>
                                         </tr>
                                     </thead>
-                                    <?php
-                                        if(isset($_GET['ProductID'])) {
-                                            $product_id = $_GET['ProductID'];
-                                            
-                                            $conn = mysqli_connect("localhost", "root", "", "finalweb");
-                                            if (!$conn) {
-                                                die("Kết nối không thành công: " . mysqli_connect_error());
-                                            }
-                                            
-                                            $sql = "SELECT * FROM products 
-                                            INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID 
-                                            WHERE products.ProductID = $product_id";
-                                            $result = mysqli_query($conn, $sql);
-                                            
-                                            if ($result && mysqli_num_rows($result) > 0) {
-                                                $row = mysqli_fetch_assoc($result);
-                                    ?>
+                                
                                     <tbody class="info1">
-                                        <tr>
-                                            <td>
-                                                <img src="<?php echo $row['Images']; ?>" width="50px" height="50px" alt="">
-                                            </td>
-                                            <td class="text-hover"><?= $row['ProductName'] ?></td>
-                                            <td>
-                                                <?= $row['UnitPrice'] ?>
-                                            </td>
-                                            <td>
-                                                <?= $row['Quantity'] ?>
-                                            </td>
-                                            <td><?= $row['RetailPrice'] ?></td>
-                                        </tr>
-                                    </tbody>
-                                    <?php 
+                                        <?php
+                                            $productCounts = array(); // Mảng kết hợp để lưu số lượng sản phẩm
+                                            $totalPrice = 0; // Tổng số tiền
+
+                                            // Lặp qua mảng các sản phẩm đã chọn
+                                            foreach ($selectedProducts as $product) {
+                                                // Cập nhật tổng giá tiền của tất cả các sản phẩm
+                                                $totalPrice += $product['price'];
+
+                                                // Kiểm tra nếu sản phẩm đã tồn tại trong mảng số lượng
+                                                if (array_key_exists($product['name'], $productCounts)) {
+                                                    // Nếu đã tồn tại, tăng số lượng lên 1
+                                                    $productCounts[$product['name']]++;
+                                                } else {
+                                                    // Nếu chưa tồn tại, đặt số lượng là 1
+                                                    $productCounts[$product['name']] = 1;
+                                                }
                                             }
-                                        }
-                                    ?>  
+
+                                            // Lặp lại danh sách sản phẩm để hiển thị
+                                            foreach ($productCounts as $productName => $quantity) {
+                                                // Tìm thông tin sản phẩm dựa trên tên
+                                                $productInfo = array_values(array_filter($selectedProducts, function ($product) use ($productName) {
+                                                    return $product['name'] === $productName;
+                                                }))[0];
+
+                                                echo '<tr>';
+                                                echo '<td>';
+                                                echo '<img src="' . $productInfo['image'] . '" width="50px" height="50px" alt="">';
+                                                echo '</td>';
+                                                echo '<td class="text-hover">' . $productInfo['name'] . '</td>';
+                                                echo '<td>' . $productInfo['price'] . '$</td>';
+                                                echo '<td>' . $quantity . '</td>';
+                                                echo '<td>' . ($productInfo['price'] * $quantity) . '$</td>';
+                                                echo '</tr>';
+                                            }
+                                        ?>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                     <div class="customers right-aligned3">
                         <div class="card">
-                        <?php
-                            if(isset($_GET['ProductID'])) {
-                                $product_id = $_GET['ProductID'];
-                                
-                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
-                                if (!$conn) {
-                                    die("Kết nối không thành công: " . mysqli_connect_error());
-                                }
-                                
-                                $sql = "SELECT sum(Quantity) as total FROM orderdetails INNER JOIN products ON products.ProductID = orderdetails.ProductID 
-                                WHERE products.ProductID = $product_id";
-                                $result = mysqli_query($conn, $sql);
-                                $row = mysqli_fetch_assoc($result);
-                                $totalProducts = $row['total'];
-                                $sql1 = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
-                                        FROM products 
-                                        INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID 
-                                        WHERE products.ProductID = $product_id";
-                                $result1 = mysqli_query($conn, $sql1);
-                                $row1 = mysqli_fetch_assoc($result1);
-                                $totalMoney = $row1['totalmoney'];
-
-                               
-                                    
-                        ?>
                             <div class="card-header1">
                                 <h6 class="danger"> Total
-                                    <h5 class="silver"> <?=$totalProducts ?> products</h5>
+                                    <h5 class="silver"><?php echo count($selectedProducts); ?> products</h5>
                                 </h6>
                             </div>
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
                                         <div>
-                                            <h6 class="silver2"><?= $totalMoney ?>$ </h6>
+                                        <h6 class="silver2"><?php echo $totalPrice; ?>$ </h6>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php
-                            }
-                        ?>
                     </div>
                     <div class="card-single2 align3">
-                        <a href="AdminReport.php"> <button>Cancel</button></a>
+                        <button>Cancel</button>
                     </div>
             </main>
             </div>
-    <script src="js/click.js"></script>
 </body>
+
 </html>
