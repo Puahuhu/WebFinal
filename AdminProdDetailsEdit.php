@@ -153,7 +153,7 @@
                                     <p>Product ID:</p>
                                 </td>
                                 <td>
-                                <p><a ><input name="ProductID" type="text" value="<?php echo $row['ProductID']; ?>"></a></p>
+                                <p><a><input name="ProductID" type="text" value="<?php echo $row['ProductID']; ?>"></a></p>
                                 </td>
                             </tr>
                             <tr>
