@@ -49,9 +49,9 @@
         die(json_encode(array('status' => false, 'data' => $ex->getMessage())));
     }
     echo '<script>
-            function redirectPage() {
-                window.location.href = "../../AdminProdMana.php";
-            }
-            redirectPage();
-        </script>';
+                function redirectPage() {
+                    window.location.href = "../../AdminProdMana.php?username=' . $_POST['username'] . '";
+                }
+                redirectPage();
+            </script>';
 ?>

@@ -1,6 +1,7 @@
 <?php
     $username = $_GET['username'];
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +34,7 @@
                                     if (adm.UserID === userId) {
                                         $(".user-wrapper").append(
                                             "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
-                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                            "<a href='AdminInformationMana.php?username=" + encodeURIComponent(username) + "&fullname=" + encodeURIComponent(adm.FullName) + "'><div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div></a>"
                                         );
                                     }
                                 });
@@ -88,8 +89,7 @@
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a> 
-                <!-- <a href="AdmCustomerMana.php" class="sidebar-link"> -->
+                <a href="AdminTransaction.php" class="sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>

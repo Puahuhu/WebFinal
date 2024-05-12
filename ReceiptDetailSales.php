@@ -190,12 +190,12 @@
                                     die("Kết nối không thành công: " . mysqli_connect_error());
                                 }
                                 
-                                $sql = "SELECT sum(Quantity) as total FROM orderdetails INNER JOIN products ON products.ProductID = orderdetails.ProductID 
+                                $sql = "SELECT * FROM orderdetails INNER JOIN products ON products.ProductID = orderdetails.ProductID 
                                 WHERE products.ProductID = $product_id";
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
-                                $totalProducts = $row['total'];
-                                $sql1 = "SELECT SUM(products.RetailPrice * orderdetails.Quantity) AS totalmoney 
+                                $totalProducts = $row['Quantity'];
+                                $sql1 = "SELECT products.RetailPrice * orderdetails.Quantity AS totalmoney 
                                         FROM products 
                                         INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID 
                                         WHERE products.ProductID = $product_id";

@@ -15,7 +15,7 @@
         $stmt = $dbCon->prepare($sql);
 
         $stmt->bindParam(':avatar', $name, PDO::PARAM_STR);
-        $stmt->bindParam(':adminID', $salespersonID, PDO::PARAM_INT);
+        $stmt->bindParam(':adminID', $adminID, PDO::PARAM_INT);
         $stmt->execute();
 
         echo json_encode(array('status' => true, 'message' => 'Avatar updated successfully'));

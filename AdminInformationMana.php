@@ -90,35 +90,7 @@
                                         $(".home-img").append("<img src='" + employ.Avatar + "'>");
                                         $(".user-wrapper").append(
                                             "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
-                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Admin</small></div>"
-                                        );
-                                    }
-                                });
-                            } else {
-                                alert("Không thể tải dữ liệu từ server");
-                            }
-                        }, "json");
-                    }
-                });
-            } else {
-                alert("Không thể tải dữ liệu từ server");
-            }
-        }, "json");
-
-        $.get("api/Account/get-account.php", function (data, status) {
-            if (status === "success" && data.status === true) {
-                var accs = data.data;
-                accs.forEach(function (acc) {
-                    if (acc.Username === username) {
-                        var userId = acc.UserID;
-                        $.get("api/Admin/get-admin.php", function (data, status) {
-                            if (status === "success" && data.status === true) {
-                                var adms = data.data;
-                                adms.forEach(function (adm) {
-                                    if (adm.UserID === userId) {
-                                        $(".user-wrapper").append(
-                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
-                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                            "<a href='AdminInformationMana.php?username=" + encodeURIComponent(username) + "&fullname=" + encodeURIComponent(employ.FullName) + "'><div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Admin </small></div></a>" 
                                         );
                                     }
                                 });
@@ -211,11 +183,14 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AdmAccMana.php" class="active sidebar-link">
+                <a href="AccountManagement.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-
+                <a href="AdminProdMana.php" class="sidebar-link">
+                    <span class="material-symbols-sharp">receipt_long</span>
+                    <h3> Product Catalog Management </h3>
+                </a>
                 <a href="AdmCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>

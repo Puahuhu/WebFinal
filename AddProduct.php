@@ -1,3 +1,6 @@
+<?php
+    $username = $_GET['username'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -118,6 +121,7 @@
                 <div class="home">
                     <div class="home-text">
                         <form action="api/Product/add-product.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="username" value="<?php echo $username; ?>">
                             <table>
                                 <!-- <tr>
                                     <td>
@@ -210,7 +214,7 @@
                             </form> -->
                             
                         </form>
-                            <input type="submit" class="btn3" value="Add" style="background-color: silver;" onclick="redirectTestPage(); return false;"></input>
+                            <input type="submit" class="btn3" value="Add" style="background-color: silver;" return false;></input>
                             <a href="AdminProdMana.php" style="background-color: silver;" class="btn3 sidebar-link"><h2>Cancel</h2></a>
                         </div>
                         

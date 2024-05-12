@@ -53,15 +53,14 @@
                 accs.forEach(function (acc) {
                     if (acc.Username === username) {
                         var userId = acc.UserID;
-                        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
+                        $.get("api/Admin/get-admin.php", function (data, status) {
                             if (status === "success" && data.status === true) {
-                                var employs = data.data;
-                                employs.forEach(function (employ) {
-                                    if (employ.UserID === userId) {
-                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                var adms = data.data;
+                                adms.forEach(function (adm) {
+                                    if (adm.UserID === userId) {
                                         $(".user-wrapper").append(
-                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
-                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                            "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<a href='AdminInformationMana.php?username=" + encodeURIComponent(username) + "&fullname=" + encodeURIComponent(adm.FullName) + "'><div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div></a>"
                                         );
                                     }
                                 });
@@ -305,11 +304,15 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="SalesAccMana.php" class="sidebar-link">
+                <a href="AccountManagement.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="SalesCustomerMana.php" class="sidebar-link">
+                <a href="AdminProdMana.php" class="sidebar-link">
+                    <span class="material-symbols-sharp">receipt_long</span>
+                    <h3> Product Catalog Management </h3>
+                </a>
+                <a href="AdmCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -317,7 +320,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php" class="sidebar-link">
+                <a href="AdminReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>

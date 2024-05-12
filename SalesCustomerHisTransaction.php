@@ -10,8 +10,57 @@
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="css/CustomerHistoryPayment.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+    $(document).ready(function () {
+        var salespersonid;
+        $.get("api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var employs = data.data;
+                                employs.forEach(function (employ) {
+                                    if (employ.UserID === userId) {
+                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                        $(".user-wrapper").append(
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
 
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
+    });
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -26,20 +75,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="SalesAccMana.php">
+                <a href="SalesAccMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="SalesCustomerMana.php" class="active">
+                <a href="SalesCustomerMana.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php">
+                <a href="SalesTransaction.php" class="sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php">
+                <a href="SalesReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -61,11 +110,11 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <img src="images/quynh.png" width="40px" height="40px" alt="">
+                    <!-- <img src="images/quynh.png" width="40px" height="40px" alt="">
                     <div>
                         <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
                         <small> Admin</small>
-                    </div>
+                    </div> -->
                 </div>
             </header>
 
@@ -113,7 +162,7 @@
                         $row1 = mysqli_fetch_assoc($result1);
                         $totalAmount = $row1['TotalAmount'];
 
-                        $sql2 = "SELECT SUM(Quantity) as Quantity FROM orderdetails
+                        $sql2 = "SELECT count(Quantity) as Quantity FROM orderdetails
                         INNER JOIN orders ON orders.OrderID = orderdetails.OrderID
                         WHERE orders.CustomerID = $CustomerID";
                         $sql3 = "SELECT * from customers where customers.CustomerID = $CustomerID";
@@ -161,9 +210,9 @@
                             <small class="success quantity">Customer</small>
                             <h6><?= $row3['FullName'] ?></h6>
                         </div>
-                        <div class="avatar">
+                        <!-- <div class="avatar">
                             <img src="images/phuong.png">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <?php
@@ -203,7 +252,7 @@
                                 
                                             
                                             if($result && mysqli_num_rows($result) > 0) {
-                                                $row2 = mysqli_fetch_assoc($result);
+                                               while( $row2 = mysqli_fetch_assoc($result)){
                     
                                         ?>
                                         <tr>
@@ -219,11 +268,12 @@
                                                 <span class="adjust-size"></span> <?= $row2['Quantity'] ?>
                                             </td>
                                             <td class="operation_actived center-aligned">
-                                                <a href="SalesCustomerDetails.php?CustomerID=<?= $row2['CustomerID'] ?>"> <span class="material-symbol"><button>More</button></span></a>
+                                                <a class="sidebar-link" href="ReceiptDetailCustomerSales.php?ProductID=<?= $row2['ProductID']?>"> <span class="material-symbol"><button>More</button></span></a>
                                             </td>
                                         </tr>
                                         <?php
                                             }
+                                        }
                                         }
                                         ?>
                                         
@@ -239,42 +289,42 @@
                             </div>
                             <?php
                             if(isset($_GET['CustomerID'])) {
-                                 $conn = mysqli_connect("localhost", "root", "", "finalweb");
-                                 $CustomerID = $_GET['CustomerID'];
-
-                                 if (!$conn) {
-                                     die("Kết nối không thành công: " . mysqli_connect_error());
-                                 }
-                                 $today = date('Y-m-d');
-                                 $sql = "SELECT * FROM customers ,orders WHERE customers.CustomerID = orders.CustomerID and orders.CustomerID = $CustomerID and date(CreatedDate) = '$today'";
-
-                                 
-                                 $result = mysqli_query($conn, $sql);
-                                 // var_dump($result);
-                             if ($result && mysqli_num_rows($result) > 0) {
-                                $row = mysqli_fetch_array($result);
+                                $conn = mysqli_connect("localhost", "root", "", "finalweb");
+                                $CustomerID = $_GET['CustomerID'];
+                            
+                                if (!$conn) {
+                                    die("Kết nối không thành công: " . mysqli_connect_error());
+                                }
+                            
+                                $today = date('Y-m-d');
+                                $sql = "SELECT * FROM customers, orders, orderdetails WHERE customers.CustomerID = orders.CustomerID 
+                                        AND orders.OrderID = orderdetails.OrderID AND orders.CustomerID = $CustomerID 
+                                        AND DATE(CreatedDate) = '$today'";
+                                                             
+                                $result = mysqli_query($conn, $sql);
+                                
+                                if ($result && mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
                             ?>
                             <div class="card-body">
                                 <div class="customer">
                                     <div class="info">
-
                                         <img src="images/receipt1.png" width="50px" height="50px" alt="">
                                         <div>
                                             <h4> $<?= $row['TotalAmount'] ?> </h4>
-                                            <span class="dateadd"><?=$today?></span>
-                                            <a href="SalesCustomerDetails.php?CustomerID=<?= $row['CustomerID'] ?>"><span class="material-symbol card-header1"><button>More</button></span></a> 
+                                            <span class="dateadd"><?= $today ?></span>
+                                            <a class="sidebar-link" href="ReceiptDetailCustomerSales.php?ProductID=<?= $row['ProductID'] ?>">
+                                                <span class="material-symbol card-header1"><button>More</button></span>
+                                            </a> 
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <?php
-                                 }
-                                }
-                            
+                                    }
+                                } 
+                            }
                             ?>
-                            
-                            
-
 
                         </div>
                     </div>

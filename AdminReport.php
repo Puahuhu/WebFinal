@@ -29,7 +29,7 @@
                                     if (adm.UserID === userId) {
                                         $(".user-wrapper").append(
                                             "<img src='" + adm.Avatar + "' width='40px' height='40px' alt=''>" +
-                                            "<div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div>"
+                                            "<a href='AdminInformationMana.php?username=" + encodeURIComponent(username) + "&fullname=" + encodeURIComponent(adm.FullName) + "'><div><h4 class='yellow text-hover1'>" + adm.FullName + "</h4><small> Admin </small></div></a>"
                                         );
                                     }
                                 });
@@ -84,7 +84,7 @@
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a>
+                <a href="AdminTransaction.php" class="sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
@@ -120,16 +120,16 @@
                         <button>Today</button>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="yesterday.php"> <button>Yesterday</button></a>
+                        <a href="yesterday.php" class="sidebar-link"> <button>Yesterday</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="TheLastSevenDays.php"> <button>The last 7 days</button></a>
+                        <a href="TheLastSevenDays.php" class="sidebar-link"> <button>The last 7 days</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="ThisMonth.php"> <button>This month</button></a>
+                        <a href="ThisMonth.php" class="sidebar-link"> <button>This month</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="Fromto.php"> <button>From-To</button></a>
+                        <a href="Fromto.php" class="sidebar-link"> <button>From-To</button></a>
                     </div>
                 </div>
                 <div class="cards">
