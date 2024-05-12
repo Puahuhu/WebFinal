@@ -1,6 +1,3 @@
-
-
-</html>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,8 +8,58 @@
     <title>Report And Analytics</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="css/SalesReport.css">
+    <link rel="stylesheet" href="css/Report.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+    $(document).ready(function () {
+        var salespersonid;
+        $.get("api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var employs = data.data;
+                                employs.forEach(function (employ) {
+                                    if (employ.UserID === userId) {
+                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                        $(".user-wrapper").append(
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
+
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
+    });
+</script>
 
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -28,20 +75,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="SalesAccMana.php">
+                <a href="SalesAccMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
 
-                <a href="SalesCustomerMana.php">
+                <a href="SalesCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php">
+                <a href="SalesTransaction.php" class="sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="SalesReport.php" class="active">
+                <a href="SalesReport.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -74,19 +121,19 @@
                 
                 <div class="cards1">
                     <div class="card-single5 hover-button">
-                        <a href="SalesReport.php"> <button>Today</button></a>
+                        <a href="SalesReport.php"  class="sidebar-link"> <button>Today</button></a>
                     </div>
                     <div class="card-single5 active-button">
-                        <a href="YesterdayofSale.php"> <button>Yesterday</button></a>
+                        <a href="YesterdayofSale.php"  class="sidebar-link"> <button>Yesterday</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="SaleTheLastSevenDays.php"> <button>The last 7 days</button></a>
+                        <a href="SaleTheLastSevenDays.php"  class="sidebar-link"> <button>The last 7 days</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="ThisMonthOfSales.php"> <button>This month</button></a>
+                        <a href="ThisMonthOfSales.php"  class="sidebar-link"> <button>This month</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="FromToOfSales.php"> <button>From-To</button></a>
+                        <a href="FromToOfSales.php" class="sidebar-link"> <button>From-To</button></a>
                     </div>
                 </div>
                 <div class="cards">

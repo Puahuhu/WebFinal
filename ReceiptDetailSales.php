@@ -10,8 +10,57 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/Receipt.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<script>
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
+    $(document).ready(function () {
+        var salespersonid;
+        $.get("api/Account/get-account.php", function (data, status) {
+            if (status === "success" && data.status === true) {
+                var accs = data.data;
+                accs.forEach(function (acc) {
+                    if (acc.Username === username) {
+                        var userId = acc.UserID;
+                        $.get("api/Salesperson/get-saleperson.php", function (data, status) {
+                            if (status === "success" && data.status === true) {
+                                var employs = data.data;
+                                employs.forEach(function (employ) {
+                                    if (employ.UserID === userId) {
+                                        $(".home-img").append("<img src='" + employ.Avatar + "'>");
+                                        $(".user-wrapper").append(
+                                            "<img src='" + employ.Avatar + "' width='40px' height='40px' alt=''>" +
+                                            "<div><h4 class='yellow text-hover1'>" + employ.FullName + "</h4><small> Salesperson</small></div>"
+                                        );
+                                    }
+                                });
+                            } else {
+                                alert("Không thể tải dữ liệu từ server");
+                            }
+                        }, "json");
+                    }
+                });
+            } else {
+                alert("Không thể tải dữ liệu từ server");
+            }
+        }, "json");
 
+        $(".sidebar-link").each(function() {
+            // Lấy href của liên kết
+            var href = $(this).attr("href");
+            // Kiểm tra nếu href đã có tham số
+            if (href.indexOf('?') !== -1) {
+                // Nếu đã có tham số, thêm username vào cuối URL
+                $(this).attr("href", href + "&username=" + encodeURIComponent(username));
+            } else {
+                // Nếu chưa có tham số, thêm username vào URL
+                $(this).attr("href", href + "?username=" + encodeURIComponent(username));
+            }
+        });
+    });
+</script>
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
@@ -26,23 +75,20 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php">
+                <a href="SalesAccMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php">
-                    <span class="material-symbols-sharp">receipt_long</span>
-                    <h3> Product Catalog Management </h3>
-                </a>
-                <a href="AdmCustomerMana.php">
+
+                <a href="SalesCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="#">
+                <a href="SalesTransaction.php" class="sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php" class="active">
+                <a href="SalesReport.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -180,7 +226,7 @@
                         ?>
                     </div>
                     <div class="card-single2 align3">
-                        <a href="SalesReport.php"> <button>Cancel</button></a>
+                        <a class="sidebar-link" href="SalesReport.php"> <button>Cancel</button></a>
                     </div>
             </main>
             </div>
