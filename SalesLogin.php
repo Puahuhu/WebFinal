@@ -3,11 +3,6 @@ session_start();
 $_SESSION['logged in'] = true;
 $error = "";
 
-if (isset($_SESSION['logout_message'])) {
-    echo '<script>alert("' . $_SESSION['logout_message'] . '");</script>';
-    unset($_SESSION['logout_message']); // Xóa thông báo sau khi đã hiển thị
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once("connection.php");
 
@@ -30,12 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($stmt->rowCount() > 0) {
                 // Kiểm tra trạng thái tài khoản
-                $stmt = $dbCon->prepare("SELECT IsNew FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
+                $stmt = $dbCon->prepare("SELECT IsNew, isActive FROM Salesperson WHERE UserID IN (SELECT UserID FROM Accounts WHERE Username=:username)");
                 $stmt->execute(array(':username' => $username));
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 
                 if ($result['IsNew'] == 1) {
                     $error = "The account needs first-time login";
+                } elseif ($result['isActive'] == 0) {
+                    $error = "Your account has been suspended";
                 } else {
                     // Chuyển sang màn hình chính
                     header("Location: SalesAccMana.php?username=$username");
