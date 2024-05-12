@@ -84,7 +84,7 @@
                                             "</table>" +
                                             "<div class='main-btn'>" +
                                             "<a id='changeAvatarLink' class='btn two'>Change Avatar</a>" +
-                                            "<a href='AdminChangePassword.php?username=" + encodeURIComponent(username) + "'class='btn two'>Change Password</a>" +
+                                            "<a href='AdmChangePassword.php?username=" + encodeURIComponent(username) + "'class='btn two'>Change Password</a>" +
                                             "</div>"
                                         );
                                         $(".home-img").append("<img src='" + employ.Avatar + "'>");
