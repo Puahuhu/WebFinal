@@ -245,9 +245,9 @@
 
                                         ?>
                                         <tr>
-                                            <td class="adjust-size1">$<?= $row['Barcode'] ?></td>
+                                            <td class="adjust-size1">   <?= $row['Barcode'] ?></td>
                                             <td class="adjust-size1">
-                                                <span class="adjust-size"></span> $<?= $row['ProductName'] ?>
+                                                <span class="adjust-size"></span> <?= $row['ProductName'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned">
                                                 <span class="adjust-size"></span> $<?= $row['RetailPrice'] ?>
