@@ -196,7 +196,7 @@
                     </div>
                     <div class="card-single">
                         <div>
-                            <h1 class="white"><?= isset($NumberOfOrder) ? $NumberOfOrder : "0" ?></h1>
+                            <h1 class="white"><?= isset($NumberOfOrders) ? $NumberOfOrders : "0" ?></h1>
                             <span> Number Of Order </span>
                         </div>
                         <div>
@@ -206,7 +206,7 @@
                     <div>
                         <div class="card-single">
                             <div>
-                                <h1 class="white"><?= isset($NumberOfProduct) ? $NumberOfProduct : "0" ?></h1>
+                                <h1 class="white"><?= isset($NumberOfProducts) ? $NumberOfProducts : "0" ?></h1>
                                 <span>Number Of Products</span>
                             </div>
                             <div>
