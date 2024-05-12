@@ -376,7 +376,7 @@
                         </div>
                         <div class="product-cost card-header">
                             <?= $row['RetailPrice'] ?>
-                            <a href="SalesProductDetails.php?ProductID=<?= $row['ProductID'] ?>"><button> More <label class="las la-arrow-right"></label></button></a>
+                            <a class ="sidebar-link" href="SalesProductDetails.php?ProductID=<?= $row['ProductID'] ?>"><button> More <label class="las la-arrow-right"></label></button></a>
                         </div>
                      </div>   
                     <?php 

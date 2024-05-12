@@ -287,7 +287,7 @@
 
 </script>
 <body>
-    <form id="checkoutForm" action="SalesCart.php" method="post">
+    <form id="checkoutForm" action="AdminCart.php?username=<?php echo urlencode($_GET['username']); ?>" method="post">
         <!-- Các trường ẩn để lưu thông tin sản phẩm -->
     </form>
     <input type="hidden" id="cartData" name="cartData">
@@ -316,7 +316,7 @@
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
-                <a href="SalesTransaction.php" class="active sidebar-link">
+                <a href="AdminTransaction.php" class="active sidebar-link">
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
@@ -379,7 +379,7 @@
                         </div>
                         <div class="product-cost card-header">
                             <?= $row['RetailPrice'] ?>
-                            <a href="SalesProductDetails.php?ProductID=<?= $row['ProductID'] ?>"><button> More <label class="las la-arrow-right"></label></button></a>
+                            <a class="sidebar-link" href="AdminProdDetails.php?ProductID=<?= $row['ProductID'] ?>"><button> More <label class="las la-arrow-right"></label></button></a>
                         </div>
                      </div>   
                     <?php 
