@@ -231,48 +231,44 @@
                             </div>
                             <div class="card-body">
                                 <table width="100%">
-                                    
                                     <thead>
                                         <tr>
-                                            <td class="danger adjust-size center-aligned">Total Amount:</td>
-                                            <td class="danger adjust-size center-aligned">Money Given</td>
-                                            <td class="danger adjust-size center-aligned">Money Back</td>
-                                            <td class="danger adjust-size center-aligned">Creation Date</td>
-                                            <td class="danger adjust-size center-aligned">Product Quantity</td>
-                                            <td class="danger adjust-size center-aligned">Details</td>
+                                            <td class="danger adjust-size">Barcode</td>
+                                            <td class="danger adjust-size">Product Name</td>
+                                            <td class="danger adjust-size center-aligned">Cost</td>
+                                            <td class="danger adjust-size">Date</td>
+                                            <td class="danger adjust-size">Recepit Details</td>
                                         </tr>
                                     </thead>
                                     <tbody class="info1">
-                                        <?php 
+                                    <?php 
                                             $conn = mysqli_connect("localhost", "root", "", "finalweb");
                                             if (!$conn) {
                                                 die("Connection failed: " . mysqli_connect_error());
                                             }
                                             $today = date("Y-m-d");
-                                            $sql = "SELECT orders.*, orderDetails.*
-                                                FROM orders
-                                                INNER JOIN orderDetails ON orders.OrderID = orderDetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
+                                            $sql = "SELECT *
+                                                FROM products 
+                                                INNER JOIN orderdetails ON products.ProductID = orderdetails.ProductID  
+                                                INNER JOIN orders ON orders.OrderID = orderdetails.OrderID WHERE DATE(orders.OrderDate) = '$today'" ;
                                             $result = mysqli_query($conn, $sql);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
 
                                         ?>
                                         <tr>
-                                            <td class="adjust-size1 center-aligned">$<?= $row['TotalAmount'] ?></td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size center-aligned"></span> $<?= $row['MoneyGiven'] ?>
+                                            <td class="adjust-size1"><?= $row['Barcode'] ?></td>
+                                            <td class="adjust-size1">
+                                                <span class="adjust-size"></span> <?= $row['ProductName'] ?>
                                             </td>
                                             <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> $<?= $row['MoneyBack'] ?>
+                                                <span class="adjust-size"></span> <?= $row['RetailPrice'] ?>
                                             </td>
-                                            <td class="adjust-size1 center-aligned"><?= $row['OrderDate'] ?></td>
-                                            <td class="adjust-size1 center-aligned">
-                                                <span class="adjust-size"></span> <?= $row['Quantity'] ?>
-                                            </td>
+                                            <td class="adjust-size1"><?= $row['OrderDate'] ?></td>
                                             <td class="operation_actived center-aligned">
-                                                <a href="ReceiptDetails.php?ProductID=<?= $row['ProductID'] ?>" ><span class="material-symbol"><button>More</button></span></a>
+                                                <a class="sidebar-link" href="ReceiptDetailSales.php?ProductID=<?= $row['ProductID'] ?>"><span class="material-symbol"><button>More</button></span></a> 
                                             </td>
-                                        </tr>
+                                        </tr> 
                                         <?php
                                                 }
                                             }

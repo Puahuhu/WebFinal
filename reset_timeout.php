@@ -27,4 +27,8 @@
     } else {
         echo "FullName not provided!";
     }
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2

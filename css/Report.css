@@ -339,8 +339,8 @@ main {
 
 .cards1 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-columns: 151px 151px 151px 151px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: 130px 130px 130px 130px 130px;
     grid-gap: 1rem;
 }
 
@@ -774,7 +774,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .card-single5 button {
     object-fit: cover;
     cursor: pointer;
-    width: 151px;
+    width: 130px;
     background: #00000086;
     height: 40px;
     border-radius: 5px;

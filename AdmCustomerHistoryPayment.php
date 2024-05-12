@@ -111,11 +111,7 @@
                     <input type="search" placeholder="Search here" />
                 </div>
                 <div class="user-wrapper">
-                    <!-- <img src="images/quynh.png" width="40px" height="40px" alt="">
-                    <div>
-                        <h4 class="yellow text-hover1"> Nguyen Dang Nhu Quynh </h4>
-                        <small> Admin</small>
-                    </div> -->
+                    <!--  -->
                 </div>
             </header>
 
@@ -170,7 +166,6 @@
                     $sql3 = "SELECT * from customers where customers.CustomerID = $CustomerID";
                     $result2 = mysqli_query($conn, $sql2);
                     $result3 = mysqli_query($conn, $sql3);
-
 
                     $totalPayment=0;
                     $totalNumberofProduct =0;
@@ -265,7 +260,11 @@
                                         <td class="adjust-size1 center-aligned">
                                             <span class="adjust-size"></span> <?= $row2['Quantity'] ?>
                                         </td>
+<<<<<<< HEAD
                                         <!-- <td class="operation_actived center-aligned">
+=======
+                                        <td class="operation_actived center-aligned">
+>>>>>>> 9408985d201ecda6c5fa1e806ba3c920c76543a2
                                         <a class="sidebar-link" href="AdminCustomerInfoDetails.php?CustomerID=<?= $CustomerID ?>">
                                             <span class="material-symbol card-header1"><button>More</button></span>
                                         </a>
