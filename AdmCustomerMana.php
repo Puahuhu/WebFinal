@@ -157,7 +157,7 @@
                                             <td class="danger adjust-size">Fullname</td>
                                             <td class="danger adjust-size">Mobile</td>
                                             <td class="danger adjust-size ">Address</td>
-                                            <td class="danger adjust-size"> History Transaction </td>
+                                            <td class="danger adjust-size"> Details </td>
                                         </tr>
                                     </thead>
                                     <?php
@@ -186,7 +186,7 @@
                                                 <address> <?= $row['CustomerAddress']?></address>
                                             </td>
                                             <td class="operation_actived">
-                                                <a href="AdmCustomerHistoryPayment.php?CustomerID=<?= $row['CustomerID'] ?>"> <span class="material-symbol"><button>More</button></span></a>
+                                                <a class="sidebar-link" href="AdminCustomerInfoDetails.php?CustomerID=<?= $row['CustomerID'] ?>"> <span class="material-symbol"><button>More</button></span></a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -229,7 +229,7 @@
                                         <div>
                                             <h4> <?= $row['FullName'] ?> </h4>
                                             <span class="dateadd"><?= $today ?></span>
-                                            <a href="AdmCustomerHistoryPayment.php?CustomerID=<?= $row['CustomerID']?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
+                                            <a class="sidebar-link" href="AdmCustomerHistoryPayment.php?CustomerID=<?= $row['CustomerID']?>"> <span class="material-symbol card-header1"><button>More</button></span></a>
                                         </div>
                                     </div>
                                 </div>
