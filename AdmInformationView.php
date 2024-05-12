@@ -37,7 +37,7 @@
                         if(employ.IsNew === 1){
                             $(".home-text").append(
                                 "<div class='operation_sendmail'>" +
-                                "<span ><button id='timeoutButton'>Send Mail</button></span>" +
+                                "<span ><button id='sendMailButton'>Send Mail</button></span>" +
                                 "</div>"
                             );
                         }
@@ -164,4 +164,27 @@
         </div>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $(document).on("click", "#sendMailButton", function () {
+            var fullName = "<?php echo htmlspecialchars($_GET['fullName']); ?>";
+
+            $.ajax({
+                url: "reset_timeout.php",
+                type: "GET",
+                data: {
+                    fullName: fullName
+                },
+                success: function (response) {
+                    alert("Email sent successfully!");
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert("Error sending email. Please try again later.");
+                }
+            });
+        });
+    });
+</script>
+
 </html>
