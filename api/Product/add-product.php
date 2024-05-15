@@ -37,7 +37,7 @@
 
     move_uploaded_file($_FILES["Images"]["tmp_name"], $target_file);
 
-    $image = "images/" . basename($_FILES["Images"]["name"]);
+    $image = "../../images/" . basename($_FILES["Images"]["name"]);
 
     $sql = 'INSERT INTO Products(Barcode, ProductName, ImportPrice, RetailPrice, CategoryID, CreatedDate, Images) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
@@ -50,7 +50,7 @@
     }
     echo '<script>
                 function redirectPage() {
-                    window.location.href = "../../AdminProdMana.php?username=' . $_POST['username'] . '";
+                    window.location.href = "../../admin/ProductMana/AdminProdMana.php?username=' . $_POST['username'] . '";
                 }
                 redirectPage();
             </script>';

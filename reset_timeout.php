@@ -16,7 +16,7 @@
 
             $subject = 'Reload the login page';
             $body = 'Request to reload your approved page<br><br>'
-                    . 'Login link here: http://localhost/WebFinal/FirstLogin.php';
+                    . 'Login link here: http://localhost/WebFinal/layout/First-time/FirstLogin.php';
             
             require("send-email.php");
 

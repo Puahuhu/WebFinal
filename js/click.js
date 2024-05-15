@@ -32,7 +32,7 @@ function redirectToProductDetailsSales() {
 
 function redirectToLogout() {
     if (confirm("Do you want to log out?")) {
-        window.location.href = "AdminLogin.php";
+        window.location.href = "../../layout/AdminLogin.php";
     }
 }
 

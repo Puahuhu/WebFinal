@@ -21,14 +21,21 @@
         $stmt = $dbCon->prepare($sql);
         $stmt->execute(array($barcode,$imort_price,$retail_price,$category,$date,$pid));
         $count = $stmt->rowCount();
-        if ($count == 1) {
-            echo json_encode(array('status' => true, 'data' => 'Product successfully updated'));
+        if ($count == 1) {  
+            echo '<script>
+                alert("Product updated succesfully.");
+                function redirectPage() {
+                    window.location.href = "../../admin/ProductMana/AdminProdMana.php?username=' . $_POST['username'] . '";
+                }
+                redirectPage();
+            </script>';
 
         }else {
             // die(json_encode(array('status' => false, 'data' => 'Invalid update')));
             echo '<script>
+                
                 function redirectPage() {
-                    window.location.href = "../../AdminProdMana.php";
+                    window.location.href = "../../admin/ProductMana/AdminProdMana.php?username=' . $_POST['username'] . '";
                 }
                 redirectPage();
             </script>';
@@ -37,18 +44,18 @@
     catch(PDOException $ex){
         // json_encode(array('status' => false, 'data' => $ex->getMessage())));
         echo '<script>
-            function redirectPage() {
-                window.location.href = "../../AdminProdMana.php";
-            }
-            redirectPage();
-        </script>';
+                function redirectPage() {
+                    window.location.href = "../../admin/ProductMana/AdminProdMana.php?username=' . $_POST['username'] . '";
+                }
+                redirectPage();
+            </script>';
     }
     echo '<script>
-            function redirectPage() {
-                window.location.href = "../../AdminProdMana.php";
-            }
-            redirectPage();
-        </script>';
+                function redirectPage() {
+                    window.location.href = "../../admin/ProductMana/AdminProdMana.php?username=' . $_POST['username'] . '";
+                }
+                redirectPage();
+            </script>';
    
 
 
