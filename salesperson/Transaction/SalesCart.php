@@ -35,6 +35,18 @@
     transform: scale(1.05);
     }
 
+    #invoiceButton {
+        background-color: white;
+        color: black;
+        border: 1px solid black; 
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer; 
+    }
+
+    #invoiceButton:hover {
+        background-color: #f0f0f0;
+    }
 </style>
 <script>
     var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
@@ -125,7 +137,7 @@
                         <span class = "material-symbols-sharp" id="setting">receipt_long</span>
                     </label> Cart Products
                 </h1>
-
+ 
                 <div class="user-wrapper">
                 </div>
 
@@ -133,11 +145,6 @@
             <main class="scrollable-content">
                 <div class="right-aligned card-single2 cart-header">
                     <span> Customer Payment </span>
-                </div>
-                <div class="right-aligned4 card-single3 cart-icon">
-                    <div class="avatar1">
-                        <button><img src="../../images/cart_icon.png"></button>
-                    </div>
                 </div>
                 <div class="recent-grid ">
                     <div class="customers right-aligned2">
@@ -293,7 +300,7 @@
                                     </td>
                                     <td>
                                         <p>
-                                            <a><input type="date" name="date" placeholder="-" required></a>
+                                            <a><input type="date" id="creation-date" name="date" readonly required></a>
                                         </p>
                                     </td>
                                 </tr>
@@ -458,5 +465,11 @@
 
         updateTotal();
     }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementById('creation-date').value = today;
+    });
 </script>
 </html>

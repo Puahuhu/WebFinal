@@ -12,6 +12,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+    .suggestions {
+        position: absolute;
+        top: calc(55px); /* Hiển thị khung gợi ý ngay dưới thanh tìm kiếm */
+        right: 20%;
+        border-radius: 30px;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        max-height: 300px; /* Đặt chiều cao tối đa cho khung gợi ý */
+        overflow-y: auto; 
+        background-color: #404040; 
+        display: none; /* Ẩn khung gợi ý ban đầu */
+        z-index: 999; /* Đảm bảo khung gợi ý nằm trên các phần tử khác */
+    }
+
+    #suggestions::-webkit-scrollbar {
+        width: 6px;
+        background-color: silver;
+        border-radius: 30px;
+    } 
+
+    #suggestions::-webkit-scrollbar-thumb {
+        background-color: #242526;
+        border-radius: 30px;
+    }
+    </style>
 </head>
 <script>
     var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
@@ -57,6 +85,85 @@
             }
         });
     });
+    function handleSearchInput(query) {
+        var suggestions = document.getElementById('suggestions');
+        if (query.length >= 2) {
+            var nameResponseReceived = false;
+            $.ajax({
+                url: '../../api/Order/search-name.php',
+                method: 'POST',
+                data: { q: query },
+                success: function (data) {
+                    var productList = '';
+                    var products = JSON.parse(data);
+                    if (products.length > 0) {
+                        nameResponseReceived = true;
+                        products.forEach(function (product ) {
+                            productList += `
+                                <div class="customer" onclick="redirectToCustomerDetails('${encodeURIComponent(product.ProductID)}')">
+                                    <div class="info">
+                                        <img src="${product.Images}" width="40px" height="40px" alt="">
+                                        <div class="operation_actived">
+                                            <h4 class="text-hover">${product.ProductName}</h4>
+                                            <h5>${product.FullName}</h5>
+                                            <h5>${product.OrderDate}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        suggestions.innerHTML = productList;
+                        suggestions.style.display = 'block';
+                    } else {
+
+                        searchByBarcode();
+                    }
+                }
+            });
+
+            function searchByBarcode() {
+                if (!nameResponseReceived) {
+                    $.ajax({
+                        url: '../../api/Order/search-barcode.php',
+                        method: 'POST',
+                        data: { q: query },
+                        success: function (data) {
+                            var productList = '';
+                            var products = JSON.parse(data);
+                            products.forEach(function (product) {
+                                productList += `
+                                    <div class="customer" onclick="redirectToCustomerDetails('${encodeURIComponent(product.ProductID)}')">
+                                        <div class="info">
+                                            <img src="${product.Images}" width="40px" height="40px" alt="">
+                                            <div class="operation_actived">
+                                                <h4 class="text-hover">${product.ProductName}</h4>
+                                                <h5>${product.FullName}</h5>
+                                                <h5>${product.OrderDate}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            suggestions.innerHTML = productList;
+                            suggestions.style.display = 'block';
+                        }
+                    });
+                }
+            }
+        } else {
+            suggestions.innerHTML = '';
+            suggestions.style.display = 'none';
+        }
+    }
+    var username = "<?php echo htmlspecialchars($_GET['username']); ?>";
+    localStorage.setItem('username', username);
+
+    var storedUsername = localStorage.getItem('username');
+
+    function redirectToCustomerDetails(ProductID) {
+        var username = localStorage.getItem('username');
+        window.location.href = 'AdminReceiptDetails.php?ProductID=' + ProductID + '&username=' +encodeURIComponent(username) ;
+    }
 </script>
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -107,7 +214,8 @@
                 </h1>
                 <div class="search-wrapper">
                     <span class="las la-search white"></span>
-                    <input type="search" placeholder="Search here" />
+                    <input type="search" placeholder="Search by product name or barcode" oninput="handleSearchInput(this.value)" />
+                    <div id="suggestions" class="suggestions sidebar-link"></div>
                 </div>
                 <div class="user-wrapper">
                     <!-- <img src="../../images/quynh.png" width="40px" height="40px" alt="">
@@ -120,19 +228,19 @@
             <main>
                 <div class="cards1">
                     <div class="card-single5 hover-button">
-                        <a href="AdminReport.php" class="sidebar-link"> <button>Today</button></a>
+                        <a href="AdminReport.php?username=<?php echo urlencode($_GET['username']); ?>" class="sidebar-link"> <button>Today</button></a>
                     </div>
                     <div class="card-single5 active-button">
                         <button>Yesterday</button>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="TheLastSevenDays.php" class="sidebar-link"> <button>The last 7 days</button></a>
+                        <a href="TheLastSevenDays.php?username=<?php echo urlencode($_GET['username']); ?>" class="sidebar-link"> <button>The last 7 days</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="ThisMonth.php" class="sidebar-link"> <button>This month</button></a>
+                        <a href="ThisMonth.php?username=<?php echo urlencode($_GET['username']); ?>" class="sidebar-link"> <button>This month</button></a>
                     </div>
                     <div class="card-single5 hover-button">
-                        <a href="Fromto.php" class="sidebar-link"> <button>From - To</button></a>
+                        <a href="Fromto.php?username=<?php echo urlencode($_GET['username']); ?>" class="sidebar-link"> <button>From - To</button></a>
                     </div>
                 </div>
                 <div class="cards">
@@ -324,11 +432,11 @@
                     </div>
                 </div>
             </main>
-            <div class="right-aligned4 card-single3 cart-icon">
+            <!-- <div class="right-aligned4 card-single3 cart-icon">
                 <div class="avatar1">
                     <button><img src="../../images/cart_icon.png"></button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <script>

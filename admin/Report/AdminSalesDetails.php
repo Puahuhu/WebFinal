@@ -110,10 +110,10 @@
                         <span class = "material-symbols-sharp" id="setting">settings</span>
                     </label> Report and Analytics
                 </h1>
-                <div class="search-wrapper">
+                <!-- <div class="search-wrapper">
                     <span class="las la-search white"></span>
                     <input type="search" placeholder="Search here" />
-                </div>
+                </div> -->
                 <div class="user-wrapper">
                     <!--  -->
                 </div>
@@ -224,11 +224,11 @@
                     </div>
                 </div>
             </main>
-            <div class="right-aligned4 card-single3 cart-icon">
+            <!-- <div class="right-aligned4 card-single3 cart-icon">
                 <div class="avatar1">
                     <button><img src="../../images/cart_icon.png"></button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <script>

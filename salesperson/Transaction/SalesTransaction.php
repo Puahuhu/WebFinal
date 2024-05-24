@@ -345,7 +345,7 @@
                 </h1>
                 <div class="search-wrapper">
                     <span class="las la-search white"></span>
-                    <input type="search" placeholder="Search here" oninput="handleSearchInput(this.value)" />
+                    <input type="search" placeholder="Search by product name or barcode" oninput="handleSearchInput(this.value)" />
                     <div id="suggestions" class="suggestions"></div>
                 </div>
 
@@ -395,16 +395,16 @@
                     
                 </div>
             </main>
-            <div class="right-aligned card-single2 cart-icon">
+            <!-- <div class="right-aligned card-single2 cart-icon">
                 <div class="avatar">
                     <img src="../../images/cart_icon.png">
                 </div>
-            </div>
-            <div class="right-aligned4 card-single3 cart-icon">
+            </div> -->
+            <!-- <div class="right-aligned4 card-single3 cart-icon">
                 <div class="avatar1">
                     <button><img src="../../images/cart_icon.png"></button>
                 </div>
-            </div>
+            </div> -->
             <div class="recent-grid">
                 <div class="customers right-aligned2">
                     <div class="card scrollable-content1">

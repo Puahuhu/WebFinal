@@ -214,7 +214,7 @@
 <body>
     <input type="checkbox" id="nav-toggle">
     <div class="container">
-        <aside>
+    <aside>
             <div class="top">
                 <div class="logo">
                     <img src="../../images/logoteam.png" width="20px" height="20px" alt="">
@@ -225,15 +225,15 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="AccountManagement.php" class="sidebar-link">
+                <a href="../../admin/AccMana/AccountManagement.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
-                <a href="AdminProdMana.php" class="sidebar-link">
+                <a href="../../admin/ProductMana/AdminProdMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">receipt_long</span>
                     <h3> Product Catalog Management </h3>
                 </a>
-                <a href="AdmCustomerMana.php" class="sidebar-link">
+                <a href="../../admin/CustomerMana/AdmCustomerMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">person</span>
                     <h3> Customers Management </h3>
                 </a>
@@ -241,7 +241,7 @@
                     <span class="material-symbols-sharp">paid</span>
                     <h3> Transaction </h3>
                 </a>
-                <a href="AdminReport.php" class="sidebar-link">
+                <a href="../../admin/Report/AdminReport.php" class="sidebar-link">
                     <span class="material-symbols-sharp">summarize</span>
                     <h3> Reporting and Analytics </h3>
                 </a>
@@ -250,7 +250,7 @@
                     <h3> Logout </h3>
                 </a>
             </div>
-        </aside>
+        </aside>    
         <div class="main-content">
             <header>
                 <h1 class="yellow text-hover1">
@@ -265,12 +265,6 @@
 
             </header>
             <main>
-
-                <div class="right-aligned4 card-single3 cart-icon">
-                    <div class="avatar1">
-                        <button><img src="../../images/cart_icon.png"></button>
-                    </div>
-                </div>
                 <div class="recent-grid ">
                     <div class="projects scrollable-content">
                         <div class="card">
@@ -285,7 +279,7 @@
                                             <td class="danger">Product</td>
                                             <td class="danger">Unit Price</td>
                                             <td class="danger">Amount</td>
-                                            <td class="danger">Total Price </td>
+                                            <td class="danger">Total Price</td>
                                         </tr>
                                     </thead>
                                 
@@ -350,18 +344,27 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <button id="createPDF">Download PDF</button>
+                    </div>
                     <div class="card-single2 align3">
                         <a href="AdminTransaction.php" class="sidebar-link"><button>Cancel</button></a>
                     </div>
             </main>
-            </div>
+        </div>
     <script>
         function redirectToLogout() {
             if (confirm("Do you want to log out?")) {
                 window.location.href = "../../layout/AdminLogin.php";
             }
         }
+
+        $(document).ready(function () {
+            $("#createPDF").click(function () {
+                // Chuyển hướng đến trang PHP tạo PDF
+                window.location.href = "create_pdf.php";
+            });
+        });
     </script>
 </body>
-
 </html>

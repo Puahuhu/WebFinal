@@ -261,12 +261,6 @@
 
             </header>
             <main>
-
-                <div class="right-aligned4 card-single3 cart-icon">
-                    <div class="avatar1">
-                        <button><img src="../../images/cart_icon.png"></button>
-                    </div>
-                </div>
                 <div class="recent-grid ">
                     <div class="projects scrollable-content">
                         <div class="card">
@@ -346,6 +340,9 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <button id="createPDF">Download PDF</button>
+                    </div>
                     <div class="card-single2 align3">
                         <a href="SalesTransaction.php" class="sidebar-link"><button>Cancel</button></a>
                     </div>
@@ -357,6 +354,13 @@
                 window.location.href = "../../layout/AdminLogin.php";
             }
         }
+
+        $(document).ready(function () {
+            $("#createPDF").click(function () {
+                // Chuyển hướng đến trang PHP tạo PDF
+                window.location.href = "create_pdf.php";
+            });
+        });
     </script>
 </body>
 

@@ -272,11 +272,6 @@
                     </div>
                 </div>
             </main>
-            <div class="right-aligned4 card-single3 cart-icon">
-                <div class="avatar1">
-                    <button><img src="../../images/cart_icon.png"></button>
-                </div>
-            </div>
         </div>
     </div>
     <div class="avatar-change-modal" id="avatarChangeModal">

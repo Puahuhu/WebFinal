@@ -12,6 +12,34 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+    .suggestions {
+        position: absolute;
+        top: calc(55px); /* Hiển thị khung gợi ý ngay dưới thanh tìm kiếm */
+        right: 20%;
+        border-radius: 30px;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        max-height: 300px; /* Đặt chiều cao tối đa cho khung gợi ý */
+        overflow-y: auto; 
+        background-color: #404040; 
+        display: none; /* Ẩn khung gợi ý ban đầu */
+        z-index: 999; /* Đảm bảo khung gợi ý nằm trên các phần tử khác */
+    }
+
+    #suggestions::-webkit-scrollbar {
+        width: 6px;
+        background-color: silver;
+        border-radius: 30px;
+    } 
+
+    #suggestions::-webkit-scrollbar-thumb {
+        background-color: #242526;
+        border-radius: 30px;
+    }
+</style>
 </head>
 <script>
     var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
@@ -59,6 +87,50 @@
             }
         });
     });
+    function handleSearchInput(query) {
+            var suggestions = document.getElementById('suggestions');
+            if (query.length >= 2) {
+                $.ajax({
+                    url: '../../api/Customer/search-name.php',
+                    method: 'POST',
+                    data: { q: query },
+                    success: function (data) {
+                        var customerList = '';
+                        var customers = JSON.parse(data);
+                        if (customers.length > 0) {
+                            customers.forEach(function (Customer) {
+                                customerList += `
+                                <div class="customer sidebar-link" onclick="redirectToCustomerDetails(${Customer.CustomerID})">
+                                        <div class="info">
+                                            <div class="operation_actived ">
+                                                <h4 class="text-hover sidebar-link">${Customer.FullName}</h4>
+                                                <h5>${Customer.Phone}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            suggestions.innerHTML = customerList;
+                            suggestions.style.display = 'block';
+                        } else {
+                            suggestions.style.display = 'none';
+                        }
+                    }
+                });
+            } else {
+                suggestions.innerHTML = '';
+                suggestions.style.display = 'none';
+            }
+        }
+        var username = "<?php echo htmlspecialchars($_GET['username']); ?>";
+        localStorage.setItem('username', username);
+
+        var storedUsername = localStorage.getItem('username');
+
+        function redirectToCustomerDetails(CustomerID) {
+            var username = localStorage.getItem('username');
+            window.location.href = 'SalesCustomerDetails.php?username=' + encodeURIComponent(username) + '&CustomerID=' + CustomerID;
+        }
 </script>
 <body>
     <input type="checkbox" id="nav-toggle">
@@ -106,8 +178,10 @@
                 </h1>
                 <div class="search-wrapper">
                     <span class="las la-search white"></span>
-                    <input type="search" placeholder="Search here" />
+                    <input type="search" placeholder="Search by customer name" oninput="handleSearchInput(this.value)" />
+                    <div id="suggestions" class="suggestions sidebar-link"></div>
                 </div>
+                
                 <div class="user-wrapper">
                     <!--  -->
                 </div>
@@ -244,11 +318,11 @@
                     </div>
                 </div>
             </main>
-            <div class="right-aligned4 card-single3 cart-icon">
+            <!-- <div class="right-aligned4 card-single3 cart-icon">
                 <div class="avatar1">
                     <button><img src="../../images/cart_icon.png"></button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <script>
