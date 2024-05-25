@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="sidebar">
-                <a href="../../salesperson/AccMana/SaleAccMana.php" class="sidebar-link">
+                <a href="../../salesperson/AccMana/SalesAccMana.php" class="sidebar-link">
                     <span class="material-symbols-sharp">settings</span>
                     <h3> Account Management </h3>
                 </a>
