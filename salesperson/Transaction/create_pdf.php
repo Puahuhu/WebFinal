@@ -1,4 +1,9 @@
 <?php
+$productNames = $_POST['products'];
+$productPrices = $_POST['prices'];
+$totalPrice = $_POST['totalPrice'];
+$productCountsJSON = $_POST['productCounts'];
+$productCounts = json_decode($productCountsJSON, true);
 require_once('tcpdf/tcpdf.php');
 
 // Tạo một TCPDF instance
@@ -17,40 +22,36 @@ $pdf->SetFont('times', '', 12);
 // Tạo trang mới
 $pdf->AddPage();
 
-$html = '<h1>List of Products</h1>
-<div></div>';
+// Tạo bảng HTML động từ dữ liệu nhận được từ biểu mẫu
+$html = '<h1>List of Products</h1>';
+$html .= '<table cellspacing="0" cellpadding="1" border="1">';
+$html .= '<tr>';
+$html .= '<td style="text-align: center; color: red"><b>Product</b></td>';
+$html .= '<td style="text-align: center; color: red"><b>Unit Price</b></td>';
+$html .= '<td style="text-align: center; color: red"><b>Amount</b></td>';
+$html .= '<td style="text-align: center; color: red"><b>Total Price</b></td>';
+$html .= '</tr>';
+
+// Lặp qua mỗi sản phẩm để thêm vào bảng
+for ($i = 0; $i < count($productNames); $i++) {
+    $productName = $productNames[$i];
+    $productPrice = $productPrices[$i];
+    $amount = $productCounts[$productName];
+    $totalProductPrice = $productPrice * $amount;
+
+    $html .= '<tr>';
+    $html .= '<td style="text-align: center;">' . $productName . '</td>';
+    $html .= '<td style="text-align: center;">' . $productPrice . '$</td>';
+    $html .= '<td style="text-align: center;">' . $amount . '</td>';
+    $html .= '<td style="text-align: center;">' . $totalProductPrice . '$</td>';
+    $html .= '</tr>';
+}
+
+$html .= '</table>';
+$html .= '<h1><p>Total: ' . $totalPrice . '$</p></h1>';
 
 // output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
-
-$tbl = <<<EOD
-<table cellspacing="0" cellpadding="1" border="1">
-    <tr>
-        <td style="text-align: center; color: red"><b>Product</b></td>
-        <td style="text-align: center; color: red"><b>Unit Price</b></td>
-        <td style="text-align: center; color: red"><b>Amount</b></td>
-        <td style="text-align: center; color: red"><b>Total Price</b></td>
-    </tr>
-
-    <tr>
-        <td style="text-align: center;">iPhone 15 Pro</td>
-        <td style="text-align: center;">1999$</td>
-        <td style="text-align: center;">1</td>
-        <td style="text-align: center;">1999$</td>
-    </tr>
-
-    <tr>
-        <td style="text-align: center;">Apple Watch SE</td>
-        <td style="text-align: center;">599$</td>
-        <td style="text-align: center;">1</td>
-        <td style="text-align: center;">599$</td>
-    </tr>
-</table>
-
-<h1><p>Total: 1798$</p></h1> 
-EOD;
-
-$pdf->writeHTML($tbl, true, false, false, false, '');
 
 // Cuối tài liệu
 $pdf->lastPage();

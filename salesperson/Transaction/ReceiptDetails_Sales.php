@@ -340,6 +340,14 @@
                             </div>
                         </div>
                     </div>
+                    <form id="pdfForm" method="post" action="create_pdf.php" style="display: none;">
+                        <?php foreach ($selectedProducts as $product): ?>
+                            <input type="hidden" name="products[]" value="<?php echo $product['name']; ?>">
+                            <input type="hidden" name="prices[]" value="<?php echo $product['price']; ?>">
+                        <?php endforeach; ?>
+                        <input type="hidden" name="totalPrice" value="<?php echo $totalPrice; ?>">
+                        <input type="hidden" name="productCounts" value='<?php echo json_encode($productCounts); ?>'>
+                    </form>
                     <div>
                         <button id="createPDF">Download PDF</button>
                     </div>
@@ -357,8 +365,8 @@
 
         $(document).ready(function () {
             $("#createPDF").click(function () {
-                // Chuyển hướng đến trang PHP tạo PDF
-                window.location.href = "create_pdf.php";
+                // Gửi dữ liệu khi nhấn vào nút "Download PDF"
+                $("#pdfForm").submit();
             });
         });
     </script>
