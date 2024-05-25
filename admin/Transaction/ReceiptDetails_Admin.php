@@ -352,7 +352,7 @@
                         <input type="hidden" name="totalPrice" value="<?php echo $totalPrice; ?>">
                         <input type="hidden" name="productCounts" value='<?php echo json_encode($productCounts); ?>'>
                     </form>
-                    <div>
+                    <div class="card-single2 align4">
                         <button id="createPDF">Download PDF</button>
                     </div>
                     <div class="card-single2 align3">

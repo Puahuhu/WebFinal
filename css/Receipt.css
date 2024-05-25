@@ -358,6 +358,12 @@ main {
     position: absolute;
 }
 
+.align4 {
+    bottom: 40px;
+    right: 200px;
+    position: absolute;
+}
+
 .card-single2 button {
     background-color: gray;
     color: black;
