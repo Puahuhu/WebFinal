@@ -164,6 +164,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .align4 {
+            bottom: 40px;
+            right: 180px;
+            position: absolute;
+        }
+    </style>
 </head>
 <script>
     var username = "<?php echo htmlspecialchars($_GET['username']); ?>"; 
